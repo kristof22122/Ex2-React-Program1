@@ -36,3 +36,49 @@
     transform: rotate(360deg);
   }
 }
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  box-sizing: border-box;
+  border-spacing: 2px;
+}
+
+.thead {
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.thead th:nth-child(1) {
+  width: 20%;
+}
+
+.thead th:nth-child(2) {
+  width: 20%;
+}
+
+.thead th:nth-child(3) {
+  width: 20%;
+}
+
+.thead th:nth-child(4) {
+  width: 20%;
+}
+
+.thead th:nth-child(5) {
+  width: 10%;
+}
+
+.thead th:nth-child(6) {
+  width: 10%;
+}
+
+.th {
+  padding: 20px;
+  border-bottom: 0.5px solid #282c34;
+}
+
+.td {
+  padding: 20px;
+  border-bottom: 0.5px solid #282c34;
+}

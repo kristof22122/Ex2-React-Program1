@@ -3,32 +3,13 @@ import AppSCSS from './App.module.scss';
 
 import { Star } from './components/Star'
 
+const stars = [5, 4, 3, 2, 1];
+
 class App extends React.Component {
   state = {
     badReviews: 0,
     neutralReviews: 0,
     goodReviews: 0,
-  };
-
-  setStar = (starNumber) => {
-    return (
-      <>
-        <input
-          type="radio"
-          id={`star-${starNumber}`}
-          name="rating"
-          value={starNumber}
-          className={AppSCSS.rating__item}
-          onChange={this.handleChange}
-          checked={false}
-        />
-        <label
-          htmlFor={`star-${starNumber}`}
-          title={`Star ${starNumber}`}
-          className={AppSCSS.rating__label}
-        ></label>	
-      </>
-    )
   };
 
   handleChange = (event) => {
@@ -66,7 +47,18 @@ class App extends React.Component {
           Reviews widget
         </h1>
         <form>
-          <Star handleChange={this.handleChange} />
+          <div className={AppSCSS.rating}>
+            <div className={AppSCSS.rating__items}>
+              {stars.map(star => (
+                <Star
+                  handleChange={this.handleChange}
+                  star={star}
+                  key={star}
+                />
+              ))}
+              
+            </div>
+          </div>
         </form>
         <div>
           <p>

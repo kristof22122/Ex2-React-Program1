@@ -1,8 +1,6 @@
 import React from 'react';
 import StarSCSS from './Star.module.scss';
 
-const stars = [5, 4, 3, 2, 1];
-
 export class Star extends React.Component {
   setStar = (starNumber, handleChange) => {
     return (
@@ -26,15 +24,11 @@ export class Star extends React.Component {
   };
 
   render() {
-    const { handleChange } = this.props;
+    const { handleChange, star } = this.props;
     return (
-      <div className={StarSCSS.rating}>
-        <div className={StarSCSS.rating__items}>
-          {stars.map(star => (
-            this.setStar(star, handleChange)
-          ))}
-        </div>
-      </div>
+      <>
+        {this.setStar(star, handleChange)}        
+      </>
     );
   }
 };

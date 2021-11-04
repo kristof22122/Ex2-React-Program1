@@ -1,12 +1,13 @@
 import React from 'react';
 import AppSCSS from './App.module.scss';
 
+import { Star } from './components/Star'
+
 class App extends React.Component {
   state = {
     badReviews: 0,
     neutralReviews: 0,
     goodReviews: 0,
-    allReviews: 0,
   };
 
   setStar = (starNumber) => {
@@ -35,62 +36,60 @@ class App extends React.Component {
       value,
     } = event.target;
 
+    this.setState((currentState) => {
+      const {
+        badReviews: currentBedReviews,
+        neutralReviews: currentNeutralReviews,
+        goodReviews: currentGoodReviews,
+      } = currentState;
+
+      return {
+        badReviews: (+value < 3) ? currentBedReviews + 1 : currentBedReviews,
+        neutralReviews: (+value === 3) ? currentNeutralReviews + 1 : currentNeutralReviews,
+        goodReviews: (+value >= 4 ) ? currentGoodReviews + 1 : currentGoodReviews,
+      }
+    });
+  };
+
+  render() {
     const {
       badReviews,
       neutralReviews,
       goodReviews,
-      allReviews,
     } = this.state;
 
-    this.setState({
-      allReviews: allReviews + 1,
-      badReviews: (+value < 3) ? badReviews + 1 : badReviews,
-      neutralReviews: (+value === 3) ? neutralReviews + 1 : neutralReviews,
-      goodReviews: (+value >= 4 ) ? goodReviews + 1 : goodReviews,
-    });
+    const allReviews = badReviews + neutralReviews + goodReviews;
 
-  }
-
-  render() {
     return (
       <div className={AppSCSS.ReviewsWidget}>
         <h1>
           Reviews widget
         </h1>
         <form>
-          <div className={AppSCSS.rating}>
-            <div className={AppSCSS.rating__items}>
-              {this.setStar(5)}  
-              {this.setStar(4)}  
-              {this.setStar(3)}  
-              {this.setStar(2)}  
-              {this.setStar(1)}  
-            </div>
-          </div>
+          <Star handleChange={this.handleChange} />
         </form>
         <div>
           <p>
-            {`Bad Reviews: ${this.state.badReviews}`}
+            Bad Reviews: {badReviews}
           </p>
           <p>
-            {`Neutral Reviews: ${this.state.neutralReviews}`}
+            Neutral Reviews: {neutralReviews}
           </p>
           <p>
-            {`Good Reviews: ${this.state.goodReviews}`}:
+            Good Reviews: {goodReviews}
           </p>
           <p>
-            {`All Reviews: ${this.state.allReviews}`}:
+            All Reviews: {allReviews}
           </p>
           <p>
-            {`Good reviews in percent: ${(this.state.allReviews)
-              ? Math.round((this.state.goodReviews / this.state.allReviews) * 100) 
-              : 0}%`}
+            Good reviews in percent: {(allReviews)
+              ? Math.round((goodReviews / allReviews) * 100) 
+              : 0}%
           </p>
         </div>
       </div>
     );
   }
-  
 }
 
 export default App;

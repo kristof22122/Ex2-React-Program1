@@ -2,14 +2,60 @@ import React from "react";
 import AddGuestSCSS from'./AddGuest.module.scss';
 
 export class AddGuest extends React.Component {
+  state = {
+    name: '',
+    sex: 'm',
+    age: '',
+    visit: false,
+  };
+
+  handleChange = (event) => {
+    const {
+      name,
+      value,
+    } = event.target;
+
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  handleSubmit = (event) => {
+      event.preventDefault();
+      const id = +new Date();
+      const { addGuest } = this.props;
+      const {
+        name,
+        sex,
+        age,
+      } = this.state;
+
+      const newGuest = {
+        id,
+        name,
+        sex,
+        age: +age,
+        visit: false,
+      };
+      
+      addGuest(newGuest);
+  
+      this.setState(() => {  
+        return {
+          name: '',
+          sex: 'm',
+          age: '',
+        }
+      });
+    };
+
   render() {
     const {
-      handleSubmit,
-      handleChange,
       name,
-      age,
       sex,
-    } = this.props;
+      age,
+    } = this.state;
+
     return (
       <div
         className={AddGuestSCSS.AddGuest}
@@ -20,7 +66,7 @@ export class AddGuest extends React.Component {
         <form
           className={AddGuestSCSS.AddGuest__form}
           onSubmit={(event) => {
-            handleSubmit(event);
+            this.handleSubmit(event);
           }}
         >
           <input
@@ -30,7 +76,7 @@ export class AddGuest extends React.Component {
             name="name"
             value={name}
             onChange={(event) => {
-              handleChange(event);
+              this.handleChange(event);
             }}
             required
           />
@@ -41,7 +87,7 @@ export class AddGuest extends React.Component {
             type="text"
             value={age}
             onChange={(event) => {
-              handleChange(event);
+              this.handleChange(event);
             }}
             required
           />
@@ -50,7 +96,7 @@ export class AddGuest extends React.Component {
             name="sex"
             value={sex}
             onChange={(event) => {
-              handleChange(event);
+              this.handleChange(event);
             }}
           >
             <option
@@ -72,7 +118,6 @@ export class AddGuest extends React.Component {
           </button>
         </form>
       </div>
-      
     )
   }
 }

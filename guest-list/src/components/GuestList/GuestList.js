@@ -2,8 +2,17 @@ import React from "react";
 import GuestListSCSS from './GuestList.module.scss';
 
 export class GuestList extends React.Component {
+  visitGuest = (guestVisit) => {
+
+    console.log(guestVisit);
+
+  };
+
   render() {
-    const { guests, visitGuest } = this.props;
+    const {
+      guests,
+      visitGuest,
+    } = this.props;
 
     return (
       <>
@@ -40,47 +49,56 @@ export class GuestList extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {guests.map(guest => (
-              <tr
-                key={guest.id}
-              >
-                <td
-                  className={GuestListSCSS.td}
+            {guests.map(guest => {
+              const {
+                id,
+                name,
+                age,
+                sex,
+                visit,
+              } = guest;
+
+              return (
+                <tr
+                  key={id}
                 >
-                  {guest.name}
-                </td>
-                <td
-                  className={GuestListSCSS.td}
-                >
-                  {guest.age}
-                </td>
-                <td
-                  className={GuestListSCSS.td}
-                >
-                  {guest.sex}
-                </td>
-                <td
-                  className={GuestListSCSS.th}
-                >
-                  <label
-                    htmlFor={`visit-${guest.id}`}
+                  <td
+                    className={GuestListSCSS.td}
                   >
-                    Visit
-                  </label>
-                  <input
-                    type="checkbox"
-                    id={`visit-${guest.id}`}
-                    name={`visit-${guest.id}`}
-                    checked={guest.visit}
-                    onChange={(e) => visitGuest(e, guest)}
-                  />
-                </td>
-              </tr>
-            ))}
+                    {name}
+                  </td>
+                  <td
+                    className={GuestListSCSS.td}
+                  >
+                    {age}
+                  </td>
+                  <td
+                    className={GuestListSCSS.td}
+                  >
+                    {sex}
+                  </td>
+                  <td
+                    className={GuestListSCSS.th}
+                  >
+                    <label
+                      htmlFor={`visit-${id}`}
+                    >
+                      Visit
+                    </label>
+                    <input
+                      type="checkbox"
+                      id={`visit-${id}`}
+                      name={`visit-${id}`}
+                      checked={visit}
+                      onChange={() => visitGuest(id)}
+                    />
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </>
-      
     )
   } 
 }

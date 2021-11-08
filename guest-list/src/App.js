@@ -31,54 +31,34 @@ const guestsFromServer = [
 class App extends React.Component {
   state = {
     guests: guestsFromServer,
-    name: '',
-    sex: 'm',
-    age: '',
-    visit: false,
   };
 
-  sortGuests = (guestList) => {
-    return guestList.sort((guestX, guestY) => guestX.name.localeCompare(guestY.name))
-    .sort((guestX, guestY) => guestX.visit - guestY.visit);
+  sortGuests = () => {
+    const { guests } = this.state;
+    const copyGuest = [...guests];    
+    return copyGuest.sort((guestX, guestY) => (guestX.visit - guestY.visit) || (guestX.name.localeCompare(guestY.name)));
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const id = +new Date();
-
-    this.setState(currentState => {
-      const {
-        name,
-        sex,
-        age,
-        guests,
-      } = currentState;
+  addGuest = (newGuest) => {
+    this.setState((currentState) => {
+      const { guests } = currentState;
 
       return {
-        guests: [...guests, {
-          id,
-          name,
-          sex,
-          age: +age,
-          visit: false,
-        }],
-        name: '',
-        sex: 'm',
-        age: '',
+        guests: [...guests, newGuest],
       }
     });
   };
 
-  visitGuest = (event, newGuest) => {
+  visitGuest = (newGuestId) => {
     this.setState((currentState) => {
       const { guests } = currentState;
 
       return {
         guests: guests.map(guest => {
-          if (guest === newGuest) {
+          if (guest.id === newGuestId) {
             return {
               ...guest,
-              visit: event.target.checked,
+              visit: !guest.visit,
             };
           };
     
@@ -88,41 +68,19 @@ class App extends React.Component {
     });
   };
 
-  handleChange = (event) => {
-    const {
-      name,
-      value,
-    } = event.target;
-
-    this.setState({
-      [name]: value,
-    });
-  }
-
   render() {
-    const {
-      name,
-      sex,
-      age,
-      guests,
-    } = this.state;
-
-    this.sortGuests(guests);
+    const sortGuests = this.sortGuests();
 
     return (
       <div className={AppSCSS.App}>
         <h1>
           Guest List
         </h1>
-        <AddGuest 
-          handleSubmit={this.handleSubmit}
-          handleChange={this.handleChange}
-          name={name}
-          age={age}
-          sex={sex}
+        <AddGuest
+          addGuest={this.addGuest}
         />
         <GuestList
-          guests={guests}
+          guests={sortGuests}
           visitGuest={this.visitGuest}
         />
       </div>

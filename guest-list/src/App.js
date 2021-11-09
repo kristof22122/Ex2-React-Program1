@@ -69,8 +69,6 @@ class App extends React.Component {
   };
 
   render() {
-    const sortGuests = this.sortGuests();
-
     return (
       <div className={AppSCSS.App}>
         <h1>
@@ -80,8 +78,8 @@ class App extends React.Component {
           addGuest={this.addGuest}
         />
         <GuestList
-          guests={sortGuests}
           visitGuest={this.visitGuest}
+          sortGuests={this.sortGuests}
         />
       </div>
     );

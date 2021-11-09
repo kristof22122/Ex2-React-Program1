@@ -6,7 +6,7 @@ export class AddGuest extends React.Component {
     name: '',
     sex: 'm',
     age: '',
-    visit: false,
+    ageError: '',
   };
 
   handleChange = (event) => {
@@ -16,44 +16,58 @@ export class AddGuest extends React.Component {
     } = event.target;
 
     this.setState({
+      ageError: '',
       [name]: value,
     });
   };
 
-  handleSubmit = (event) => {
-      event.preventDefault();
-      const id = +new Date();
-      const { addGuest } = this.props;
-      const {
-        name,
-        sex,
-        age,
-      } = this.state;
+  handleClick = () => {
+    const id = +new Date();
+    const { addGuest } = this.props;
+    const {
+      name,
+      sex,
+      age,
+    } = this.state;
 
-      const newGuest = {
-        id,
-        name,
-        sex,
-        age: +age,
-        visit: false,
-      };
-      
-      addGuest(newGuest);
-  
-      this.setState(() => {  
+    if (isNaN(+age)) {
+      this.setState(() => {
         return {
+          ageError: 'Wrong age',
           name: '',
           sex: 'm',
           age: '',
         }
       });
+
+      return;
     };
+
+    const newGuest = {
+      id,
+      name,
+      sex,
+      age: +age,
+      visit: false,
+    };
+    
+    addGuest(newGuest);
+
+    this.setState(() => {  
+      return {
+        name: '',
+        sex: 'm',
+        age: '',
+      }
+    });
+  };
 
   render() {
     const {
       name,
       sex,
       age,
+      ageError,
     } = this.state;
 
     return (
@@ -65,9 +79,6 @@ export class AddGuest extends React.Component {
         </h2>
         <form
           className={AddGuestSCSS.AddGuest__form}
-          onSubmit={(event) => {
-            this.handleSubmit(event);
-          }}
         >
           <input
             className={AddGuestSCSS.AddGuest__input}
@@ -75,9 +86,7 @@ export class AddGuest extends React.Component {
             type="text"
             name="name"
             value={name}
-            onChange={(event) => {
-              this.handleChange(event);
-            }}
+            onChange={this.handleChange}
             required
           />
           <input
@@ -86,18 +95,19 @@ export class AddGuest extends React.Component {
             name="age"
             type="text"
             value={age}
-            onChange={(event) => {
-              this.handleChange(event);
-            }}
+            onChange={this.handleChange}
             required
           />
+          {ageError && (
+            <p>
+              {ageError}
+            </p>
+          )}
           <select
             className={AddGuestSCSS.AddGuest__select}
             name="sex"
             value={sex}
-            onChange={(event) => {
-              this.handleChange(event);
-            }}
+            onChange={this.handleChange}
           >
             <option
               value="m"
@@ -112,7 +122,8 @@ export class AddGuest extends React.Component {
           </select>
           <button
             className={AddGuestSCSS.AddGuest__button}
-            type="submit"
+            type="button"
+            onClick={this.handleClick}
           >
             Add Guest
           </button>

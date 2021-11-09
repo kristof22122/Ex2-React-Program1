@@ -2,17 +2,13 @@ import React from "react";
 import GuestListSCSS from './GuestList.module.scss';
 
 export class GuestList extends React.Component {
-  visitGuest = (guestVisit) => {
-
-    console.log(guestVisit);
-
-  };
-
   render() {
     const {
-      guests,
       visitGuest,
+      sortGuests,
     } = this.props;
+
+    const guests = sortGuests();
 
     return (
       <>

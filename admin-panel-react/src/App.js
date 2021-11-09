@@ -187,9 +187,7 @@ class App extends React.Component {
     });
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-
+  handleClick = () => {
     const {
       userName,
       userDepartment,
@@ -244,7 +242,7 @@ class App extends React.Component {
         dateBuilder={this.dateBuilder}
         addUser={this.addUser}
         handleChange={this.handleChange}
-        handleSubmit={this.handleSubmit}
+        handleClick={this.handleClick}
         userName={userName}
         userDepartment={userDepartment}
       />

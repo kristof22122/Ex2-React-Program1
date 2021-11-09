@@ -5,7 +5,7 @@ export class AdminPanelForm extends React.Component {
   render() {
     const {
       handleChange,
-      handleSubmit,
+      handleClick,
       userName,
       userDepartment,
     } = this.props;
@@ -17,12 +17,7 @@ export class AdminPanelForm extends React.Component {
         </h2>
         <section className={AdminPanelFormCSS.adminPanel}>
           <form
-            action="#"
-            method="GET"
             className={AdminPanelFormCSS.form}
-            onSubmit={(event) => {
-              handleSubmit(event);
-            }}
           >
             <fieldset>
               <div>
@@ -73,8 +68,11 @@ export class AdminPanelForm extends React.Component {
               </div>
 
               <button
-                type="submit"
+                type="button"
                 className={AdminPanelFormCSS.button}
+                onClick={() => {
+                  handleClick();
+                }}
               >
                 Save
               </button>

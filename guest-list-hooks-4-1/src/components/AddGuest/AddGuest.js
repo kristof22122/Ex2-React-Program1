@@ -39,12 +39,10 @@ export const AddGuest = (props) => {
 
   const handleClick = () => {
     const id = +new Date();
+    const guestAge = +age;
 
-    if (isNaN(+age)) {
+    if (isNaN(guestAge)) {
       setAgeError('Wrong age');
-      setName('');
-      setSex('m');
-      setAge('');
 
       return;
     };
@@ -53,7 +51,7 @@ export const AddGuest = (props) => {
       id,
       name,
       sex,
-      age: +age,
+      age: guestAge,
       visit: false,
     };
     

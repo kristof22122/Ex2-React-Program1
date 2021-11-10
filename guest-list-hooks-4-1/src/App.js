@@ -31,11 +31,6 @@ const guestsFromServer = [
 const App = () => {
   const [ guests, setGuests] = useState([...guestsFromServer]);
 
-  const sortGuests = () => {
-    const copyGuest = [...guests];
-    return copyGuest.sort((guestX, guestY) => (guestX.visit - guestY.visit) || (guestX.name.localeCompare(guestY.name)));
-  }
-
   const addGuest = (newGuest) => {
     setGuests([...guests, newGuest]);
   };
@@ -65,10 +60,10 @@ const App = () => {
       />
       <GuestList
         visitGuest={visitGuest}
-        sortGuests={sortGuests}
+        guests={guests}
       />
     </div>
   );
-}
+};
 
 export default App;

@@ -4,10 +4,15 @@ import GuestListSCSS from './GuestList.module.scss';
 export const GuestList = (props) => {
   const {
     visitGuest,
-    sortGuests,
+    guests,
   } = props;
 
-  const guests = sortGuests();
+  const sortGuests = () => {
+    const copyGuest = [...guests];
+    return copyGuest.sort((guestX, guestY) => (guestX.visit - guestY.visit) || (guestX.name.localeCompare(guestY.name)));
+  }
+
+  const sortedGuests = sortGuests();
 
   return (
     <>
@@ -44,7 +49,7 @@ export const GuestList = (props) => {
           </tr>
         </thead>
         <tbody>
-          {guests.map(guest => {
+          {sortedGuests.map(guest => {
             const {
               id,
               name,
@@ -95,4 +100,4 @@ export const GuestList = (props) => {
       </table>
     </>
   )
-}
+};

@@ -33,12 +33,6 @@ class App extends React.Component {
     guests: guestsFromServer,
   };
 
-  sortGuests = () => {
-    const { guests } = this.state;
-    const copyGuest = [...guests];    
-    return copyGuest.sort((guestX, guestY) => (guestX.visit - guestY.visit) || (guestX.name.localeCompare(guestY.name)));
-  }
-
   addGuest = (newGuest) => {
     this.setState((currentState) => {
       const { guests } = currentState;
@@ -69,6 +63,10 @@ class App extends React.Component {
   };
 
   render() {
+    const {
+      guests,
+    } = this.state;
+
     return (
       <div className={AppSCSS.App}>
         <h1>
@@ -79,7 +77,7 @@ class App extends React.Component {
         />
         <GuestList
           visitGuest={this.visitGuest}
-          sortGuests={this.sortGuests}
+          guests={guests}
         />
       </div>
     );

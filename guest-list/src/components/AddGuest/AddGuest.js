@@ -29,14 +29,12 @@ export class AddGuest extends React.Component {
       sex,
       age,
     } = this.state;
+    const guestAge = +age;
 
-    if (isNaN(+age)) {
+    if (isNaN(guestAge)) {
       this.setState(() => {
         return {
           ageError: 'Wrong age',
-          name: '',
-          sex: 'm',
-          age: '',
         }
       });
 
@@ -47,7 +45,7 @@ export class AddGuest extends React.Component {
       id,
       name,
       sex,
-      age: +age,
+      age: guestAge,
       visit: false,
     };
     

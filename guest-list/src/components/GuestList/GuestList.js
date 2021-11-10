@@ -2,13 +2,18 @@ import React from "react";
 import GuestListSCSS from './GuestList.module.scss';
 
 export class GuestList extends React.Component {
+  sortGuests = () => {
+    const { guests } = this.props;
+    const copyGuest = [...guests];    
+    return copyGuest.sort((guestX, guestY) => (guestX.visit - guestY.visit) || (guestX.name.localeCompare(guestY.name)));
+  };
+
   render() {
     const {
       visitGuest,
-      sortGuests,
     } = this.props;
 
-    const guests = sortGuests();
+    const guests = this.sortGuests();
 
     return (
       <>
@@ -97,4 +102,4 @@ export class GuestList extends React.Component {
       </>
     )
   } 
-}
+};

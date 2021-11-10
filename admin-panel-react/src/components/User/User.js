@@ -2,31 +2,6 @@ import React from 'react';
 import UserCSS from './User.module.css';
 
 export class User extends React.Component {
-
-  delete = (userId) => {
-    const {
-      deleteUser,
-    } = this.props;
-
-    deleteUser(userId);
-  };
-
-  update = (userId, userName, userDepartment) => {
-    const {
-      updateUser,
-    } = this.props;
-
-    const userForUpdate = {
-      id: userId,
-      userName,
-      userDepartment,
-    };
-
-    updateUser(userForUpdate);
-  };
-
-
-
   render() {
     const {
       id,
@@ -35,6 +10,11 @@ export class User extends React.Component {
       dateOfCreation,
       dateOfChange,
     } = this.props.user;
+
+    const {
+      deleteUser,
+      updateUser,
+    } = this.props;
 
     return (
       <>
@@ -65,7 +45,11 @@ export class User extends React.Component {
             type="button"
             className={UserCSS.userButton}
             onClick={() => {
-              this.update(id, userName, userDepartment);
+              updateUser({
+                id,
+                userName,
+                userDepartment,
+              });
             }}
           >
             Update
@@ -78,7 +62,7 @@ export class User extends React.Component {
             type="button"
             className={UserCSS.userButton}
             onClick={() => {
-              this.delete(id);
+              deleteUser(id);
             }}
           >
             delete

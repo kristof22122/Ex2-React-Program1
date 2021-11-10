@@ -38,61 +38,16 @@ let localStorageUsers = getLocalStorageUsers();
 class App extends React.Component {
   state = {
     users: [],
-    updateUserInfo: {},
+    updateUserInfoId: null,
     userName: '',
     userDepartment: '',
-    query: '',
-  };
-
-  timeFormat = (time) => {
-    if (time < 10) {
-      return `0${time}`;
-    } 
-    return `${time}`;
-  };
-  
-  dateBuilder = (currentDate) => {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  
-    const day = days[currentDate.getDay()];
-    const date = currentDate.getDate();
-    const month = months[currentDate.getMonth()];
-    const year = currentDate.getFullYear();
-    const hr = currentDate.getHours();
-    const min = currentDate.getMinutes();
-    const hours = this.timeFormat(hr);
-    const minutes = this.timeFormat(min);
-  
-    return `${day}, ${date} ${month} ${year}, ${hours}:${minutes}`;
-  };
-
-  getVisibleUsers = () => {
-    const {
-      query,
-      users,
-    } = this.state;
-
-    let visibleUsers = [...users];
-
-    if (query) {
-      const lowerQuery = query.toLocaleLowerCase();
-
-      visibleUsers = users
-        .filter(user => user.userName.toLocaleLowerCase().includes(lowerQuery));
-    }
-
-    return visibleUsers;
   };
 
   addUser = (newUser) => {
     const {
       users,
+      updateUserInfoId,
     } = this.state;
-
-    const {
-      id: updateUserInfoId
-    } = this.state.updateUserInfo;
 
     const {
       userName,
@@ -131,7 +86,9 @@ class App extends React.Component {
 
         return {
           users: [...copyUsers],
-          updateUserInfo: {},
+          updateUserInfoId: null,
+          userName: '',
+          userDepartment: '',
         };
       });
 
@@ -143,6 +100,8 @@ class App extends React.Component {
 
       return {
         users: [...users, newUser],
+        userName: '',
+        userDepartment: '',
       };
     });
   };
@@ -166,11 +125,12 @@ class App extends React.Component {
   updateUser = (user) => {
     const {
       userName,
-      userDepartment
+      userDepartment,
+      id,
     } = user;
 
     this.setState(() => ({
-      updateUserInfo: user,
+      updateUserInfoId: id,
       userName,
       userDepartment,
     }));
@@ -187,33 +147,6 @@ class App extends React.Component {
     });
   };
 
-  handleClick = () => {
-    const {
-      userName,
-      userDepartment,
-    } = this.state;
-
-    const id = +new Date();
-    const dateCreate = this.dateBuilder(new Date())    
-
-    const newUser = {
-      id,
-      userName,
-      userDepartment,
-      dateOfCreation: dateCreate,
-      dateOfChange: dateCreate,
-    };
-    
-    this.addUser(newUser);
-
-    this.setState(() => {  
-      return {
-        userName: '',
-        userDepartment: '',
-      };
-    });
-  };
-
   componentDidMount() {
     this.setState(() => {
       return {
@@ -224,13 +157,10 @@ class App extends React.Component {
 
   render() {
     const {
-      updateUserInfo,
       userName,
       userDepartment,
-      query,
+      users,
     } = this.state;
-
-    const visibleUsers = this.getVisibleUsers();
 
     return (
     <div className="App">
@@ -238,20 +168,15 @@ class App extends React.Component {
         Admin Panel React
       </h1>
       <AdminPanelForm
-        updateUserInfo={updateUserInfo}
-        dateBuilder={this.dateBuilder}
-        addUser={this.addUser}
         handleChange={this.handleChange}
-        handleClick={this.handleClick}
+        addUser={this.addUser}
         userName={userName}
         userDepartment={userDepartment}
       />
       <AdminPanelTable
-       users={visibleUsers}
-       deleteUser={this.deleteUser}
-       updateUser={this.updateUser}
-       handleChange={this.handleChange}
-       query={query}
+        users={users}
+        deleteUser={this.deleteUser}
+        updateUser={this.updateUser}
       />
     </div>
     );

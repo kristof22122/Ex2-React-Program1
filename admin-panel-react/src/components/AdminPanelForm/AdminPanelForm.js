@@ -2,10 +2,30 @@ import React from "react";
 import AdminPanelFormCSS from'./AdminPanelForm.module.css';
 
 export class AdminPanelForm extends React.Component {
+  handleClick = () => {
+    const {
+      userName,
+      userDepartment,
+      addUser,
+    } = this.props;
+
+    const id = +new Date();
+    const dateCreate = new Date().toString();
+
+    const newUser = {
+      id,
+      userName,
+      userDepartment,
+      dateOfCreation: dateCreate,
+      dateOfChange: dateCreate,
+    };
+    
+    addUser(newUser);
+  };
+
   render() {
     const {
       handleChange,
-      handleClick,
       userName,
       userDepartment,
     } = this.props;
@@ -71,7 +91,7 @@ export class AdminPanelForm extends React.Component {
                 type="button"
                 className={AdminPanelFormCSS.button}
                 onClick={() => {
-                  handleClick();
+                  this.handleClick();
                 }}
               >
                 Save
@@ -81,5 +101,5 @@ export class AdminPanelForm extends React.Component {
         </section>
       </div>
     )
-  }
+  };
 };

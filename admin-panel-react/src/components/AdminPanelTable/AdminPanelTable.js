@@ -4,14 +4,52 @@ import AdminPanelTableCSS from'./AdminPanelTable.module.css';
 import { User } from '../User/User';
 
 export class AdminPanelTable extends React.Component {
-  render() {
+  state = {
+    query: '',
+  };
+
+  search = (event) => {
+    const {
+      value,
+    } = event.target;
+
+    this.setState({
+      query: value,
+    });
+  };
+
+  getVisibleUsers = () => {
+    const {
+      query,
+    } = this.state;
+
     const {
       users,
+    } = this.props;
+
+    let visibleUsers = [...users];
+
+    if (query) {
+      const lowerQuery = query.toLocaleLowerCase();
+
+      visibleUsers = users
+        .filter(user => user.userName.toLocaleLowerCase().includes(lowerQuery));
+    };
+
+    return visibleUsers;
+  };
+
+  render() {
+    const {
       deleteUser,
       updateUser,
-      query,
-      handleChange,
     } = this.props;
+
+    const {
+      query,
+    } = this.state;
+
+    const visibleUsers = this.getVisibleUsers();
 
     return (
       <div className={AdminPanelTableCSS.App}>
@@ -26,9 +64,7 @@ export class AdminPanelTable extends React.Component {
             className={AdminPanelTableCSS.input}
             placeholder="Search"
             value={query}
-            onChange={(event) => {
-              handleChange(event);
-            }}
+            onChange={this.search}
           />
         </div>
         <table 
@@ -71,7 +107,7 @@ export class AdminPanelTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {visibleUsers.map(user => (
               <tr
                 key={user.id}
               >
@@ -87,4 +123,4 @@ export class AdminPanelTable extends React.Component {
       </div>
     );
   }
-}
+};

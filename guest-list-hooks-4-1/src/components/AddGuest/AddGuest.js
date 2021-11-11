@@ -14,8 +14,15 @@ export const AddGuest = (props) => {
   const handleChange = (event) => {
     const {
       name,
+    } = event.target;
+
+    let {
       value,
     } = event.target;
+
+    if (value === null) {
+      value = '';
+    };
 
     switch(name) {
       case 'name':

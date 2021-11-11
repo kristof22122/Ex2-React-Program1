@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 import { AdminPanelTable } from './components/AdminPanelTable/AdminPanelTable';
@@ -35,65 +35,14 @@ const getLocalStorageUsers = () => {
 
 let localStorageUsers = getLocalStorageUsers();
 
-class App extends React.Component {
-  state = {
-    users: [],
-    updateUserInfo: {},
-    userName: '',
-    userDepartment: '',
-    query: '',
-  };
+const App = () => {
+  const [ users, setUsers ] = useState([]);
+  const [ updateUserInfoId, setUpdateUserInfoId ] = useState(null);
+  const [ userName, setUserName ] = useState('');
+  const [ userDepartment, setUserDepartment ] = useState('');
 
-  timeFormat = (time) => {
-    if (time < 10) {
-      return `0${time}`;
-    } 
-    return `${time}`;
-  };
-  
-  dateBuilder = (currentDate) => {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  
-    const day = days[currentDate.getDay()];
-    const date = currentDate.getDate();
-    const month = months[currentDate.getMonth()];
-    const year = currentDate.getFullYear();
-    const hr = currentDate.getHours();
-    const min = currentDate.getMinutes();
-    const hours = this.timeFormat(hr);
-    const minutes = this.timeFormat(min);
-  
-    return `${day}, ${date} ${month} ${year}, ${hours}:${minutes}`;
-  };
 
-  getVisibleUsers = () => {
-    const {
-      query,
-      users,
-    } = this.state;
-
-    let visibleUsers = [...users];
-
-    if (query) {
-      const lowerQuery = query.toLocaleLowerCase();
-
-      visibleUsers = users
-        .filter(user => user.userName.toLocaleLowerCase().includes(lowerQuery));
-    }
-
-    return visibleUsers;
-  };
-
-  addUser = (newUser) => {
-    const {
-      users,
-    } = this.state;
-
-    const {
-      id: updateUserInfoId
-    } = this.state.updateUserInfo;
-
+  const addUser = (newUser) => {
     const {
       userName,
       userDepartment,
@@ -101,161 +50,114 @@ class App extends React.Component {
     } = newUser;
 
     if (updateUserInfoId) {
-      this.setState(() => {
+      const copyUsers = users.map(user => {
         const {
-          users,
-        } = this.state;
+          id: userId,
+          dateOfCreation: userDateOfCreation,
+        } = user;
 
-        const copyUsers = users.map(user => {
-          const {
+        if (userId === updateUserInfoId) {
+          user = {
             id: userId,
+            userName,
+            userDepartment,
             dateOfCreation: userDateOfCreation,
-          } = user;
-
-          if (userId === updateUserInfoId) {
-            user = {
-              id: userId,
-              userName,
-              userDepartment,
-              dateOfCreation: userDateOfCreation,
-              dateOfChange,
-            }
-
-            return user;
-          };
+            dateOfChange,
+          }
 
           return user;
-        });
-
-        setLocalStorageUsers(copyUsers);
-
-        return {
-          users: [...copyUsers],
-          updateUserInfo: {},
         };
+
+        return user;
       });
+
+      setLocalStorageUsers(copyUsers);
+
+      setUsers([...copyUsers]);
+      setUpdateUserInfoId(null);
+      setUserName('');
+      setUserDepartment('');
 
       return;
     };
 
-    this.setState(() => {
-      setLocalStorageUsers([...users, newUser]);
+    setLocalStorageUsers([...users, newUser]);
 
-      return {
-        users: [...users, newUser],
-      };
-    });
+    setUsers([...users, newUser]);
+    setUserName('');
+    setUserDepartment('');
   };
 
-  deleteUser = (userId) => {
-    this.setState((currentState) => {
-      const {
-        users,
-      } = currentState;
+  const deleteUser = (userId) => {
 
-      const copyUsers = users.filter(user => user.id !== userId);
+    const copyUsers = users.filter(user => user.id !== userId);
 
-      setLocalStorageUsers(copyUsers);
+    setLocalStorageUsers(copyUsers);
 
-      return {
-        users: [...copyUsers],
-      };
-    });
+    setUsers([...copyUsers]);
   };
 
-  updateUser = (user) => {
+  const updateUser = (user) => {
     const {
-      userName,
-      userDepartment
-    } = user;
-
-    this.setState(() => ({
-      updateUserInfo: user,
       userName,
       userDepartment,
-    }));
+      id,
+    } = user;
+
+    setUpdateUserInfoId(id);
+    setUserDepartment(userDepartment);
+    setUserName(userName);
   };
 
-  handleChange = (event) => {
+  const handleChange = (event) => {
     const {
       name,
+    } = event.target;
+
+    let {
       value,
     } = event.target;
 
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleClick = () => {
-    const {
-      userName,
-      userDepartment,
-    } = this.state;
-
-    const id = +new Date();
-    const dateCreate = this.dateBuilder(new Date())    
-
-    const newUser = {
-      id,
-      userName,
-      userDepartment,
-      dateOfCreation: dateCreate,
-      dateOfChange: dateCreate,
+    if (value === null) {
+      value = '';
     };
+
+    switch (name) {
+      case 'userName':
+        setUserName(value);
+        break;
+
+      case 'userDepartment':
+        setUserDepartment(value);
+        break;
     
-    this.addUser(newUser);
-
-    this.setState(() => {  
-      return {
-        userName: '',
-        userDepartment: '',
-      };
-    });
+      default:
+        break;
+    };
   };
 
-  componentDidMount() {
-    this.setState(() => {
-      return {
-        users: [...localStorageUsers],
-      };
-    });
-  };
+  useEffect(() => {
+    setUsers([...localStorageUsers]);
+  }, []);
 
-  render() {
-    const {
-      updateUserInfo,
-      userName,
-      userDepartment,
-      query,
-    } = this.state;
-
-    const visibleUsers = this.getVisibleUsers();
-
-    return (
+  return (
     <div className="App">
       <h1>
         Admin Panel React
       </h1>
       <AdminPanelForm
-        updateUserInfo={updateUserInfo}
-        dateBuilder={this.dateBuilder}
-        addUser={this.addUser}
-        handleChange={this.handleChange}
-        handleClick={this.handleClick}
+        handleChange={handleChange}
+        addUser={addUser}
         userName={userName}
         userDepartment={userDepartment}
       />
       <AdminPanelTable
-       users={visibleUsers}
-       deleteUser={this.deleteUser}
-       updateUser={this.updateUser}
-       handleChange={this.handleChange}
-       query={query}
+        users={users}
+        deleteUser={deleteUser}
+        updateUser={updateUser}
       />
     </div>
-    );
-  }  
-}
+  );
+};
 
 export default App;

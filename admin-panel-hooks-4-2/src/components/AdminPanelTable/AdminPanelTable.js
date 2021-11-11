@@ -1,90 +1,113 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AdminPanelTableCSS from'./AdminPanelTable.module.css';
 
 import { User } from '../User/User';
 
-export class AdminPanelTable extends React.Component {
-  render() {
-    const {
-      users,
-      deleteUser,
-      updateUser,
-      query,
-      handleChange,
-    } = this.props;
+export const AdminPanelTable = (props) => {
+  const [ query, setQuery ] = useState('');
 
-    return (
-      <div className={AdminPanelTableCSS.App}>
-        <h2>
-          Admin Panel Table
-        </h2>
-        <div className={AdminPanelTableCSS.inputWrapper}>
-          <input
-            type="text"
-            id="query"
-            name="query"
-            className={AdminPanelTableCSS.input}
-            placeholder="Search"
-            value={query}
-            onChange={(event) => {
-              handleChange(event);
-            }}
-          />
-        </div>
-        <table 
-          className={AdminPanelTableCSS.table}
-        >
-          <thead
-            className={AdminPanelTableCSS.thead}
-          >
-            <tr>
-              <th
-                className={AdminPanelTableCSS.th}
-              >
-                User Name
-              </th>
-              <th
-                className={AdminPanelTableCSS.th}
-              >
-                Department
-              </th>
-              <th
-                className={AdminPanelTableCSS.th}
-              >
-                Date of creation
-              </th>
-              <th
-                className={AdminPanelTableCSS.th}
-              >
-                Date of change
-              </th>
-              <th
-                className={AdminPanelTableCSS.th}
-              >
-                Update
-              </th>
-              <th
-                className={AdminPanelTableCSS.th}
-              >
-                Delete
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr
-                key={user.id}
-              >
-                <User
-                  user={user}
-                  deleteUser={deleteUser}
-                  updateUser={updateUser}
-                />
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  const {
+    users,
+    deleteUser,
+    updateUser,
+  } = props;
+
+  const search = (event) => {
+    let {
+      value,
+    } = event.target;
+
+    if (value === null) {
+      value = '';
+    };
+
+    setQuery(value);
+  };
+
+  const getVisibleUsers = () => {
+    let visibleUsers = [...users];
+
+    if (query) {
+      const lowerQuery = query.toLocaleLowerCase();
+
+      visibleUsers = users
+        .filter(user => user.userName.toLocaleLowerCase().includes(lowerQuery));
+    };
+
+    return visibleUsers;
+  };
+
+  const visibleUsers = getVisibleUsers();
+
+  return (
+    <div className={AdminPanelTableCSS.App}>
+      <h2>
+        Admin Panel Table
+      </h2>
+      <div className={AdminPanelTableCSS.inputWrapper}>
+        <input
+          type="text"
+          id="query"
+          name="query"
+          className={AdminPanelTableCSS.input}
+          placeholder="Search"
+          value={query}
+          onChange={search}
+        />
       </div>
-    );
-  }
-}
+      <table 
+        className={AdminPanelTableCSS.table}
+      >
+        <thead
+          className={AdminPanelTableCSS.thead}
+        >
+          <tr>
+            <th
+              className={AdminPanelTableCSS.th}
+            >
+              User Name
+            </th>
+            <th
+              className={AdminPanelTableCSS.th}
+            >
+              Department
+            </th>
+            <th
+              className={AdminPanelTableCSS.th}
+            >
+              Date of creation
+            </th>
+            <th
+              className={AdminPanelTableCSS.th}
+            >
+              Date of change
+            </th>
+            <th
+              className={AdminPanelTableCSS.th}
+            >
+              Update
+            </th>
+            <th
+              className={AdminPanelTableCSS.th}
+            >
+              Delete
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {visibleUsers.map(user => (
+            <tr
+              key={user.id}
+            >
+              <User
+                user={user}
+                deleteUser={deleteUser}
+                updateUser={updateUser}
+              />
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};

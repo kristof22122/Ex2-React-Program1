@@ -1,90 +1,72 @@
 import React from 'react';
 import UserCSS from './User.module.css';
 
-export class User extends React.Component {
+export const User = (props) => {
+  const {
+    id,
+    userName,
+    userDepartment,
+    dateOfCreation,
+    dateOfChange,
+  } = props.user;
 
-  delete = (userId) => {
-    const {
-      deleteUser,
-    } = this.props;
+  const {
+    deleteUser,
+    updateUser,
+  } = props;
 
-    deleteUser(userId);
-  };
-
-  update = (userId, userName, userDepartment) => {
-    const {
-      updateUser,
-    } = this.props;
-
-    const userForUpdate = {
-      id: userId,
-      userName,
-      userDepartment,
-    };
-
-    updateUser(userForUpdate);
-  };
-
-
-
-  render() {
-    const {
-      id,
-      userName,
-      userDepartment,
-      dateOfCreation,
-      dateOfChange,
-    } = this.props.user;
-
-    return (
-      <>
-        <td
-          className={UserCSS.td}
+  return (
+    <>
+      <td
+        className={UserCSS.td}
+      >
+        {userName}
+      </td>
+      <td
+        className={UserCSS.td}
+      >
+        {userDepartment}
+      </td>
+      <td
+        className={UserCSS.td}
+      >
+        {dateOfCreation}
+      </td>
+      <td
+        className={UserCSS.td}
+      >
+        {dateOfChange}
+      </td>
+      <td
+        className={UserCSS.td}
+      >
+        <button
+          type="button"
+          className={UserCSS.userButton}
+          onClick={() => {
+            updateUser({
+              id,
+              userName,
+              userDepartment,
+            });
+          }}
         >
-          {userName}
-        </td>
-        <td
-          className={UserCSS.td}
+          Update
+        </button>
+      </td>
+      <td
+        className={UserCSS.td}
+      >
+        <button
+          type="button"
+          className={UserCSS.userButton}
+          onClick={() => {
+            deleteUser(id);
+          }}
         >
-          {userDepartment}
-        </td>
-        <td
-          className={UserCSS.td}
-        >
-          {dateOfCreation}
-        </td>
-        <td
-          className={UserCSS.td}
-        >
-          {dateOfChange}
-        </td>
-        <td
-          className={UserCSS.td}
-        >
-          <button
-            type="button"
-            className={UserCSS.userButton}
-            onClick={() => {
-              this.update(id, userName, userDepartment);
-            }}
-          >
-            Update
-          </button>
-        </td>
-        <td
-          className={UserCSS.td}
-        >
-          <button
-            type="button"
-            className={UserCSS.userButton}
-            onClick={() => {
-              this.delete(id);
-            }}
-          >
-            delete
-          </button>
-        </td>
-      </>
-    );
-  }  
+          delete
+        </button>
+      </td>
+    </>
+  );
 };

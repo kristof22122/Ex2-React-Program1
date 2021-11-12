@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 import { AdminPanelTable } from './components/AdminPanelTable/AdminPanelTable';
@@ -37,26 +37,28 @@ let localStorageUsers = getLocalStorageUsers();
 
 const App = () => {
   const [ users, setUsers ] = useState([]);
-  const [ updateUserInfoId, setUpdateUserInfoId ] = useState(null);
-  const [ userName, setUserName ] = useState('');
-  const [ userDepartment, setUserDepartment ] = useState('');
+  const [ updateUserInfo, setUpdateUserInfo ] = useState(null);
 
-
-  const addUser = (newUser) => {
+  const addUser = useCallback((newUser) => {
     const {
       userName,
       userDepartment,
       dateOfChange,
     } = newUser;
 
-    if (updateUserInfoId) {
+    const updateStates = (valueForUserState) => {
+      setLocalStorageUsers(valueForUserState);
+      setUsers(valueForUserState);
+    }
+
+    if (updateUserInfo !== null) {
       const copyUsers = users.map(user => {
         const {
           id: userId,
           dateOfCreation: userDateOfCreation,
         } = user;
 
-        if (userId === updateUserInfoId) {
+        if (userId === updateUserInfo.id) {
           user = {
             id: userId,
             userName,
@@ -70,71 +72,28 @@ const App = () => {
 
         return user;
       });
+      
+      updateStates([...copyUsers]);
 
-      setLocalStorageUsers(copyUsers);
-
-      setUsers([...copyUsers]);
-      setUpdateUserInfoId(null);
-      setUserName('');
-      setUserDepartment('');
-
+      setUpdateUserInfo(null);
       return;
     };
 
-    setLocalStorageUsers([...users, newUser]);
+    updateStates([...users, newUser]);
+  }, [updateUserInfo, users]);
 
-    setUsers([...users, newUser]);
-    setUserName('');
-    setUserDepartment('');
-  };
-
-  const deleteUser = (userId) => {
+  const deleteUser = useCallback((userId) => {
 
     const copyUsers = users.filter(user => user.id !== userId);
 
     setLocalStorageUsers(copyUsers);
 
     setUsers([...copyUsers]);
-  };
+  }, [users]) ;
 
-  const updateUser = (user) => {
-    const {
-      userName,
-      userDepartment,
-      id,
-    } = user;
-
-    setUpdateUserInfoId(id);
-    setUserDepartment(userDepartment);
-    setUserName(userName);
-  };
-
-  const handleChange = (event) => {
-    const {
-      name,
-    } = event.target;
-
-    let {
-      value,
-    } = event.target;
-
-    if (value === null) {
-      value = '';
-    };
-
-    switch (name) {
-      case 'userName':
-        setUserName(value);
-        break;
-
-      case 'userDepartment':
-        setUserDepartment(value);
-        break;
-    
-      default:
-        break;
-    };
-  };
+  const updateUser = useCallback((user) => {
+    setUpdateUserInfo(user);
+  }, []);
 
   useEffect(() => {
     setUsers([...localStorageUsers]);
@@ -146,10 +105,8 @@ const App = () => {
         Admin Panel React
       </h1>
       <AdminPanelForm
-        handleChange={handleChange}
         addUser={addUser}
-        userName={userName}
-        userDepartment={userDepartment}
+        updateUserInfo={updateUserInfo}
       />
       <AdminPanelTable
         users={users}

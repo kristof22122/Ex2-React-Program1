@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import AdminPanelTableCSS from'./AdminPanelTable.module.css';
 
 import { User } from '../User/User';
 
-export const AdminPanelTable = (props) => {
-  const [ query, setQuery ] = useState('');
+export const AdminPanelTable = React.memo((props) => {
+  const [ query, setQuery ] = useState(null);
 
   const {
     users,
@@ -12,19 +12,15 @@ export const AdminPanelTable = (props) => {
     updateUser,
   } = props;
 
-  const search = (event) => {
-    let {
+  const search = useCallback((event) => {
+    const {
       value,
     } = event.target;
 
-    if (value === null) {
-      value = '';
-    };
-
     setQuery(value);
-  };
+  }, []);
 
-  const getVisibleUsers = () => {
+  const getVisibleUsers = useCallback(() => {
     let visibleUsers = [...users];
 
     if (query) {
@@ -35,7 +31,7 @@ export const AdminPanelTable = (props) => {
     };
 
     return visibleUsers;
-  };
+  }, [query, users]) ;
 
   const visibleUsers = getVisibleUsers();
 
@@ -51,7 +47,7 @@ export const AdminPanelTable = (props) => {
           name="query"
           className={AdminPanelTableCSS.input}
           placeholder="Search"
-          value={query}
+          value={(query === null) ? '' : query}
           onChange={search}
         />
       </div>
@@ -110,4 +106,4 @@ export const AdminPanelTable = (props) => {
       </table>
     </div>
   );
-};
+});

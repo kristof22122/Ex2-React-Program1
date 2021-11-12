@@ -1,7 +1,7 @@
 import React from 'react';
 import UserCSS from './User.module.css';
 
-export const User = (props) => {
+export const User = React.memo((props) => {
   const {
     id,
     userName,
@@ -69,4 +69,4 @@ export const User = (props) => {
       </td>
     </>
   );
-};
+});

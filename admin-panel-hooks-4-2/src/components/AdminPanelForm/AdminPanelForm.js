@@ -1,28 +1,60 @@
-import React from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import AdminPanelFormCSS from'./AdminPanelForm.module.css';
 
-export const AdminPanelForm = (props) => {
+export const AdminPanelForm = React.memo((props) => {
   const {
-    handleChange,
-    userName,
-    userDepartment,
     addUser,
+    updateUserInfo,
   } = props;
 
-  const handleClick = () => {
+  const [ userNameField, setUserNameField ] = useState(null);
+  const [ userDepartmentField, setUserDepartmentField] = useState(null);
+
+  const handleClick = useCallback(() => {
     const id = +new Date();
     const dateCreate = new Date().toString();
 
     const newUser = {
       id,
-      userName,
-      userDepartment,
+      userName: userNameField,
+      userDepartment: userDepartmentField,
       dateOfCreation: dateCreate,
       dateOfChange: dateCreate,
     };
     
     addUser(newUser);
-  };
+
+    setUserNameField(null);
+    setUserDepartmentField(null);
+  }, [addUser, userNameField, userDepartmentField]) ;
+
+  const handleChange = useCallback((event) => {
+    const {
+      name,
+      value,
+    } = event.target;
+    
+    switch (name) {
+      case 'userNameField':
+        setUserNameField(value);
+        break;
+
+      case 'userDepartmentField':
+        setUserDepartmentField(value);
+        break;
+    
+      default:
+        break;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (updateUserInfo) {
+      setUserNameField(updateUserInfo.userName);
+      setUserDepartmentField(updateUserInfo.userDepartment);
+    };
+    console.log(updateUserInfo);
+  }, [updateUserInfo]);
 
   return (
     <div>
@@ -37,11 +69,11 @@ export const AdminPanelForm = (props) => {
             <div>
               <input
                 type="text"
-                id="userName"
-                name="userName"
+                id="userNameField"
+                name="userNameField"
                 className={AdminPanelFormCSS.input}
                 placeholder="Username"
-                value={userName}
+                value={(userNameField === null) ? '' : userNameField}
                 onChange={(event) => {
                   handleChange(event);
                 }}
@@ -51,10 +83,10 @@ export const AdminPanelForm = (props) => {
 
             <div>
               <select
-                id="disabledSelect"
+                id="userDepartmentField"
                 className={AdminPanelFormCSS.select}
-                name="userDepartment"
-                value={userDepartment}
+                name="userDepartmentField"
+                value={(userDepartmentField === null) ? '' : userDepartmentField}
                 onChange={(event) => {
                   handleChange(event);
                 }}
@@ -93,4 +125,4 @@ export const AdminPanelForm = (props) => {
       </section>
     </div>
     )
-  };
+  });

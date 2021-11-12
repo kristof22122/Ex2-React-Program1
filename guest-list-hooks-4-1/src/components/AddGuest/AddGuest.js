@@ -6,23 +6,16 @@ export const AddGuest = (props) => {
     addGuest
   } = props;
 
-  const [ name, setName ] = useState('');
+  const [ name, setName ] = useState(null);
   const [ sex, setSex ] = useState('m');
-  const [ age, setAge ] = useState('');
-  const [ ageError, setAgeError ] = useState('');
+  const [ age, setAge ] = useState(null);
+  const [ ageError, setAgeError ] = useState(null);
 
   const handleChange = (event) => {
     const {
       name,
-    } = event.target;
-
-    let {
       value,
     } = event.target;
-
-    if (value === null) {
-      value = '';
-    };
 
     switch(name) {
       case 'name':
@@ -64,9 +57,9 @@ export const AddGuest = (props) => {
     
     addGuest(newGuest);
 
-    setName('');
+    setName(null);
     setSex('m');
-    setAge('');
+    setAge(null);
   };
 
   return (
@@ -84,7 +77,7 @@ export const AddGuest = (props) => {
           placeholder="Name"
           type="text"
           name="name"
-          value={name}
+          value={(name === null) ? '' : name}
           onChange={handleChange}
           required
         />
@@ -93,7 +86,7 @@ export const AddGuest = (props) => {
           placeholder="Age"
           name="age"
           type="text"
-          value={age}
+          value={(age === null) ? '' : age}
           onChange={handleChange}
           required
         />

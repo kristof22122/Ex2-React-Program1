@@ -11,19 +11,7 @@ export const AdminPanelForm = React.memo((props) => {
   const [ userDepartmentField, setUserDepartmentField] = useState(null);
 
   const handleClick = useCallback(() => {
-    const id = +new Date();
-    const dateCreate = new Date().toString();
-
-    const newUser = {
-      id,
-      userName: userNameField,
-      userDepartment: userDepartmentField,
-      dateOfCreation: dateCreate,
-      dateOfChange: dateCreate,
-    };
-    
-    addUser(newUser);
-
+    addUser(userNameField, userDepartmentField);
     setUserNameField(null);
     setUserDepartmentField(null);
   }, [addUser, userNameField, userDepartmentField]) ;
@@ -53,7 +41,6 @@ export const AdminPanelForm = React.memo((props) => {
       setUserNameField(updateUserInfo.userName);
       setUserDepartmentField(updateUserInfo.userDepartment);
     };
-    console.log(updateUserInfo);
   }, [updateUserInfo]);
 
   return (
@@ -73,10 +60,8 @@ export const AdminPanelForm = React.memo((props) => {
                 name="userNameField"
                 className={AdminPanelFormCSS.input}
                 placeholder="Username"
-                value={(userNameField === null) ? '' : userNameField}
-                onChange={(event) => {
-                  handleChange(event);
-                }}
+                value={userNameField || ''}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -86,10 +71,8 @@ export const AdminPanelForm = React.memo((props) => {
                 id="userDepartmentField"
                 className={AdminPanelFormCSS.select}
                 name="userDepartmentField"
-                value={(userDepartmentField === null) ? '' : userDepartmentField}
-                onChange={(event) => {
-                  handleChange(event);
-                }}
+                value={userDepartmentField || ''}
+                onChange={handleChange}
                 required
               >
                 <option value="">

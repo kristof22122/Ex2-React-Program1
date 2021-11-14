@@ -39,12 +39,17 @@ const App = () => {
   const [ users, setUsers ] = useState([]);
   const [ updateUserInfo, setUpdateUserInfo ] = useState(null);
 
-  const addUser = useCallback((newUser) => {
-    const {
+  const addUser = useCallback((userName, userDepartment) => {
+    const id = +new Date();
+    const dateCreate = new Date().toString();
+
+    const newUser = {
+      id,
       userName,
       userDepartment,
-      dateOfChange,
-    } = newUser;
+      dateOfCreation: dateCreate,
+      dateOfChange: dateCreate,
+    };
 
     const updateStates = (valueForUserState) => {
       setLocalStorageUsers(valueForUserState);
@@ -59,15 +64,13 @@ const App = () => {
         } = user;
 
         if (userId === updateUserInfo.id) {
-          user = {
+          return {
             id: userId,
             userName,
             userDepartment,
             dateOfCreation: userDateOfCreation,
-            dateOfChange,
-          }
-
-          return user;
+            dateOfChange: dateCreate,
+          };
         };
 
         return user;

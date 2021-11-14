@@ -47,7 +47,7 @@ export const AdminPanelTable = React.memo((props) => {
           name="query"
           className={AdminPanelTableCSS.input}
           placeholder="Search"
-          value={(query === null) ? '' : query}
+          value={query || ''}
           onChange={search}
         />
       </div>

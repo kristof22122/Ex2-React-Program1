@@ -38,7 +38,6 @@ export const AddGuest = (props) => {
   };
 
   const handleClick = () => {
-    const id = +new Date();
     const guestAge = +age;
 
     if (isNaN(guestAge)) {
@@ -47,15 +46,7 @@ export const AddGuest = (props) => {
       return;
     };
 
-    const newGuest = {
-      id,
-      name,
-      sex,
-      age: guestAge,
-      visit: false,
-    };
-    
-    addGuest(newGuest);
+    addGuest(name, sex, guestAge);
 
     setName(null);
     setSex('m');
@@ -77,7 +68,7 @@ export const AddGuest = (props) => {
           placeholder="Name"
           type="text"
           name="name"
-          value={(name === null) ? '' : name}
+          value={name || ''}
           onChange={handleChange}
           required
         />
@@ -86,7 +77,7 @@ export const AddGuest = (props) => {
           placeholder="Age"
           name="age"
           type="text"
-          value={(age === null) ? '' : age}
+          value={age || ''}
           onChange={handleChange}
           required
         />

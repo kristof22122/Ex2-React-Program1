@@ -31,7 +31,17 @@ const guestsFromServer = [
 const App = () => {
   const [ guests, setGuests] = useState([...guestsFromServer]);
 
-  const addGuest = (newGuest) => {
+  const addGuest = (name, sex, guestAge) => {
+    const id = +new Date();
+
+    const newGuest = {
+      id,
+      name,
+      sex,
+      age: guestAge,
+      visit: false,
+    };
+
     setGuests([...guests, newGuest]);
   };
 

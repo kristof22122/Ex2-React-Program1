@@ -2,7 +2,7 @@ import React from "react";
 import ModalCSS from './Modal.module.css';
 import { useSpring, animated } from '@react-spring/web';
 
-export const Modal = (props) => {
+export const Modal = React.memo((props) => {
   const {
     showModal,
     setShowModal,
@@ -38,4 +38,4 @@ export const Modal = (props) => {
       
     </>
   )
-}
+});

@@ -3,7 +3,7 @@ import { Modal } from '../Modal/Modal';
 
 import PictureCSS from './Pictures.module.css';
 
-export const Pictures = (props) => {
+export const Pictures = React.memo((props) => {
   const {
     pictures,
   } = props;
@@ -48,4 +48,4 @@ export const Pictures = (props) => {
       </div>
     </div>
   )
-};
+});

@@ -9,50 +9,41 @@ import { request } from './api';
 function App() {
   const [ pictures, setPictures ] = useState([]);
   const [ query, setQuery ] = useState(null);
-  const [ appliedQuery, setAppliedQuery ] = useState(null);
   const [ page, setPage ] = useState(1);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const applyQuery = useCallback(
-    debounce(setAppliedQuery, 500),
+    debounce(setQuery, 500),
     []
-  ); 
+  );
 
-  const searchPicture = useCallback((event) => {
+  const searchPicture = (event) => {
     const {
       value,
     } = event.target;
 
-    setQuery(value);
     applyQuery(value);
     setPage(1);
-  }, [applyQuery]);
+  };
 
-  const handleClick = useCallback(() => {
+  const handleClick = () => {
     setPage(page + 1);
     console.log(page);
-  }, [page]); 
+  }; 
 
   useEffect(() => {
-    if (appliedQuery === null) {
-      setAppliedQuery('');
-    };    
+    if (query === null) {
+      setQuery('');
+    };
 
-    request(appliedQuery, page).then(picture => {
-      try {
-        if (page === 1) {
-          setPictures(picture.hits);
-        } else {
-          setPictures(pictures.concat(picture.hits));
-        } 
-      } catch (error) {
-        console.log('Getting pictures error');
-        console.log(error.message);
-      }      
+    request(query, page).then(picture => {
+      if (picture) {
+        (page === 1) ? setPictures(picture.hits) : setPictures(pictures.concat(picture.hits));
+      };
     });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appliedQuery, page]);
+  }, [query, page]);
 
   return (
     <div className={AppCSS.App}>
@@ -71,7 +62,6 @@ function App() {
             className="form-control"
             type="text"
             placeholder="Enter you request"
-            value={query || ''}
             onChange={searchPicture}
           />
         </div>

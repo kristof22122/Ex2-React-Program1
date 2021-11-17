@@ -8,7 +8,6 @@ export const Pictures = React.memo((props) => {
     pictures,
   } = props;
 
-  const [ showModal, setShowModal ] = useState(false);
   const [ showPictureUrl, setShowPictureUrl ] = useState(null);
 
   return (
@@ -18,13 +17,18 @@ export const Pictures = React.memo((props) => {
       <div className="container">
         <div className="row row-cols-2 row-cols-lg-4">          
           {pictures.map(picture => {
+            const {
+              webformatURL,
+              id,
+              largeImageURL,
+            } = picture;
+
             return (
               <div
                 className="col"
-                key={picture.id}
+                key={id}
                 onClick={() => {
-                  setShowPictureUrl(picture.largeImageURL);
-                  setShowModal(prev => !prev);
+                  setShowPictureUrl(largeImageURL);
                 }}
               >
                 <div
@@ -32,8 +36,8 @@ export const Pictures = React.memo((props) => {
                 >
                   <img
                     className={PictureCSS.card__image}
-                    src={picture.webformatURL}
-                    alt={picture.id}
+                    src={webformatURL}
+                    alt={id}
                   />                  
                 </div>
               </div>
@@ -41,9 +45,8 @@ export const Pictures = React.memo((props) => {
           })}
         </div>
         <Modal
-          showModal={showModal}
           showPictureUrl={showPictureUrl}
-          setShowModal={setShowModal}
+          setShowPictureUrl={setShowPictureUrl}
         />
       </div>
     </div>

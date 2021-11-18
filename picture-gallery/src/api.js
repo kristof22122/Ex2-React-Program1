@@ -12,7 +12,7 @@ export const requestToAPI = (q, page = 1) => {
 
   axiosRequest = axios.CancelToken.source();
 
-  return axios.request('',
+  return axios.request(
     {
       baseURL: BASE_URL,
       params: {

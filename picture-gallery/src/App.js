@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Pictures } from './components/Pictures/Pictures';
 import { debounce } from 'lodash';
 
-import { request } from './api';
+import { requestToAPI } from './api';
 
 function App() {
   const [ pictures, setPictures ] = useState([]);
@@ -28,7 +28,6 @@ function App() {
 
   const handleClick = () => {
     setPage(page + 1);
-    console.log(page);
   }; 
 
   useEffect(() => {
@@ -36,7 +35,7 @@ function App() {
       setQuery('');
     };
 
-    request(query, page).then(picture => {
+    requestToAPI(query, page).then(picture => {
       if (picture) {
         (page === 1) ? setPictures(picture.hits) : setPictures(pictures.concat(picture.hits));
       };

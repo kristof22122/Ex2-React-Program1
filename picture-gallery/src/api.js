@@ -5,14 +5,14 @@ const BASE_URL = `https://pixabay.com/api/?key=${key}`;
 
 let axiosRequest = null;
 
-export const request = (q, page = 1) => {
+export const requestToAPI = (q, page = 1) => {
   if (axiosRequest) {
     axiosRequest.cancel();
   };
 
   axiosRequest = axios.CancelToken.source();
 
-  return axios.get('',
+  return axios.request('',
     {
       baseURL: BASE_URL,
       params: {

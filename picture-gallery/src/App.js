@@ -12,8 +12,8 @@ function App() {
   const [ page, setPage ] = useState(1);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const applyQuery = useCallback(
-    debounce(setQuery, 500),
+  const debouncePictures = useCallback(
+    debounce(setPictures, 500),
     []
   );
 
@@ -22,7 +22,7 @@ function App() {
       value,
     } = event.target;
 
-    applyQuery(value);
+    setQuery(value);
     setPage(1);
   };
 
@@ -31,16 +31,15 @@ function App() {
   }; 
 
   useEffect(() => {
-    if (query === null) {
-      setQuery('');
-    };
-
     requestToAPI(query, page).then(picture => {
       if (picture) {
-        (page === 1) ? setPictures(picture.hits) : setPictures(pictures.concat(picture.hits));
+        const {
+          hits,
+        } = picture;
+        
+        debouncePictures((page === 1) ? hits : pictures.concat(hits));
       };
     });
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, page]);
 
@@ -61,6 +60,7 @@ function App() {
             className="form-control"
             type="text"
             placeholder="Enter you request"
+            value={query || ''}
             onChange={searchPicture}
           />
         </div>

@@ -11,9 +11,21 @@ function App() {
   const [ query, setQuery ] = useState(null);
   const [ page, setPage ] = useState(1);
 
+  const getPicturesFromApi = (query, page) => {
+    requestToAPI(query, page).then(picture => {
+      if (picture) {
+        const {
+          hits,
+        } = picture;
+
+        setPictures((page === 1) ? hits : [...pictures, ...hits]);
+      };
+    });
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncePictures = useCallback(
-    debounce(setPictures, 500),
+    debounce(getPicturesFromApi, 500),
     []
   );
 
@@ -31,15 +43,7 @@ function App() {
   }; 
 
   useEffect(() => {
-    requestToAPI(query, page).then(picture => {
-      if (picture) {
-        const {
-          hits,
-        } = picture;
-        
-        debouncePictures((page === 1) ? hits : pictures.concat(hits));
-      };
-    });
+    (page === 1) ? debouncePictures(query, page) : getPicturesFromApi(query, page);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, page]);
 

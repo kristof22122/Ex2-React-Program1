@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.confirm {
+  width: 500px;
+  border-radius: 15px;
+}
+
+.confirm__title {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.confirm__buttons{
+  display: flex;
+  justify-content: space-between;
+  width: 460px;
+}

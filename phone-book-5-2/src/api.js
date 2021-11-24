@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const BASE_URL = 'https://api.m3o.com/v1/db';
 const M3O_API_TOKEN = 'YTEzODE3YmItMWYwOS00MGVkLTlmYzYtZWVlOWM0YzAwYmQw';
+const table ='contact';
 
 const baseApiRequest = (url, data) => {
   return axios({
@@ -16,28 +17,28 @@ const baseApiRequest = (url, data) => {
   });
 };
 
-export const requestRead = (table = 'contact') => {
+export const requestRead = () => {
   return baseApiRequest('/Read', { table })
     .then(res => {
       return res.data;
     })
 };
 
-export const requestCreate = (record, table = 'contact') => {
+export const requestCreate = (record) => {
   return baseApiRequest('/Create', {
     table,
     record,
   });
 };
 
-export const requestDelete = (id, table = 'contact') => {
+export const requestDelete = (id) => {
   return baseApiRequest('/Delete', {
     table,
     id,
   });
 };
 
-export const requestUpdate = (record, table = 'contact') => {
+export const requestUpdate = (record) => {
   return baseApiRequest('/Update', {
     table,
     record,

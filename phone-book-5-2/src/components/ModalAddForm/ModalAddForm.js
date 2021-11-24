@@ -6,8 +6,8 @@ import ModalAddFormCSS from './ModalAddForm.module.css';
 export const ModalAddForm = React.memo((props) => {
   const {
     addContact,
-    setOpenAddForm,
     selectContact,
+    toggleAddModal,
   } = props;
 
   const [ firstNameField, setFirstNameField ] = useState(null);
@@ -17,10 +17,10 @@ export const ModalAddForm = React.memo((props) => {
   const [ firstNameError, setFirstNameError ] = useState(false);
   const [ lastNameError, setLastNameError ] = useState(false);
   const [ phoneError, setPhoneError ] = useState(false);
-
-  const validFirstName = new RegExp('[A-Za-z]{1,10}');
-  const validLastName = new RegExp('[A-Za-z]{1,20}');
-  const validPhone = new RegExp('[0-9]{12}');
+  
+  const validFirstName = /^[A-Za-z]{2,10}$/;
+  const validLastName = /^[A-Za-z]{2,20}$/;
+  const validPhone = /^\+8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
 
   const validField = (validRegExp, field, setError) => {
     const validTest = validRegExp.test(field);
@@ -36,13 +36,9 @@ export const ModalAddForm = React.memo((props) => {
     const validLastNameTest = validField(validLastName, lastNameField, setLastNameError);
     const validPhoneTest = validField(validPhone, phoneField, setPhoneError);
     
-    if (validFirstNameTest
+    return (validFirstNameTest
         && validLastNameTest
-        && validPhoneTest) {
-      return true;
-    }
-
-    return false;
+        && validPhoneTest);
   };
 
   const handleClick = () => {
@@ -51,12 +47,12 @@ export const ModalAddForm = React.memo((props) => {
       setFirstNameField(null);
       setLastNameField(null);
       setPhoneField(null);
-      setOpenAddForm(false);
+      toggleAddModal();
     };      
   };
 
   const closeForm = () => {
-      setOpenAddForm(false)
+      toggleAddModal();
     };
 
   const handleChange = (event) => {
@@ -113,6 +109,7 @@ export const ModalAddForm = React.memo((props) => {
             className="form-control"
             name="firstNameField"
             id="firstNameField"
+            placeholder="1 - 10 letters"
             value={firstNameField || ''}
             onChange={handleChange}
             required
@@ -137,6 +134,7 @@ export const ModalAddForm = React.memo((props) => {
             className="form-control"
             name="lastNameField"
             id="lastNameField"
+            placeholder="1 - 20 letters"
             value={lastNameField || ''}
             onChange={handleChange}
             required
@@ -161,6 +159,7 @@ export const ModalAddForm = React.memo((props) => {
             className="form-control"
             name="phoneField"
             id="phoneField"
+            placeholder="+8(999)999-99-99"
             value={phoneField || ''}
             onChange={handleChange}
             required
@@ -171,6 +170,7 @@ export const ModalAddForm = React.memo((props) => {
               className={ModalAddFormCSS.form__error}
             >
               Wrong phone number
+              +8(999)999-99-99
             </label>
           )}
         <div

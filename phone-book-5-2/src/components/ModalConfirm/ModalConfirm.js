@@ -5,20 +5,15 @@ import ModalConfirmCSS from './ModalConfirm.module.css';
 
 export const ModalConfirm = (props) => {
   const {
-    setIsDelete,
-    deleteContactId,
-    deleteContact,
-    setSelectContact,
+    toggleModalConfirm,
   } = props;
 
   const setYes = () => {
-    setSelectContact(null);
-    deleteContact(deleteContactId);
-    setIsDelete(false);
+    toggleModalConfirm(true);
   };
 
   const setNo = () => {
-    setIsDelete(false);
+    toggleModalConfirm(false);
   }
 
   return ReactDOM.createPortal(

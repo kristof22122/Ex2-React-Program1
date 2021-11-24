@@ -3,17 +3,14 @@ import React from 'react';
 import ContactsListCSS from './ContactsList.module.css';
 
 import { Contact } from '../Contact/Contact';
-import { ModalAddForm } from '../ModalAddForm/ModalAddForm';
 
 export const ContactsList = (props) => {
 
   const {
     contacts,
     setSelectContact,
-    setOpenAddForm,
-    openAddForm,
-    addContact,
-    selectContact,
+    // openAddModal,
+    toggleAddModal,
   } = props;
 
   return (
@@ -32,7 +29,8 @@ export const ContactsList = (props) => {
             type="button"
             className="btn btn-primary"
             onClick={() => {
-              setOpenAddForm(true);
+              // openAddModal();
+              toggleAddModal();
             }}
           >
             Add contact
@@ -61,13 +59,6 @@ export const ContactsList = (props) => {
             )
           })}
         </div>
-          {openAddForm && (
-            <ModalAddForm 
-              addContact={addContact}
-              setOpenAddForm={setOpenAddForm}
-              selectContact={selectContact}
-            />
-          )}
     </div>
   );
 };

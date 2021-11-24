@@ -6,13 +6,42 @@ import { requestRead, requestCreate, requestDelete, requestUpdate } from './api'
 import { ContactsList } from './components/ContactsList/ContactsList';
 import { ContactInfo } from './components/ContactInfo/ContactInfo';
 
+import { ModalAddForm } from './components/ModalAddForm/ModalAddForm';
+
 function App() {
-  const table ='contact';
   const [ contacts, setContacts ] = useState([]);
   const [ selectContact, setSelectContact ] = useState(null);
   const [ openAddForm, setOpenAddForm ] = useState(false);
 
   const addContact = useCallback((firstNameField, lastNameField, phoneField) => {
+    if (selectContact !== null) {
+      let updateContactInfo = null;
+
+      const copyContacts = contacts.map(contact => {
+        const {
+          id: contactId,
+        } = contact;
+
+        if (contactId === selectContact.id) {
+          updateContactInfo = {
+            id: contactId,
+            firstName: firstNameField,
+            lastName: lastNameField,
+            phone: phoneField,
+          };
+
+          return updateContactInfo;
+        };
+
+        return contact;
+      });
+
+      requestUpdate(updateContactInfo);
+      setContacts([...copyContacts]);
+      setSelectContact(null);
+      return;
+    };
+
     const id = (+new Date()).toString();
     const newContact = {
       id,
@@ -21,34 +50,7 @@ function App() {
       phone: phoneField,
     };
 
-    if (selectContact !== null) {
-      const copyContacts = contacts.map(contact => {
-        const {
-          id: contactId,
-        } = contact;
-
-        if (contactId === selectContact.id) {
-          const updateContactInfo = {
-            id: contactId,
-            firstName: firstNameField,
-            lastName: lastNameField,
-            phone: phoneField,
-          };
-
-          requestUpdate(updateContactInfo, table);
-
-          return updateContactInfo;
-        };
-
-        return contact;
-      });
-
-      setContacts([...copyContacts]);
-      setSelectContact(null);
-      return;
-    };
-
-    requestCreate(newContact, table);
+    requestCreate(newContact);
     setContacts([...contacts, newContact]);
   }, [contacts, selectContact]);
 
@@ -58,11 +60,19 @@ function App() {
 
     setContacts([...copyContacts]);
 
-    requestDelete(contactId, table);
-  }, [contacts]) ;
+    requestDelete(contactId);
+  }, [contacts]);
+
+  const toggleAddModal = useCallback(() => {
+    setOpenAddForm((current) => !current);
+  }, []);
+
+  const handleSelectContact = useCallback((contact) => {
+    setSelectContact(contact);
+  }, []);
 
   useEffect(() => {
-    requestRead(table).then(contactsFromAPI => {
+    requestRead().then(contactsFromAPI => {
       const {
         records,
       } = contactsFromAPI;
@@ -73,32 +83,30 @@ function App() {
 
   return (
     <div className={AppCSS.App}>
-      <div
-        className={AppCSS.wrapper}
-      >
       {!selectContact && (
         <ContactsList
           contacts={contacts}
-          deleteContact={deleteContact}
           setSelectContact={setSelectContact}
-          setOpenAddForm={setOpenAddForm}
-          openAddForm={openAddForm}
-          addContact={addContact}
-          selectContact={selectContact}
+          toggleAddModal={toggleAddModal}
+
         />
       )}
       {selectContact && (
         <ContactInfo 
           selectContact={selectContact}
-          setSelectContact={setSelectContact}
           deleteContact={deleteContact}
 
-          openAddForm={openAddForm}
-          setOpenAddForm={setOpenAddForm}
-          addContact={addContact}
+          toggleAddModal={toggleAddModal}
+          handleSelectContact={handleSelectContact}
         />
       )}
-      </div>
+      {openAddForm && (
+        <ModalAddForm 
+          addContact={addContact}
+          selectContact={selectContact}
+          toggleAddModal={toggleAddModal}
+        />
+      )}
     </div>
   );
 }

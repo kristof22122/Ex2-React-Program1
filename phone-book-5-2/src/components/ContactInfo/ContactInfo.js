@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import ContactInfoCSS from './ContactInfo.module.css';
 
-import { ModalAddForm } from '../ModalAddForm/ModalAddForm';
 import { ModalConfirm } from '../ModalConfirm/ModalConfirm';
 
 export const ContactInfo = (props) => {
   const {
-    setSelectContact,
     deleteContact,
-    openAddForm,
-    setOpenAddForm,
-    addContact,
     selectContact,
+    toggleAddModal,
+    handleSelectContact,
   } = props;
   
   const {
@@ -20,20 +17,26 @@ export const ContactInfo = (props) => {
     firstName,
     lastName,
     phone,
-  } = props.selectContact;
+  } = selectContact;
 
-  const [ isDelete, setIsDelete ] = useState(false);
+  const [ openModalConfirm, setOpenModalConfirm ] = useState(false);
 
-  const handleDelete = () => {
-    setIsDelete(true);
-  };
+  const toggleModalConfirm = useCallback((choice) => {
+    if (choice) {
+      deleteContact(id);
+      handleSelectContact(null);
+    };
+    
+    setOpenModalConfirm((current) => !current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClose = () => {
-    setSelectContact(null);
+    handleSelectContact(null);
   };
 
   const handleEdit = () => {
-    setOpenAddForm(true);
+    toggleAddModal();
   };
 
   return (
@@ -80,7 +83,9 @@ export const ContactInfo = (props) => {
                 <button
                   className="btn btn-danger"
                   type="button"
-                  onClick={handleDelete}
+                  onClick={() => {
+                    toggleModalConfirm(false);
+                  }}
                 >
                   Delete
                 </button>
@@ -89,7 +94,7 @@ export const ContactInfo = (props) => {
                   type="button"
                   onClick={handleEdit}
                 >
-                  edit
+                  Edit
                 </button>
                 <button
                   className="btn btn-primary"
@@ -103,19 +108,9 @@ export const ContactInfo = (props) => {
           </div>
         </div>
       </div>
-      {openAddForm && (
-        <ModalAddForm 
-          addContact={addContact}
-          setOpenAddForm={setOpenAddForm}
-          selectContact={selectContact}
-        />
-      )}
-      {isDelete && (
+      {openModalConfirm && (
         <ModalConfirm
-          setIsDelete={setIsDelete}
-          deleteContact={deleteContact}
-          deleteContactId={id}
-          setSelectContact={setSelectContact}
+          toggleModalConfirm={toggleModalConfirm}
         />
       )}
     </div>

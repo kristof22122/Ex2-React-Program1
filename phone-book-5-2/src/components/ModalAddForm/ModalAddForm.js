@@ -181,7 +181,7 @@ export const ModalAddForm = React.memo((props) => {
             className="btn btn-success"
             onClick={handleClick}
           >
-            Add
+            {selectContact ? 'Change' : 'Add'}
           </button>
           <button
             type="button"

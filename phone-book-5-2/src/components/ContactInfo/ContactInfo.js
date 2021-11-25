@@ -9,7 +9,7 @@ export const ContactInfo = (props) => {
     deleteContact,
     selectContact,
     toggleAddModal,
-    handleSelectContact,
+    setSelectContact,
   } = props;
   
   const {
@@ -24,7 +24,7 @@ export const ContactInfo = (props) => {
   const toggleModalConfirm = useCallback((choice) => {
     if (choice) {
       deleteContact(id);
-      handleSelectContact(null);
+      setSelectContact(null);
     };
     
     setOpenModalConfirm((current) => !current);
@@ -32,7 +32,7 @@ export const ContactInfo = (props) => {
   }, []);
 
   const handleClose = () => {
-    handleSelectContact(null);
+    setSelectContact(null);
   };
 
   const handleEdit = () => {

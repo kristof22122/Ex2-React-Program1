@@ -76,10 +76,6 @@ function App() {
     setOpenAddForm((current) => !current);
   }, []);
 
-  const handleSelectContact = (contact) => {
-    setSelectContact(contact);
-  };
-
   useEffect(() => {
     requestRead().then(contactsFromAPI => {
       const {
@@ -100,7 +96,7 @@ function App() {
         <ContactsList
           contacts={contacts}
           toggleAddModal={toggleAddModal}
-          handleSelectContact={handleSelectContact}
+          setSelectContact={setSelectContact}
 
         />
       )}
@@ -110,7 +106,7 @@ function App() {
           deleteContact={deleteContact}
 
           toggleAddModal={toggleAddModal}
-          handleSelectContact={handleSelectContact}
+          setSelectContact={setSelectContact}
         />
       )}
       {openAddForm && (

@@ -8,9 +8,8 @@ export const ContactsList = (props) => {
 
   const {
     contacts,
-    setSelectContact,
-    // openAddModal,
     toggleAddModal,
+    handleSelectContact,
   } = props;
 
   return (
@@ -29,7 +28,6 @@ export const ContactsList = (props) => {
             type="button"
             className="btn btn-primary"
             onClick={() => {
-              // openAddModal();
               toggleAddModal();
             }}
           >
@@ -49,7 +47,7 @@ export const ContactsList = (props) => {
                 key={id}
                 className={ContactsListCSS.contact}
                 onClick={() => {
-                  setSelectContact(contact);
+                  handleSelectContact(contact);
                 }}
               >
                 <Contact

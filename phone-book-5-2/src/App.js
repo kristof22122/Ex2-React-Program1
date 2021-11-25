@@ -15,15 +15,17 @@ function App() {
 
   const addContact = useCallback((firstNameField, lastNameField, phoneField) => {
     if (selectContact !== null) {
-      let updateContactInfo = null;
+      const {
+        id: selectContactId,
+      } = selectContact;
 
       const copyContacts = contacts.map(contact => {
         const {
           id: contactId,
         } = contact;
 
-        if (contactId === selectContact.id) {
-          updateContactInfo = {
+        if (contactId === selectContactId) {
+          const updateContactInfo = {
             id: contactId,
             firstName: firstNameField,
             lastName: lastNameField,
@@ -36,7 +38,14 @@ function App() {
         return contact;
       });
 
-      requestUpdate(updateContactInfo);
+      const updateContactInfoForRequest = {
+        id: selectContactId,
+        firstName: firstNameField,
+        lastName: lastNameField,
+        phone: phoneField,
+      };
+
+      requestUpdate(updateContactInfoForRequest);
       setContacts([...copyContacts]);
       setSelectContact(null);
       return;
@@ -67,9 +76,9 @@ function App() {
     setOpenAddForm((current) => !current);
   }, []);
 
-  const handleSelectContact = useCallback((contact) => {
+  const handleSelectContact = (contact) => {
     setSelectContact(contact);
-  }, []);
+  };
 
   useEffect(() => {
     requestRead().then(contactsFromAPI => {
@@ -81,13 +90,17 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+
+  }, []);
+
   return (
     <div className={AppCSS.App}>
       {!selectContact && (
         <ContactsList
           contacts={contacts}
-          setSelectContact={setSelectContact}
           toggleAddModal={toggleAddModal}
+          handleSelectContact={handleSelectContact}
 
         />
       )}

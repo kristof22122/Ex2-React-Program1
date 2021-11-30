@@ -1,23 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+import AppCSS from './App.module.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { MovieList } from './components/MovieList/MovieList';
+import { MovieAllInfo } from './components/MovieAllInfo/MovieAllInfo';
+
+import { baseApiRequest } from './api';
 
 function App() {
+  const [ moviesFromApi , setMoviesFromApi ] = useState([]);
+  const [ selectMovieId, setSelectMovieId ] = useState(null);
+
+  useEffect(() => {
+    baseApiRequest(1).then(res => {
+      setMoviesFromApi(res.data.results);
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={AppCSS.App}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MovieList 
+              moviesFromApi={moviesFromApi}
+              setSelectMovieId={setSelectMovieId}
+            />
+          }
+        />
+        <Route
+          path={(selectMovieId) ? `/movies/:${selectMovieId}/*` : '/'}
+          element={
+            <MovieAllInfo
+              selectMovieId={selectMovieId}
+              setSelectMovieId={setSelectMovieId}
+            />
+          }
+        />
+        <Route 
+          path="*"
+          element={
+            <MovieList 
+              moviesFromApi={moviesFromApi}
+              setSelectMovieId={setSelectMovieId}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 }

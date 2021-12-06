@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import React from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 import AppCSS from './App.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,17 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { MovieList } from './components/MovieList/MovieList';
 import { MovieAllInfo } from './components/MovieAllInfo/MovieAllInfo';
 
-import { baseApiRequest } from './api';
-
 function App() {
-  const [ moviesFromApi , setMoviesFromApi ] = useState([]);
-  const [ selectMovieId, setSelectMovieId ] = useState(null);
-
-  useEffect(() => {
-    baseApiRequest(1).then(res => {
-      setMoviesFromApi(res.data.results);
-    });
-  }, []);
 
   return (
     <div className={AppCSS.App}>
@@ -25,27 +15,20 @@ function App() {
         <Route
           path="/"
           element={
-            <MovieList 
-              moviesFromApi={moviesFromApi}
-              setSelectMovieId={setSelectMovieId}
-            />
+            <MovieList />
           }
         />
         <Route
-          path={(selectMovieId) ? `/movies/:${selectMovieId}/*` : '/'}
+          path={`/movies/:id/*`}
           element={
-            <MovieAllInfo
-              selectMovieId={selectMovieId}
-              setSelectMovieId={setSelectMovieId}
-            />
+            <MovieAllInfo />
           }
         />
         <Route 
           path="*"
           element={
-            <MovieList 
-              moviesFromApi={moviesFromApi}
-              setSelectMovieId={setSelectMovieId}
+            <Navigate
+              to="/" 
             />
           }
         />

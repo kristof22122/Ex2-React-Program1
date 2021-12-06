@@ -1,14 +1,19 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 import MovieListCSS from './MovieList.module.css';
 
 import { Movie } from '../Movie/Movie';
+import { CustomPagination } from '../CustomPagination/CustomPagination';
 
-export const MovieList = (props) => {
-  const {
-    moviesFromApi,
-    setSelectMovieId,
-  } = props;
+import { trendingMovies } from '../../api';
+
+export const MovieList = () => {
+  const [ moviesFromApi , setMoviesFromApi ] = useState([]);
+  const [ page, setPage ] = useState(1)
+
+  useEffect(() => {
+    trendingMovies(page).then(setMoviesFromApi);
+  }, [page]);
   
   return (
     <div
@@ -33,13 +38,15 @@ export const MovieList = (props) => {
               >
                 <Movie
                   movie={movie}
-                  setSelectMovieId={setSelectMovieId}
                   className="col"
                 />
               </div>
             )})}
         </div>
       </div>
+      <CustomPagination
+        setPage={setPage}
+      />
     </div>
   )
 };

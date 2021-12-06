@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 
 import MovieInfoCSS from './MovieInfo.module.css';
 
-import { movieInfoRequest } from '../../api';
+import { baseMovieRequest } from '../../api';
 
 export const MovieInfo = (props) => {
   const [ movieInfo, setMovieInfo ] = useState(null);
 
   const {
-    setSelectMovieId,
-    selectMovieId,
+    movieId,
   } = props;
 
   const renderList = (list) => {
@@ -29,18 +28,16 @@ export const MovieInfo = (props) => {
   };
 
   useEffect(() => {
-    if (selectMovieId) {
-      movieInfoRequest(selectMovieId).then(res => {
-        setMovieInfo(res.data);
+    if (movieId) {
+      baseMovieRequest(movieId).then(res => {
+        setMovieInfo(res);
       });
     };
    
-  }, [selectMovieId]);
+  }, [movieId]);
 
   return (movieInfo && (
-    <div
-      className={MovieInfoCSS.container}
-    >
+    <>
       <div
         className={MovieInfoCSS.card}
       >
@@ -71,14 +68,9 @@ export const MovieInfo = (props) => {
       <Link
         to='/'
         className={MovieInfoCSS.buttonClose}
-        data-bs-dismiss="modal"
-        aria-label="Close"
-        onClick={() => {
-          setSelectMovieId(null)
-        }}
       >
-        ×
+        Back to trends
       </Link>
-    </div>
+    </>
   )) 
 };

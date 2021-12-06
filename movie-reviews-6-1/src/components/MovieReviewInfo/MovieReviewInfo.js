@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 
 import MovieReviewInfoCSS from './MovieReviewInfo.module.css';
 
-import { movieReviewRequest } from '../../api';
+import { baseMovieRequest } from '../../api';
 
 export const MovieReviewInfo = (props) => {
   const [ movieReviewInfo, setMovieReviewInfo ] = useState(null);
 
   const {
-    setSelectMovieId,
-    selectMovieId,
+    movieId,
   } = props;
 
   const renderList = (list) => {
@@ -46,19 +45,17 @@ export const MovieReviewInfo = (props) => {
   };
 
   useEffect(() => {
-    if (selectMovieId) {
-      movieReviewRequest(selectMovieId).then(res => {
-        setMovieReviewInfo(res.data);
+    if (movieId) {
+      baseMovieRequest(movieId, '/reviews').then(res => {
+        setMovieReviewInfo(res);
       });
     };
-  }, [selectMovieId]);
+  }, [movieId]);
 
   return (movieReviewInfo && (
     movieReviewInfo.results.length === 0 
     ? (
-      <div
-        className={MovieReviewInfoCSS.container__noReviews}
-      >
+      <>
         <div
           className={MovieReviewInfoCSS.card__noReviews}
         >
@@ -71,18 +68,13 @@ export const MovieReviewInfo = (props) => {
           className={MovieReviewInfoCSS.buttonClose}
           data-bs-dismiss="modal"
           aria-label="Close"
-          onClick={() => {
-            setSelectMovieId(null)
-          }}
         >
           ×
         </Link>
-      </div>
+      </>
     )
     : (
-    <div
-      className={MovieReviewInfoCSS.container}
-    >
+    <>
       <div
         className={MovieReviewInfoCSS.card}
       >
@@ -94,15 +86,10 @@ export const MovieReviewInfo = (props) => {
       <Link
         to='/'
         className={MovieReviewInfoCSS.buttonClose}
-        data-bs-dismiss="modal"
-        aria-label="Close"
-        onClick={() => {
-          setSelectMovieId(null)
-        }}
       >
-        ×
+        Back to trends
       </Link>
-    </div>
+    </>
   )))
 };
 

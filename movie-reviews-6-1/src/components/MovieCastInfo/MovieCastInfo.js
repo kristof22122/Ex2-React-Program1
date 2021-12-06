@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import MovieCastInfoCSS from './MovieCastInfo.module.css';
 
-import { movieCastRequest } from '../../api';
+import { baseMovieRequest } from '../../api';
 
 import { img_300, noPicture } from '../../config/config';
 
@@ -11,8 +11,7 @@ export const MovieCastInfo = (props) => {
   const [ movieCastInfo, setMovieCastInfo ] = useState(null);
 
   const {
-    setSelectMovieId,
-    selectMovieId,
+    movieId,
   } = props;
 
   const renderList = (list) => {
@@ -50,22 +49,19 @@ export const MovieCastInfo = (props) => {
   };
 
   useEffect(() => {
-    if (selectMovieId) {
-      movieCastRequest(selectMovieId).then(res => {
-        setMovieCastInfo(res.data);
+    if (movieId) {
+      baseMovieRequest(movieId, '/credits').then(res => {
+        setMovieCastInfo(res);
       });
     };
    
-  }, [selectMovieId]);
+  }, [movieId]);
 
   return (movieCastInfo && (
 
-    <div
-      className={MovieCastInfoCSS.container}
-    >
+    <>
       <div
         className={MovieCastInfoCSS.card}
-        // className="card"
       >
         <div className="card-body">
           <h2 className="card-title"> Cast </h2>
@@ -74,17 +70,11 @@ export const MovieCastInfo = (props) => {
       </div>
       <Link
         to='/'
-        // className="btn-close"
         className={MovieCastInfoCSS.buttonClose}
-        data-bs-dismiss="modal"
-        aria-label="Close"
-        onClick={() => {
-          setSelectMovieId(null)
-        }}
       >
-        ×
+        Back to trends
       </Link>
-    </div>
+    </>
   )) 
 };
 

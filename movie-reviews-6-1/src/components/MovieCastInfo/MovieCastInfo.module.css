@@ -14,7 +14,7 @@
   right: 12px;
   top: 0;
   box-sizing: content-box;
-  width: 1em;
+  width: 7em;
   height: 1em;
   padding: 0.25em 0.25em;
   color: #fff;
@@ -22,35 +22,39 @@
   border-radius: 0.25rem;
   opacity: .5;
   text-decoration: none;
-  font-size: 1.5rem;
- }
+  font-size: 1rem;
+}
 
- .card {
+.buttonClose:hover {
+  color: rgb(179, 180, 182);
+}
+
+.card {
   position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 100vh;
   word-wrap: break-word;
   background-color: rgb(40, 87, 131);
   color: #fff;
   background-clip: border-box;
   border: 1px solid rgba(0,0,0,.125);
-  border-radius: 15px;
   box-shadow: 25px 2px 20px 10px rgba(80, 79, 79, 0.2);
- }
+}
 
- .cast__image {
+.cast__image {
   width: 200px;
   margin-right: 4rem;
   border: 3px solid #fff;
   border-radius: 5px;
- }
+}
 
- .cast {
+.cast {
   display: flex;
   margin-bottom: 1rem;
   margin-left: 2.5rem;
- }
+}
 
  .cast__body {
   display: flex;
@@ -58,8 +62,7 @@
 
  }
 
- .cast__name, .cast__character {
+.cast__name, .cast__character {
   text-align: left;
   font-size: 1.5rem;
- }
- 
+}

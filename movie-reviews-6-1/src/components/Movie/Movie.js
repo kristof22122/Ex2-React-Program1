@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 
 export const Movie = (props) => {
   const {
-    setSelectMovieId,
     movie,
   } = props;
 
@@ -57,30 +56,21 @@ export const Movie = (props) => {
           >
             <Link
               className={MovieCSS.link}
-              to={`/movies/:${id}`}
-              onClick={() => {
-                setSelectMovieId(id);
-              }}
+              to={`/movies/${id}`}
             >
               Movie detail
             </Link>
-          <br/>
+            <br/>
             <Link
               className={MovieCSS.link}
-              to={`/movies/:${id}/cast`}
-              onClick={() => {
-                setSelectMovieId(id);
-              }}
+              to={`/movies/${id}/cast`}
             >
               Movie cast detail
             </Link>
             <br/>
             <Link
               className={MovieCSS.link}
-              to={`/movies/:${id}/review`}
-              onClick={() => {
-                setSelectMovieId(id);
-              }}
+              to={`/movies/${id}/review`}
             >
               Movie review detail
             </Link>

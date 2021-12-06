@@ -1,24 +1,21 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
 
 import { MovieCastInfo } from '../MovieCastInfo/MovieCastInfo';
 import { MovieReviewInfo } from '../MovieReviewInfo/MovieReviewInfo';
 import { MovieInfo } from '../MovieInfo/MovieInfo';
 
-export const MovieAllInfo = (props) => {
-  const {
-    setSelectMovieId,
-    selectMovieId,
-  } = props;
+export const MovieAllInfo = () => {
+  let params = useParams();
+  const movieId = +params.id;
 
   return (
     <Routes>
       <Route 
         path="/"
         element={
-          <MovieInfo 
-            selectMovieId={selectMovieId}
-            setSelectMovieId={setSelectMovieId}
+          <MovieInfo
+            movieId={movieId}
           />
         }
       />
@@ -26,8 +23,7 @@ export const MovieAllInfo = (props) => {
           path="cast"
           element={
             <MovieCastInfo
-              selectMovieId={selectMovieId}
-              setSelectMovieId={setSelectMovieId}
+              movieId={movieId}
             />
           }
         />
@@ -35,8 +31,7 @@ export const MovieAllInfo = (props) => {
           path="review"
           element={
             <MovieReviewInfo
-              selectMovieId={selectMovieId}
-              setSelectMovieId={setSelectMovieId}
+              movieId={movieId}
             />
           }
         />

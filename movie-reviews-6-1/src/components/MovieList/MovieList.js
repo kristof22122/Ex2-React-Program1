@@ -13,6 +13,7 @@ export const MovieList = () => {
 
   useEffect(() => {
     trendingMovies(page).then(setMoviesFromApi);
+    window.scroll(0, 0);
   }, [page]);
   
   return (

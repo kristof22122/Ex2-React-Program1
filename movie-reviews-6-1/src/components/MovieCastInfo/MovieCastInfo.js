@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import MovieCastInfoCSS from './MovieCastInfo.module.css';
 
-import { baseMovieRequest } from '../../api';
+import { castMovieRequest } from '../../api';
 
 import { img_300, noPicture } from '../../config/config';
 
@@ -50,7 +50,7 @@ export const MovieCastInfo = (props) => {
 
   useEffect(() => {
     if (movieId) {
-      baseMovieRequest(movieId, '/credits').then(res => {
+      castMovieRequest(movieId).then(res => {
         setMovieCastInfo(res);
       });
     };
@@ -63,7 +63,7 @@ export const MovieCastInfo = (props) => {
       <div
         className={MovieCastInfoCSS.card}
       >
-        <div className="card-body">
+        <div className={MovieCastInfoCSS.card__body}>
           <h2 className="card-title"> Cast </h2>
           {renderList(movieCastInfo.cast)}
         </div>

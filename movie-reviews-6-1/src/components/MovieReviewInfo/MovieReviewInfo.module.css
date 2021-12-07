@@ -43,6 +43,12 @@
   box-shadow: 25px 2px 20px 10px rgba(80, 79, 79, 0.2);
 }
 
+.card__body {
+  flex: 1 1 auto;
+  padding: 1rem 1rem;
+  background-color: rgb(40, 87, 131);
+}
+
 .cast__image {
   width: 200px;
   margin-right: 4rem;

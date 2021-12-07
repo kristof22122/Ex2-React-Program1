@@ -6,8 +6,10 @@ import { MovieReviewInfo } from '../MovieReviewInfo/MovieReviewInfo';
 import { MovieInfo } from '../MovieInfo/MovieInfo';
 
 export const MovieAllInfo = () => {
-  let params = useParams();
-  const movieId = +params.id;
+  const params = useParams();
+  const {
+    id,
+  } = params;
 
   return (
     <Routes>
@@ -15,7 +17,7 @@ export const MovieAllInfo = () => {
         path="/"
         element={
           <MovieInfo
-            movieId={movieId}
+            movieId={id}
           />
         }
       />
@@ -23,7 +25,7 @@ export const MovieAllInfo = () => {
           path="cast"
           element={
             <MovieCastInfo
-              movieId={movieId}
+              movieId={id}
             />
           }
         />
@@ -31,7 +33,7 @@ export const MovieAllInfo = () => {
           path="review"
           element={
             <MovieReviewInfo
-              movieId={movieId}
+              movieId={id}
             />
           }
         />

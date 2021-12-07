@@ -8,7 +8,6 @@ import { MovieList } from './components/MovieList/MovieList';
 import { MovieAllInfo } from './components/MovieAllInfo/MovieAllInfo';
 
 function App() {
-
   return (
     <div className={AppCSS.App}>
       <Routes>

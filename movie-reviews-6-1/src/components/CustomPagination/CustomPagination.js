@@ -17,7 +17,6 @@ export const CustomPagination = (props) => {
 
   const handlePageChange = (page) => {
     setPage(page);
-    window.scroll(0, 0);
   };
 
   return (

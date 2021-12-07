@@ -37,3 +37,11 @@ export const baseMovieRequest = (id, url = '') => {
     console.log('Error', err.message);
   });
 };
+
+export const castMovieRequest = (id) => {
+  return baseMovieRequest(id, '/credits');
+};
+
+export const reviewMovieRequest = (id) => {
+  return baseMovieRequest(id, '/reviews');
+};

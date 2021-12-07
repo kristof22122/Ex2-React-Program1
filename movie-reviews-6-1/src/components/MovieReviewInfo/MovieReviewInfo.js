@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 
 import MovieReviewInfoCSS from './MovieReviewInfo.module.css';
 
-import { baseMovieRequest } from '../../api';
+import { reviewMovieRequest } from '../../api';
 
 export const MovieReviewInfo = (props) => {
   const [ movieReviewInfo, setMovieReviewInfo ] = useState(null);
+  const [ checkReviewsIsArray, setCheckReviewsIsArray ] = useState(false);
 
   const {
     movieId,
@@ -46,14 +47,18 @@ export const MovieReviewInfo = (props) => {
 
   useEffect(() => {
     if (movieId) {
-      baseMovieRequest(movieId, '/reviews').then(res => {
+      reviewMovieRequest(movieId).then(res => {
         setMovieReviewInfo(res);
+
+        (Array.isArray(res.results)) 
+          ? setCheckReviewsIsArray(true)
+          : setCheckReviewsIsArray(false);
       });
     };
   }, [movieId]);
 
-  return (movieReviewInfo && (
-    movieReviewInfo.results.length === 0 
+  return (checkReviewsIsArray && (
+    (movieReviewInfo.results.length === 0) 
     ? (
       <>
         <div
@@ -69,7 +74,7 @@ export const MovieReviewInfo = (props) => {
           data-bs-dismiss="modal"
           aria-label="Close"
         >
-          ×
+          Back to trends
         </Link>
       </>
     )
@@ -78,7 +83,7 @@ export const MovieReviewInfo = (props) => {
       <div
         className={MovieReviewInfoCSS.card}
       >
-        <div className="card-body">
+        <div className={MovieReviewInfoCSS.card__body}>
           <h2 className="card-title"> Review </h2>
           {renderList(movieReviewInfo.results)}
         </div>
@@ -92,4 +97,3 @@ export const MovieReviewInfo = (props) => {
     </>
   )))
 };
-

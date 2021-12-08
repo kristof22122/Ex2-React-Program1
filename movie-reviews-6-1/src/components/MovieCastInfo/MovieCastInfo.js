@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import MovieCastInfoCSS from './MovieCastInfo.module.css';
 
@@ -7,12 +7,14 @@ import { castMovieRequest } from '../../api';
 
 import { img_300, noPicture } from '../../config/config';
 
-export const MovieCastInfo = (props) => {
+export const MovieCastInfo = () => {
   const [ movieCastInfo, setMovieCastInfo ] = useState(null);
+  
+  const params = useParams();
 
   const {
-    movieId,
-  } = props;
+    id: movieId
+  } = params;
 
   const renderList = (list) => {
     return list.map(element => {

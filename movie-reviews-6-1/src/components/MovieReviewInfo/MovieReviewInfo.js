@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import MovieReviewInfoCSS from './MovieReviewInfo.module.css';
 
 import { reviewMovieRequest } from '../../api';
 
-export const MovieReviewInfo = (props) => {
-  const [ movieReviewInfo, setMovieReviewInfo ] = useState(null);
-  const [ checkReviewsIsArray, setCheckReviewsIsArray ] = useState(false);
+export const MovieReviewInfo = () => {
+  const [ movieReviewInfo, setMovieReviewInfo ] = useState([]);
+
+  const params = useParams();
 
   const {
-    movieId,
-  } = props;
+    id: movieId
+  } = params;
 
   const renderList = (list) => {
     return list.map(element => {
@@ -48,17 +49,13 @@ export const MovieReviewInfo = (props) => {
   useEffect(() => {
     if (movieId) {
       reviewMovieRequest(movieId).then(res => {
-        setMovieReviewInfo(res);
-
-        (Array.isArray(res.results)) 
-          ? setCheckReviewsIsArray(true)
-          : setCheckReviewsIsArray(false);
+        setMovieReviewInfo(res.results);
       });
     };
   }, [movieId]);
 
-  return (checkReviewsIsArray && (
-    (movieReviewInfo.results.length === 0) 
+  return (Array.isArray(movieReviewInfo) && (
+    (movieReviewInfo.length === 0) 
     ? (
       <>
         <div
@@ -85,7 +82,7 @@ export const MovieReviewInfo = (props) => {
       >
         <div className={MovieReviewInfoCSS.card__body}>
           <h2 className="card-title"> Review </h2>
-          {renderList(movieReviewInfo.results)}
+          {renderList(movieReviewInfo)}
         </div>
       </div>
       <Link

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import MovieInfoCSS from './MovieInfo.module.css';
 
 import { baseMovieRequest } from '../../api';
 
-export const MovieInfo = (props) => {
+export const MovieInfo = () => {
   const [ movieInfo, setMovieInfo ] = useState(null);
 
+  const params = useParams();
+
   const {
-    movieId,
-  } = props;
+    id: movieId
+  } = params;
 
   const renderList = (list) => {
     return list.map(element => {

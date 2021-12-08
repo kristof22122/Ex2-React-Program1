@@ -26,22 +26,35 @@ export const trendingMovies = (page = 1) => {
   });
 };
 
-export const baseMovieRequest = (id, url = '') => {
-  return baseApi.request({
-    url: `movie/${id}${url}`,
-  })
-  .then(res => {
+const handlerRequest = (newRequest) => {
+  return newRequest.then(res => {
     return res.data;
   })
   .catch(err => {
     console.log('Error', err.message);
+  })
+};
+
+export const baseMovieRequest = (id) => {
+  const movieRequest = baseApi.request({
+    url: `movie/${id}`,
   });
+
+  return handlerRequest(movieRequest);
 };
 
 export const castMovieRequest = (id) => {
-  return baseMovieRequest(id, '/credits');
+  const castRequest = baseApi.request({
+    url: `movie/${id}/credits`,
+  });
+
+  return handlerRequest(castRequest);
 };
 
 export const reviewMovieRequest = (id) => {
-  return baseMovieRequest(id, '/reviews');
+  const reviewRequest = baseApi.request({
+    url: `movie/${id}/reviews`,
+  });
+
+  return handlerRequest(reviewRequest);
 };

@@ -51,7 +51,7 @@ export const productsFromServer = [
     color: 'white',
     size: 'xs',
     sort: 'newest',
-    price: '20',
+    price: 20,
   },
   {
     id:2,
@@ -60,7 +60,7 @@ export const productsFromServer = [
     color: 'white',
     size: 's',
     sort: 'asc',
-    price: '30',
+    price: 30,
   },
   {
     id:3,
@@ -69,7 +69,7 @@ export const productsFromServer = [
     color: 'black',
     size: 'm',
     sort: 'newest',
-    price: '40',
+    price: 40,
   },
   {
     id:4,
@@ -78,7 +78,7 @@ export const productsFromServer = [
     color: 'red',
     size: 'l',
     sort: 'asc',
-    price: '50',
+    price: 50,
   },
   {
     id:5,
@@ -87,7 +87,7 @@ export const productsFromServer = [
     color: 'blue',
     size: 'xl',
     sort: 'desc',
-    price: '60',
+    price: 60,
   },
   {
     id:6,
@@ -96,7 +96,7 @@ export const productsFromServer = [
     color: 'yellow',
     size: 'xxl',
     sort: 'newest',
-    price: '70',
+    price: 70,
   },
   {
     id:7,
@@ -106,7 +106,7 @@ export const productsFromServer = [
     color: 'green',
     size: 'm',
     sort: 'asc',
-    price: '80',
+    price: 80,
   },
   {
     id:8,
@@ -115,6 +115,6 @@ export const productsFromServer = [
     color: 'blue',
     size: 'l',
     sort: 'desc',
-    price: '90',
+    price: 90,
   },
 ];

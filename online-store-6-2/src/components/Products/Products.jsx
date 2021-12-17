@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { Product } from '../Product/Product';
@@ -13,54 +13,64 @@ const Container = styled.div`
 `;
 
 export const Products = (props) => {
-  const [ visibleProducts, setVisibleProducts ] = useState([])
-  const {
-    filters,
-  } = props;
-
   const {
     color,
     size,
     name,
-    price,
-  } = filters;
+    minPrice,
+    maxPrice,
+  } = props.filters;
 
-  useEffect(() => {
-    const minPrice = +price.split('-')[0];
-    const maxPrice = +price.split('-')[1];
+  const filterProducts = (productsForFilter) => {
+    let validSize = false;
+    let sizeValues = []
 
-    console.log(minPrice, maxPrice);
+    for (const s in size) {
+      if (size[s]) {
+        sizeValues = [...sizeValues , s];
+        validSize = true;
+      }
+    }
 
-    let valid = false;
+    let validPrice = false;
 
-    (minPrice >= 0 && maxPrice >= 0 && maxPrice > minPrice) ? valid = true : valid = false;
-    
-    const products = [...productsFromServer];
+    (maxPrice > minPrice) ? validPrice = true : validPrice = false;
 
-    const sortProductsColor = color === '' ? [ ...products ] : products.filter(product => product.color === color);
-    const sortProductsSize = size === '' ? [ ...sortProductsColor] : sortProductsColor.filter(product => product.size === size);
-    const sortProductsName = sortProductsSize.filter(product => product.name.toLowerCase().includes(name.toLowerCase()));
+    let validName = false;
+    let nameToLowerCase;
 
-    let sortProductsPrice;
+    if (name !== null) {
+      validName = true;
+      nameToLowerCase = name.toLowerCase();
+    }
 
-    if (valid) {
-      sortProductsPrice = sortProductsName.filter(product => {
+    const sortProductsColor = color === null ? [ ...productsForFilter ] : productsForFilter.filter(product => product.color === color);
+
+    const sortProductsSize = validSize 
+    ? sortProductsColor.filter(product => {
+      return sizeValues.some(s => s === product.size);
+    }) 
+    : [ ...sortProductsColor];
+
+
+    const sortProductsName = validName ? sortProductsSize.filter(product => product.name.toLowerCase().includes(nameToLowerCase)) : [...sortProductsSize];
+
+    const sortProductsPrice = validPrice 
+    ? sortProductsName.filter(product => {
         const {
           price,
         } = product;
-        return +price >= minPrice && +price <= maxPrice;
-      });
-    } else {
-      sortProductsPrice = [ ...sortProductsName ];
-    };
 
-    setVisibleProducts(sortProductsPrice);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+        return price >= minPrice && price <= maxPrice;
+      })
+    : [ ...sortProductsName ];
+
+    return sortProductsPrice;
+  };
 
   return (
     <Container>
-      {visibleProducts.map(item => (
+      {filterProducts(productsFromServer).map(item => (
         <Product
           key={item.id}
           item={item}

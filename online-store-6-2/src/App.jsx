@@ -4,7 +4,6 @@ import './App.css';
 
 import { Home } from './pages/Home';
 import { ProductList } from './pages/ProductList';
-import { ProductPage } from './pages/ProductPage';
 
 function App() {
   return (
@@ -19,18 +18,6 @@ function App() {
         path={`/products/:category`}
         element={
           <ProductList />
-        }
-      />
-      {/* <Route
-        path={`/products/`}
-        element={
-          <ProductList />
-        }
-      /> */}
-      <Route 
-        path="/product/:id"
-        element={
-          <ProductPage />
         }
       />
       <Route 

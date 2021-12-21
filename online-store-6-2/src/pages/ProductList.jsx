@@ -11,6 +11,9 @@ import { Footer } from '../components/Footer/Footer';
 import { ColorSelect } from '../components/ColorSelect/ColorSelect';
 import { CheckBoxFilter } from '../components/CheckBoxFilter/CheckBoxFilter';
 
+import { validColorValues } from '../valuesForValidation/valuesForValidation';
+import { validSizeValues } from '../valuesForValidation/valuesForValidation';
+
 
 const Container = styled.div``;
 
@@ -49,8 +52,8 @@ export const ProductList = () => {
     const searchTermName = searchParams.get('name') || null;
     const searchTermPrice = searchParams.get('price') || null;
 
-    let min = null;
-    let max = null;
+    let minFromUrl = null;
+    let maxFromUrl = null;
 
     if (searchTermPrice !== null) {
       const [
@@ -59,8 +62,8 @@ export const ProductList = () => {
       ] = searchTermPrice.split('-');
 
       if (minPriceFromUrl <= maxPriceFromUrl) {
-        min = minPriceFromUrl;
-        max = maxPriceFromUrl;
+        minFromUrl = minPriceFromUrl;
+        maxFromUrl = maxPriceFromUrl;
       }
     }
 
@@ -70,16 +73,24 @@ export const ProductList = () => {
       const searchTermSizeValue = searchTermSize.split(',');
 
       for ( const sizeValue of searchTermSizeValue) {
-        sizeFromUrl[sizeValue] = true;
+        if (validSizeValues.some(validSize => validSize === sizeValue)) {
+          sizeFromUrl[sizeValue] = true;
+        }
       };
     };
 
+    let colorFromUrl = null;
+
+    if (validColorValues.some(validColor => validColor === searchTermColor)) {
+      colorFromUrl = searchTermColor;
+    }
+
     return {
-      color: searchTermColor,
+      color: colorFromUrl,
       size: sizeFromUrl,
       name: searchTermName,
-      minPrice: min,
-      maxPrice: max,
+      minPrice: minFromUrl,
+      maxPrice: maxFromUrl,
     }
   });
 
@@ -149,7 +160,7 @@ export const ProductList = () => {
     } = filters;
 
     for (const i in filters) {
-      if (filters[i] !== null && (i !== 'minPrice') && (i !== 'maxPrice') && (i !== 'size') && (i !== 'price')) {
+      if (filters[i] !== null && (i !== 'minPrice') && (i !== 'maxPrice') && (i !== 'size')) {
         params[i] = filters[i];
       }
     }

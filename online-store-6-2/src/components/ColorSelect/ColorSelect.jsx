@@ -22,8 +22,9 @@ const selectValue = [
 export const ColorSelect = (props) => {
   const {
     handleFilter,
-    filters,
+    color,
   } = props;
+
   return (
     <>
       <Select
@@ -31,7 +32,7 @@ export const ColorSelect = (props) => {
         onChange={(event) => {
           handleFilter(event)
         }}
-        value={filters.color || ''}
+        value={color || ''}
       >
         {selectValue.map((value, i) => {
           if (value === "") {

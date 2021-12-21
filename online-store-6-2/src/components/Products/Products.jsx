@@ -23,7 +23,7 @@ export const Products = (props) => {
 
   const filterProducts = (productsForFilter) => {
     let validSize = false;
-    let sizeValues = []
+    let sizeValues = [];
 
     for (const s in size) {
       if (size[s]) {
@@ -42,30 +42,50 @@ export const Products = (props) => {
     if (name !== null) {
       validName = true;
       nameToLowerCase = name.toLowerCase();
-    }
+    };
 
-    const sortProductsColor = color === null ? [ ...productsForFilter ] : productsForFilter.filter(product => product.color === color);
+    let validColor = false;
 
-    const sortProductsSize = validSize 
-    ? sortProductsColor.filter(product => {
-      return sizeValues.some(s => s === product.size);
-    }) 
-    : [ ...sortProductsColor];
+    if (color !== null) {
+      validColor = true;
+    };
 
+    const sortProductAllFilters = productsForFilter.filter(product => {
+      const {
+        price: productPrice,
+        color: productColor,
+        size: productSize,
+        name: productName,
+      } = product;
+      
+      if (validColor) {
+        if (color !== productColor) {
+          return false;
+        };
+      };
+      
+      if (validSize) {
+        if (!sizeValues.some(s => s === productSize)) {
+          return false;
+        };
+      };
 
-    const sortProductsName = validName ? sortProductsSize.filter(product => product.name.toLowerCase().includes(nameToLowerCase)) : [...sortProductsSize];
+      if (validName) {
+        if (!productName.toLowerCase().includes(nameToLowerCase)) {
+          return false;
+        };
+      };
 
-    const sortProductsPrice = validPrice 
-    ? sortProductsName.filter(product => {
-        const {
-          price,
-        } = product;
+      if (validPrice) {
+        if (!(productPrice >= minPrice && productPrice <= maxPrice)) {
+          return false;
+        };
+      };
 
-        return price >= minPrice && price <= maxPrice;
-      })
-    : [ ...sortProductsName ];
+      return true;
+    });
 
-    return sortProductsPrice;
+    return sortProductAllFilters;
   };
 
   return (

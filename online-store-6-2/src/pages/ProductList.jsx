@@ -43,42 +43,44 @@ const Input = styled.input`
 
 export const ProductList = () => {
   const [ searchParams, setSearchParams ] = useSearchParams();
+  const [ filters, setFilters ] = useState(() => {
+    const searchTermColor = searchParams.get('color') || null;
+    const searchTermSize = searchParams.get('size') || null;
+    const searchTermName = searchParams.get('name') || null;
+    const searchTermPrice = searchParams.get('price') || null;
 
-  const searchTermColor = searchParams.get('color') || null;
-  const searchTermSize = searchParams.get('size') || null;
-  const searchTermName = searchParams.get('name') || null;
-  const searchTermPrice = searchParams.get('price') || null;
+    let min = null;
+    let max = null;
 
-  let min = null;
-  let max = null;
-  const sizeFromUrl = {
-    xs: false,
-    s: false,
-    m: false,
-    l: false,
-    xl: false,
-    xxl: false,
-  };
+    if (searchTermPrice !== null) {
+      const [
+        minPriceFromUrl,
+        maxPriceFromUrl,
+      ] = searchTermPrice.split('-');
 
-  if (searchTermPrice !== null) {
-    min = searchTermPrice.split('-')[0];
-    max = searchTermPrice.split('-')[1];
-  }
+      if (minPriceFromUrl <= maxPriceFromUrl) {
+        min = minPriceFromUrl;
+        max = maxPriceFromUrl;
+      }
+    }
 
-  if (searchTermSize !== null) {
-    const searchTermSizeValue = searchTermSize.split(',');
+    const sizeFromUrl = {};
 
-    for ( const sizeValue of searchTermSizeValue) {
-      sizeFromUrl[sizeValue] = true;
+    if (searchTermSize !== null) {
+      const searchTermSizeValue = searchTermSize.split(',');
+
+      for ( const sizeValue of searchTermSizeValue) {
+        sizeFromUrl[sizeValue] = true;
+      };
     };
-  };
-  
-  const [ filters, setFilters ] = useState({
-    color: searchTermColor,
-    size: sizeFromUrl,
-    name: searchTermName,
-    minPrice: min,
-    maxPrice: max,
+
+    return {
+      color: searchTermColor,
+      size: sizeFromUrl,
+      name: searchTermName,
+      minPrice: min,
+      maxPrice: max,
+    }
   });
 
   const params = useParams();
@@ -86,58 +88,57 @@ export const ProductList = () => {
     category,
   } = params;
 
-  const handleFilter =(
-    (event) => {    
-      const {
-        value,
-        name,
-        checked,
-        type,
-      } = event.target;
-  
-      if (name === 'minPrice') {
-        const numValue = Number(value);
-  
-        if (!isNaN(numValue)){
-          setFilters({
-            ...filters,
-            minPrice: numValue,
-          });
-        }
-        
-        return;
-      };
-  
-      if (name === 'maxPrice') {
-        const numValue = Number(value);
-  
-        if (!isNaN(numValue)) {
-          setFilters({
-            ...filters,
-            maxPrice: numValue,
-          });
-        }
-        return;
-      };
-  
-      if (type === 'checkbox') {
+  const handleFilter = (event) => {
+    const {
+      value,
+      name,
+      checked,
+      type,
+    } = event.target;
+
+    if (name === 'minPrice') {
+      const numValue = Number(value);
+
+      if (!isNaN(numValue)){
         setFilters({
           ...filters,
-          size: {
-            ...filters.size,
-            [name]: checked,
-          }
+          minPrice: numValue,
         });
-        return;
       }
-  
-      const filterValue = value === '' ? null : value
-  
+      
+      return;
+    };
+
+    if (name === 'maxPrice') {
+      const numValue = Number(value);
+
+      if (!isNaN(numValue)) {
+        setFilters({
+          ...filters,
+          maxPrice: numValue,
+        });
+      }
+      return;
+    };
+
+    if (type === 'checkbox') {
       setFilters({
         ...filters,
-        [name]: filterValue,
+        size: {
+          ...filters.size,
+          [name]: checked,
+        }
       });
+      return;
+    }
+
+    const filterValue = value === '' ? null : value
+
+    setFilters({
+      ...filters,
+      [name]: filterValue,
     });
+  };
 
   useEffect(() => {
     const params = {};
@@ -148,7 +149,7 @@ export const ProductList = () => {
     } = filters;
 
     for (const i in filters) {
-      if (filters[i] !== null && (i !== 'minPrice') && (i !== 'maxPrice') && (i !== 'size')) {
+      if (filters[i] !== null && (i !== 'minPrice') && (i !== 'maxPrice') && (i !== 'size') && (i !== 'price')) {
         params[i] = filters[i];
       }
     }
@@ -189,7 +190,7 @@ export const ProductList = () => {
           </FilterText>
           <ColorSelect
             handleFilter={handleFilter}
-            filters={filters}
+            color={filters.color}
           />
         </Filter>
         <Filter>
@@ -198,7 +199,7 @@ export const ProductList = () => {
           </FilterText>
           <CheckBoxFilter
             handleFilter={handleFilter}
-            filters={filters}
+            size={filters.size}
           />
         </Filter>
         <Filter>

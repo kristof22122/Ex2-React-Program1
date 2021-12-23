@@ -8,11 +8,8 @@ import { Announcement } from '../components/Announcement/Announcement';
 import { Products } from '../components/Products/Products';
 import { Newsletter } from '../components/Newsletter/Newsletter';
 import { Footer } from '../components/Footer/Footer';
-import { ColorSelect } from '../components/ColorSelect/ColorSelect';
-import { CheckBoxFilter } from '../components/CheckBoxFilter/CheckBoxFilter';
-
-import { validColorValues } from '../valuesForValidation/valuesForValidation';
-import { validSizeValues } from '../valuesForValidation/valuesForValidation';
+import { ColorSelect, validColorValues } from '../components/ColorSelect/ColorSelect';
+import { CheckBoxFilter, validSizeValues } from '../components/CheckBoxFilter/CheckBoxFilter';
 
 
 const Container = styled.div``;

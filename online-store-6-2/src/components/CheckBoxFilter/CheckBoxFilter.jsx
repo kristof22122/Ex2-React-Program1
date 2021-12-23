@@ -53,4 +53,14 @@ export const CheckBoxFilter = (props) => {
       })}
     </>
   )
-}
+};
+
+export const validSizeValues = [
+  'xs',
+  's',
+  'm',
+  'l',
+  'xl',
+  'xxl',
+];
+

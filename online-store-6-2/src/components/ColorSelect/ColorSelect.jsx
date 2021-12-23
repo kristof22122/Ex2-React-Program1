@@ -59,3 +59,12 @@ export const ColorSelect = (props) => {
     </>
   )
 }
+
+export const validColorValues = [
+  'white',
+  'black',
+  'red',
+  'blue',
+  'yellow',
+  'green',
+];

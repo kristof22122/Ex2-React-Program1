@@ -57,29 +57,12 @@ export const Products = (props) => {
         size: productSize,
         name: productName,
       } = product;
-      
-      if (validColor) {
-        if (color !== productColor) {
-          return false;
-        };
-      };
-      
-      if (validSize) {
-        if (!sizeValues.some(s => s === productSize)) {
-          return false;
-        };
-      };
 
-      if (validName) {
-        if (!productName.toLowerCase().includes(nameToLowerCase)) {
-          return false;
-        };
-      };
-
-      if (validPrice) {
-        if (!(productPrice >= minPrice && productPrice <= maxPrice)) {
-          return false;
-        };
+      if ((validColor && color !== productColor)
+          || (validSize && !sizeValues.some(s => s === productSize))
+          || (validName && !productName.toLowerCase().includes(nameToLowerCase))
+          || (validPrice && !(productPrice >= minPrice && productPrice <= maxPrice))) {
+        return false;
       };
 
       return true;

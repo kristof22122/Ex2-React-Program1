@@ -1,20 +1,46 @@
-const lengthValidator = (value) => {
-  if (value !== null && value.length >= 10) {
-    return 'Value length >= 10';
-  };
+const validatorBase = (value, message, conditionCallback) => {
+  if (!Array.isArray(value)) {
+    if (conditionCallback(value)) {
+      return message;
+    };
+  } else {
+    const valueKeys = Object.keys(value);
 
-  return;
-};
-
-const exclamationMarkValidator = (value) => {
-  if (value !== null && value.includes('!')) {
-    return 'Exclamation Mark!';
+    for (const key of valueKeys) {
+      if (conditionCallback(value[key])) {
+        return message;
+      };
+    }
   }
 
-  return;
+  return undefined;
+};
+
+const noExclamationMark = (value) => {
+  if (value !== null) {
+    return value.includes('!');
+  }
+
+  return false;
+}
+
+const lengthMoreThenTen = (value) => {
+  if (value !== null) {
+    return value.length >= 10;
+  }
+
+  return false;
+}
+
+const lengthValidator = (value) => {
+  return validatorBase(value, 'Value length >= 10', lengthMoreThenTen);
+}
+
+const exclamationMarkValidator = (value) => {
+ return validatorBase(value, 'Exclamation Mark!', noExclamationMark);
 }
 
 export const validators = [
-  lengthValidator,
   exclamationMarkValidator,
+  lengthValidator,
 ];

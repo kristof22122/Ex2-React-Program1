@@ -1,15 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import classNames from 'classnames/bind';
 
-const Select = styled.select`
-  padding: 10px;
-  border-color: ${props => (props.invalid) && (props.invalid ? '#f00' : '#000')};
-  background-color: ${props => (props.invalid) && (props.invalid ? '#f00' : '#fff')};
-`;
-
-const Option = styled.option`
-  text-transform: capitalize;
-`;
+import './SelectComponent.css';
 
 const selectValue = [
   '',
@@ -19,7 +11,7 @@ const selectValue = [
   'blue',
   'yellow',
   'green',
-]
+];
 
 export const SelectComponent = (props) => {
   const {
@@ -30,9 +22,14 @@ export const SelectComponent = (props) => {
 
   return (
     <>
-      <Select
+      <select
+        className={classNames(
+          'selectField',
+          {
+            invalid: invalid,  
+          }
+        )}
         name="color"
-        invalid={invalid}
         onChange={(event) => {
           handleChange(event)
         }}
@@ -41,25 +38,27 @@ export const SelectComponent = (props) => {
         {selectValue.map((value, i) => {
           if (value === "") {
             return (
-              <Option
+              <option
+                className='optionField'
                 key={i}
                 value=""
               >
                 All colors
-              </Option>
+              </option>
             )
           }
 
           return (
-            <Option
+            <option
+              className=''
               key={i}
               value={value}
             >
               {value}
-            </Option>
+            </option>
           )
         })}
-      </Select>
+      </select>
     </>
   )
 };

@@ -1,0 +1,14 @@
+.selectField {
+  padding: 10px;
+  border-color: #000;
+  background-color: #fff;
+}
+
+.optionField {
+  text-transform: capitalize;
+}
+
+.invalid {
+  border-color: #f00;
+  background-color: #f00;
+}

@@ -1,63 +1,55 @@
 import React, { useEffect, useState } from 'react';
 
-
 export const Field = (props) => {
-  const [ invalid, setInvalid ] = useState(false);
   const [ invalidMessage, setInvalidMessage ] = useState(null);
   const {
     inputValue,
-    handleChange,
+    setInputValue,
     validators,
     renderContent,
   } = props;
 
-  useEffect(() => {
-    if (!Array.isArray(inputValue)) {
-      for (const validator of validators) {
-        const checkValue = validator(inputValue);
+  const handleChange = (event) => {
+    const {
+      value,
+    } = event.target;
 
-        if (checkValue !== undefined) {
-          setInvalid(true);
-          setInvalidMessage(checkValue);
-          return;
-        } else {
-          setInvalid(false);
-          setInvalidMessage(null);
-        }
-      };
-    } else {
-      for (const value of inputValue) {
-        const valueKeys = Object.keys(value);
+    setInputValue(value);
+  };
 
-        for (const key of valueKeys) {
-          for (const validator of validators) {
-            const checkValue = validator(value[key]);
+  const inputValidation = (validators, value) => {
+    for (const validator of validators) {
+      const checkValue = validator(value);
 
-            if (checkValue !== undefined) {
-              setInvalid(true);
-              setInvalidMessage(checkValue);
-              return;
-            } else {
-              setInvalid(false);
-              setInvalidMessage(null);
-            };
-          };
-        };
-      };
+      if (checkValue !== undefined) {
+        setInvalidMessage(checkValue);
+        return;
+      } else {
+        setInvalidMessage(null);
+      }
     };
-    
+  };
+
+  useEffect(() => {
+    inputValidation(validators, inputValue);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   return (
     <>
-      {renderContent(inputValue, handleChange, invalid)}
+      {renderContent(
+        inputValue,
+        handleChange,
+        (invalidMessage !== null
+          ? true 
+          : false
+        ),
+      )}
       {invalidMessage && (
         <div>
           {invalidMessage}
         </div>
       )}
-      
     </>
   )
 }

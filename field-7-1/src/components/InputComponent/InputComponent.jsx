@@ -1,11 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import classNames from 'classnames/bind';
 
-const ValidInputField = styled.input`
-  border-color: ${props => (props.invalid) && (props.invalid ? '#f00' : '#000')};
-  background-color: ${props => (props.invalid) && (props.invalid ? '#f00' : '#fff')};
-  padding: 10px;
-`;
+import './InputComponent.css';
 
 export const InputComponent = (props) => {
   const {
@@ -16,10 +12,15 @@ export const InputComponent = (props) => {
 
   return (
     <>
-      <ValidInputField 
+      <input
+        className={classNames(
+          'inputField',
+          {
+            invalid: invalid,  
+          }
+        )}
         type="text"
         placeholder='Input text'
-        invalid={invalid}
         value={inputValue || ''}
         onChange={(event) => {
           handleChange(event);

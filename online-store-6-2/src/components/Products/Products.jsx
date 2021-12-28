@@ -22,35 +22,13 @@ export const Products = (props) => {
   } = props.filters;
 
   const filterProducts = (productsForFilter) => {
-    let validSize = false;
-    let sizeValues = [];
-
-    for (const s in size) {
-      if (size[s]) {
-        sizeValues = [...sizeValues , s];
-        validSize = true;
-      }
-    }
-
-    let validPrice = false;
-
-    (maxPrice > minPrice) ? validPrice = true : validPrice = false;
-
-    let validName = false;
     let nameToLowerCase;
 
     if (name !== null) {
-      validName = true;
       nameToLowerCase = name.toLowerCase();
     };
 
-    let validColor = false;
-
-    if (color !== null) {
-      validColor = true;
-    };
-
-    const sortProductAllFilters = productsForFilter.filter(product => {
+    return productsForFilter.filter(product => {
       const {
         price: productPrice,
         color: productColor,
@@ -58,17 +36,11 @@ export const Products = (props) => {
         name: productName,
       } = product;
 
-      if ((validColor && color !== productColor)
-          || (validSize && !sizeValues.some(s => s === productSize))
-          || (validName && !productName.toLowerCase().includes(nameToLowerCase))
-          || (validPrice && !(productPrice >= minPrice && productPrice <= maxPrice))) {
-        return false;
-      };
-
-      return true;
+      return !((color !== null && color !== productColor)
+        || (size.length !== 0 ? !size.some(s => s === productSize) : false)
+        || (name !== null && !productName.toLowerCase().includes(nameToLowerCase))
+        || ((maxPrice > minPrice) && !(productPrice >= minPrice && productPrice <= maxPrice)));
     });
-
-    return sortProductAllFilters;
   };
 
   return (

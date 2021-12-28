@@ -9,7 +9,7 @@ import { Products } from '../components/Products/Products';
 import { Newsletter } from '../components/Newsletter/Newsletter';
 import { Footer } from '../components/Footer/Footer';
 import { ColorSelect, validColorValues } from '../components/ColorSelect/ColorSelect';
-import { CheckBoxFilter, validSizeValues } from '../components/CheckBoxFilter/CheckBoxFilter';
+import { CheckBoxFilter, checkBoxValues } from '../components/CheckBoxFilter/CheckBoxFilter';
 
 
 const Container = styled.div``;
@@ -58,23 +58,26 @@ export const ProductList = () => {
         maxPriceFromUrl,
       ] = searchTermPrice.split('-');
 
-      if (minPriceFromUrl <= maxPriceFromUrl) {
-        minFromUrl = minPriceFromUrl;
-        maxFromUrl = maxPriceFromUrl;
+      const minPriceFromUrlNumber = +minPriceFromUrl;
+      const maxPriceFromUrlNumber = +maxPriceFromUrl;
+
+      if (minPriceFromUrlNumber <= maxPriceFromUrlNumber) {
+        minFromUrl = minPriceFromUrlNumber;
+        maxFromUrl = maxPriceFromUrlNumber;
       }
     }
 
-    const sizeFromUrl = {};
+    let sizeFromUrl = [];
 
     if (searchTermSize !== null) {
       const searchTermSizeValue = searchTermSize.split(',');
 
       for ( const sizeValue of searchTermSizeValue) {
-        if (validSizeValues.some(validSize => validSize === sizeValue)) {
-          sizeFromUrl[sizeValue] = true;
+        if (checkBoxValues.some(validSize => validSize === sizeValue)) {
+          sizeFromUrl = [...sizeFromUrl, sizeValue];
         }
       };
-    };
+    } 
 
     let colorFromUrl = null;
 
@@ -130,12 +133,13 @@ export const ProductList = () => {
     };
 
     if (type === 'checkbox') {
+      const {
+        size,
+      } = filters;
+
       setFilters({
         ...filters,
-        size: {
-          ...filters.size,
-          [name]: checked,
-        }
+        size: checked ? [ ...size, name ] : size.filter(s => s !== name),
       });
       return;
     }
@@ -163,9 +167,9 @@ export const ProductList = () => {
     }
 
     let sizeValues = [];
-
-    for (const s in size) {
-      if (size[s]) {
+    
+    for (const s of size) {
+      if (s) {
         sizeValues = [...sizeValues , s];
       }
     }

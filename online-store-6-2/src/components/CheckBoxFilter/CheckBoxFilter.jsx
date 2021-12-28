@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const checkBoxValues = [
+export const checkBoxValues = [
   'xs',
   's',
   'm',
@@ -38,7 +38,7 @@ export const CheckBoxFilter = (props) => {
               type="checkbox"
               id={value}
               name={value}
-              checked={size[value] || false}
+              checked={size.some(s => s === value)}
               onChange={(event) => {
                 handleFilter(event)
               }}
@@ -54,13 +54,3 @@ export const CheckBoxFilter = (props) => {
     </>
   )
 };
-
-export const validSizeValues = [
-  'xs',
-  's',
-  'm',
-  'l',
-  'xl',
-  'xxl',
-];
-

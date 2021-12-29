@@ -8,19 +8,17 @@ export const SelectField = () => {
   const [ inputValue, setInputValue ] = useState(null);
 
   return (
-    <div>
-      <Field 
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        validators={validators}
-        renderContent={(inputValue, handleChange, invalid) => (
-          <SelectComponent 
-            inputValue={inputValue}
-            handleChange={handleChange}
-            invalid={invalid}
-          />
-        )}
-      />
-    </div>
+    <Field 
+      inputValue={inputValue}
+      setInputValue={setInputValue}
+      validators={validators}
+      renderContent={(inputValue, handleChange, invalid) => (
+        <SelectComponent 
+          inputValue={inputValue}
+          handleChange={handleChange}
+          invalid={invalid}
+        />
+      )}
+    />
   )
 };

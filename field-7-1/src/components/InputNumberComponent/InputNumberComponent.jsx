@@ -11,21 +11,17 @@ export const InputNumberComponent = (props) => {
   } = props;
 
   return (
-    <>
-      <input
-        className={classNames(
-          'inputField',
-          {
-            invalid: invalid,  
-          }
-        )}
-        type="number"
-        placeholder='Input number'
-        value={inputValue || ''}
-        onChange={(event) => {
-          handleChange(event);
-        }}
-      />
-    </>
+    <input
+      className={classNames(
+        'inputField',
+        {
+          invalid,  
+        }
+      )}
+      type="number"
+      placeholder='Input number'
+      value={inputValue || ''}
+      onChange={handleChange}
+    />
   )
 }

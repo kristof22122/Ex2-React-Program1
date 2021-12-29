@@ -11,21 +11,17 @@ export const InputComponent = (props) => {
   } = props;
 
   return (
-    <>
-      <input
-        className={classNames(
-          'inputField',
-          {
-            invalid: invalid,  
-          }
-        )}
-        type="text"
-        placeholder='Input text'
-        value={inputValue || ''}
-        onChange={(event) => {
-          handleChange(event);
-        }}
-      />
-    </>
+    <input
+      className={classNames(
+        'inputField',
+        {
+          invalid,  
+        }
+      )}
+      type="text"
+      placeholder='Input text'
+      value={inputValue || ''}
+      onChange={handleChange}
+    />
   )
 }

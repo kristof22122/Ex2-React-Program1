@@ -7,10 +7,12 @@ import { InputNumberField } from './components/InputNumberField/InputNumberField
 function App() {
   return (
     <div className="App">
-      <h1>
-        HOC
-      </h1>
-      <div>
+      <div
+        className="App__form"
+      >
+        <h1>
+          HOC
+        </h1>
         <InputField />
         <InputNumberField />
         <SelectField />

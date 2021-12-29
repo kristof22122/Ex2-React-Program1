@@ -8,19 +8,17 @@ export const InputNumberField = () => {
   const [ inputValue, setInputValue ] = useState(null);
 
   return (
-    <div>
-      <Field 
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        validators={validators}
-        renderContent={(inputValue, handleChange, invalid) => (
-          <InputNumberComponent 
-            inputValue={inputValue}
-            handleChange={handleChange}
-            invalid={invalid}
-          />
-        )}
-      />
-    </div>
+    <Field 
+      inputValue={inputValue}
+      setInputValue={setInputValue}
+      validators={validators}
+      renderContent={(inputValue, handleChange, invalid) => (
+        <InputNumberComponent 
+          inputValue={inputValue}
+          handleChange={handleChange}
+          invalid={invalid}
+        />
+      )}
+    />
   )
 };

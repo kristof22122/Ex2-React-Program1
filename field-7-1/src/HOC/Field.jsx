@@ -18,16 +18,21 @@ export const Field = (props) => {
   };
 
   const inputValidation = (validators, value) => {
-    for (const validator of validators) {
-      const checkValue = validator(value);
+    const numberOfValidators = validators.length;
+    let i = 0;
+
+    while (i < numberOfValidators) {
+      const checkValue = validators[i](value);
 
       if (checkValue !== undefined) {
         setInvalidMessage(checkValue);
-        return;
+        i = numberOfValidators;
       } else {
         setInvalidMessage(null);
-      }
-    };
+      };
+
+      i += 1;
+    }
   };
 
   useEffect(() => {
@@ -40,10 +45,7 @@ export const Field = (props) => {
       {renderContent(
         inputValue,
         handleChange,
-        (invalidMessage !== null
-          ? true 
-          : false
-        ),
+        (invalidMessage !== null),
       )}
       {invalidMessage && (
         <div>

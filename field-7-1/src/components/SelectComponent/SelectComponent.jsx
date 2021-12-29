@@ -21,44 +21,40 @@ export const SelectComponent = (props) => {
   } = props;
 
   return (
-    <>
-      <select
-        className={classNames(
-          'selectField',
-          {
-            invalid: invalid,  
-          }
-        )}
-        name="color"
-        onChange={(event) => {
-          handleChange(event)
-        }}
-        value={inputValue || ''}
-      >
-        {selectValue.map((value, i) => {
-          if (value === "") {
-            return (
-              <option
-                className='optionField'
-                key={i}
-                value=""
-              >
-                All colors
-              </option>
-            )
-          }
-
+    <select
+      className={classNames(
+        'selectField',
+        {
+          invalid,  
+        }
+      )}
+      name="color"
+      onChange={handleChange}
+      value={inputValue || ''}
+    >
+      {selectValue.map((value, i) => {
+        if (value === "") {
           return (
             <option
-              className=''
+              className='optionField'
               key={i}
-              value={value}
+              value=""
             >
-              {value}
+              All colors
             </option>
           )
-        })}
-      </select>
-    </>
+        }
+
+        return (
+          <option
+            className=''
+            key={i}
+            value={value}
+          >
+            {value}
+          </option>
+        )
+      })}
+    </select>
   )
 };

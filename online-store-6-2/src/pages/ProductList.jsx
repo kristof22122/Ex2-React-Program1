@@ -8,7 +8,7 @@ import { Announcement } from '../components/Announcement/Announcement';
 import { Products } from '../components/Products/Products';
 import { Newsletter } from '../components/Newsletter/Newsletter';
 import { Footer } from '../components/Footer/Footer';
-import { ColorSelect, validColorValues } from '../components/ColorSelect/ColorSelect';
+import { ColorSelect, selectValue } from '../components/ColorSelect/ColorSelect';
 import { CheckBoxFilter, checkBoxValues } from '../components/CheckBoxFilter/CheckBoxFilter';
 
 
@@ -73,7 +73,7 @@ export const ProductList = () => {
       const searchTermSizeValue = searchTermSize.split(',');
 
       for ( const sizeValue of searchTermSizeValue) {
-        if (checkBoxValues.some(validSize => validSize === sizeValue)) {
+        if (checkBoxValues.includes(sizeValue)) {
           sizeFromUrl = [...sizeFromUrl, sizeValue];
         }
       };
@@ -81,7 +81,7 @@ export const ProductList = () => {
 
     let colorFromUrl = null;
 
-    if (validColorValues.some(validColor => validColor === searchTermColor)) {
+    if (selectValue.includes(searchTermColor)) {
       colorFromUrl = searchTermColor;
     }
 

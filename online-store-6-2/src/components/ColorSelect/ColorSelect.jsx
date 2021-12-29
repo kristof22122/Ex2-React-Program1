@@ -9,15 +9,14 @@ const Option = styled.option`
   text-transform: capitalize;
 `;
 
-const selectValue = [
-  '',
+export const selectValue = [
   'white',
   'black',
   'red',
   'blue',
   'yellow',
   'green',
-]
+];
 
 export const ColorSelect = (props) => {
   const {
@@ -29,23 +28,15 @@ export const ColorSelect = (props) => {
     <>
       <Select
         name="color"
-        onChange={(event) => {
-          handleFilter(event)
-        }}
+        onChange={handleFilter}
         value={color || ''}
       >
+        <Option
+          value=""
+        >
+          All colors
+        </Option>
         {selectValue.map((value, i) => {
-          if (value === "") {
-            return (
-              <Option
-                key={i}
-                value=""
-              >
-                All colors
-              </Option>
-            )
-          }
-
           return (
             <Option
               key={i}
@@ -59,12 +50,3 @@ export const ColorSelect = (props) => {
     </>
   )
 }
-
-export const validColorValues = [
-  'white',
-  'black',
-  'red',
-  'blue',
-  'yellow',
-  'green',
-];

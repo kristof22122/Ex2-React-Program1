@@ -38,10 +38,8 @@ export const CheckBoxFilter = (props) => {
               type="checkbox"
               id={value}
               name={value}
-              checked={size.some(s => s === value)}
-              onChange={(event) => {
-                handleFilter(event)
-              }}
+              checked={size.includes(value)}
+              onChange={handleFilter}
             />
             <LabelForCheckBox
               htmlFor={value}

@@ -22,11 +22,7 @@ export const Products = (props) => {
   } = props.filters;
 
   const filterProducts = (productsForFilter) => {
-    let nameToLowerCase;
-
-    if (name !== null) {
-      nameToLowerCase = name.toLowerCase();
-    };
+    const nameToLowerCase = name !== null ? name.toLowerCase() : null;
 
     return productsForFilter.filter(product => {
       const {
@@ -37,7 +33,7 @@ export const Products = (props) => {
       } = product;
 
       return !((color !== null && color !== productColor)
-        || (size.length !== 0 ? !size.some(s => s === productSize) : false)
+        || (size.length !== 0 ? !size.includes(productSize) : false)
         || (name !== null && !productName.toLowerCase().includes(nameToLowerCase))
         || ((maxPrice > minPrice) && !(productPrice >= minPrice && productPrice <= maxPrice)));
     });

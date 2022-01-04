@@ -9,6 +9,8 @@ export const Field = (props) => {
     renderContent,
   } = props;
 
+  const RenderContent = renderContent;
+
   const handleChange = (event) => {
     const {
       value,
@@ -42,11 +44,12 @@ export const Field = (props) => {
 
   return (
     <>
-      {renderContent(
-        inputValue,
-        handleChange,
-        (invalidMessage !== null),
-      )}
+      <RenderContent 
+        inputValue={inputValue}
+        handleChange={handleChange}
+        invalid={invalidMessage}
+      />
+      
       {invalidMessage && (
         <div>
           {invalidMessage}

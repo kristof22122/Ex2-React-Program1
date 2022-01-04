@@ -12,13 +12,7 @@ export const InputField = () => {
       inputValue={inputValue}
       setInputValue={setInputValue}
       validators={validators}
-      renderContent={(inputValue, handleChange, invalid) => (
-        <InputComponent 
-          inputValue={inputValue}
-          handleChange={handleChange}
-          invalid={invalid}
-        />
-      )}
+      renderContent={InputComponent}
     />
   )
 };

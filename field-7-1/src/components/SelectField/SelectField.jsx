@@ -12,13 +12,7 @@ export const SelectField = () => {
       inputValue={inputValue}
       setInputValue={setInputValue}
       validators={validators}
-      renderContent={(inputValue, handleChange, invalid) => (
-        <SelectComponent 
-          inputValue={inputValue}
-          handleChange={handleChange}
-          invalid={invalid}
-        />
-      )}
+      renderContent={SelectComponent}
     />
   )
 };

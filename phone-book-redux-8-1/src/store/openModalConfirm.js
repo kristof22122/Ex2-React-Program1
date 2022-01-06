@@ -10,9 +10,7 @@ const openModalConfirmReducer = (
 ) => {
   switch (action.type) {
     case TOGGLE:
-      openAddForm = !openAddForm;
-
-      return openAddForm;
+      return !openAddForm;
     default:
       return openAddForm;
   };

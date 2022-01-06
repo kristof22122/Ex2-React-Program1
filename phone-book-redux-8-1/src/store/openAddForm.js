@@ -14,18 +14,8 @@ const openAddFormReducer = (
   action,
 ) => {
   switch (action.type) {
-    case SET_TRUE:
-      openAddForm = true;
-      
-      return openAddForm;
-    case SET_FALSE:
-      openAddForm = false;
-
-      return openAddForm;
     case TOGGLE:
-      openAddForm = !openAddForm;
-
-      return openAddForm;
+      return !openAddForm;
     default:
       return openAddForm;
   };

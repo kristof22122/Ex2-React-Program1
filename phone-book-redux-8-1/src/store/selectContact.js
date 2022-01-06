@@ -17,9 +17,7 @@ const selectContactReducer = (
 
       return selectContact;
     case SET_NULL:
-      selectContact = null;
-
-      return selectContact;
+      return null;
     default:
       return selectContact;
   };

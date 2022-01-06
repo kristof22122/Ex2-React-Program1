@@ -1,10 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ModalAddFormCSS from './ModalAddForm.module.css';
 
-import { getSelectContact } from '../../store';
+import {
+  actions,
+  getFirstNameError,
+  getFirstNameField,
+  getLastNameError,
+  getLastNameField,
+  getPhoneError,
+  getPhoneField,
+  getSelectContact,
+} from '../../store';
+
+import { actions as firstNameFieldAction } from '../../store/firstNameField';
+import { actions as lastNameFieldAction } from '../../store/lastNameField';
+import { actions as phoneFieldAction } from '../../store/phoneField';
+import { actions as firstNameErrorAction } from '../../store/firstNameError';
+import { actions as lastNameErrorAction } from '../../store/lastNameError';
+import { actions as phoneErrorAction } from '../../store/phoneError';
 
 export const ModalAddForm = React.memo((props) => {
   const {
@@ -12,33 +28,55 @@ export const ModalAddForm = React.memo((props) => {
     toggleAddModal,
   } = props;
 
+  const dispatch = useDispatch();
+
   const selectContact = useSelector(getSelectContact);
+  const firstNameField = useSelector(getFirstNameField);
+  const lastNameField = useSelector(getLastNameField);
+  const phoneField = useSelector(getPhoneField);
+  const firstNameError = useSelector(getFirstNameError);
+  const lastNameError = useSelector(getLastNameError);
+  const phoneError = useSelector(getPhoneError);
 
-  const [ firstNameField, setFirstNameField ] = useState(null);
-  const [ lastNameField, setLastNameField ] = useState(null);
-  const [ phoneField, setPhoneField ] = useState(null);
+  const {
+    validField,
+  } = actions;
 
-  const [ firstNameError, setFirstNameError ] = useState(false);
-  const [ lastNameError, setLastNameError ] = useState(false);
-  const [ phoneError, setPhoneError ] = useState(false);
+  const {
+    select: selectFirsNameField,
+    setNull: setNullFirstNameField,
+  } = firstNameFieldAction;
+
+  const {
+    select: selectLastNameField,
+    setNull: setNullLastNameField,
+  } = lastNameFieldAction;
+
+  const {
+    select: selectPhoneField,
+    setNull: setNullPhoneField,
+  } = phoneFieldAction;
+
+  const {
+    setValue: firstNameErrorSetValue,
+  } = firstNameErrorAction;
+
+  const {
+    setValue: lastNameErrorSetValue,
+  } = lastNameErrorAction;
+
+  const {
+    setValue: phoneErrorSetValue,
+  } = phoneErrorAction;
   
   const validFirstName = /^[A-Za-z]{2,10}$/;
   const validLastName = /^[A-Za-z]{2,20}$/;
   const validPhone = /^\+8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
 
-  const validField = (validRegExp, field, setError) => {
-    const validTest = validRegExp.test(field);
-    if (!validTest || field === null) {
-      setError(true);
-    }
-    
-    return validTest;
-  }
-
   const validate = () => {
-    const validFirstNameTest = validField(validFirstName, firstNameField, setFirstNameError);
-    const validLastNameTest = validField(validLastName, lastNameField, setLastNameError);
-    const validPhoneTest = validField(validPhone, phoneField, setPhoneError);
+    const validFirstNameTest = dispatch(validField(validFirstName, firstNameField, firstNameErrorSetValue));
+    const validLastNameTest = dispatch(validField(validLastName, lastNameField, lastNameErrorSetValue));
+    const validPhoneTest = dispatch(validField(validPhone, phoneField, phoneErrorSetValue));
     
     return (validFirstNameTest
         && validLastNameTest
@@ -48,9 +86,9 @@ export const ModalAddForm = React.memo((props) => {
   const handleClick = () => {
     if (validate()) {
       addContact(firstNameField, lastNameField, phoneField);
-      setFirstNameField(null);
-      setLastNameField(null);
-      setPhoneField(null);
+      dispatch(setNullFirstNameField(null));
+      dispatch(setNullLastNameField(null));
+      dispatch(setNullPhoneField(null));
       toggleAddModal();
     };      
   };
@@ -67,18 +105,18 @@ export const ModalAddForm = React.memo((props) => {
 
     switch (name) {
       case 'firstNameField':
-        setFirstNameField(value);
-        setFirstNameError(false);
+        dispatch(selectFirsNameField(value));
+        dispatch(firstNameErrorSetValue(false));
         break;
 
       case 'lastNameField':
-        setLastNameField(value);
-        setLastNameError(false);
+        dispatch(selectLastNameField(value));
+        dispatch(lastNameErrorSetValue(false));
         break;
 
       case 'phoneField':
-        setPhoneField(value);
-        setPhoneError(false);
+        dispatch(selectPhoneField(value));
+        dispatch(phoneErrorSetValue(false));
         break;
     
       default:
@@ -88,11 +126,17 @@ export const ModalAddForm = React.memo((props) => {
 
   useEffect(() => {
     if (selectContact) {
-      setFirstNameField(selectContact.firstName);
-      setLastNameField(selectContact.lastName);
-      setPhoneField(selectContact.phone);
+      dispatch(selectFirsNameField(selectContact.firstName));
+      dispatch(selectLastNameField(selectContact.lastName));
+      dispatch(selectPhoneField(selectContact.phone));
     };
-  }, [selectContact])
+  }, [
+    selectContact,
+    dispatch,
+    selectFirsNameField,
+    selectLastNameField,
+    selectPhoneField,
+  ])
 
   return ReactDOM.createPortal(
     <div

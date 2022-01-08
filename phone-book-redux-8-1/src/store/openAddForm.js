@@ -1,11 +1,6 @@
-const SET_TRUE = 'openAddForm/SET_TRUE';
-const SET_FALSE = 'openAddForm/SET_FALSE';
 const TOGGLE = 'openAddForm/TOGGLE';
 
-
 export const actions = {
-  setTrue: () => ({ type: SET_TRUE }),
-  setFalse: () => ({ type: SET_FALSE }),
   toggle: () => ({ type: TOGGLE }),
 };
 

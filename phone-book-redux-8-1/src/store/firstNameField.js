@@ -1,10 +1,8 @@
-const SELECT = 'firstNameField/SELECT';
-const SET_NULL = 'firstNameField/SET_NULL';
+const SET_FIRST_NAME_FIELD = 'firstNameField/SET_FIRST_NAME_FIELD'
 
 
 export const actions = {
-  select: (contact) => ({ type: SELECT, contact }),
-  setNull: () => ({ type: SET_NULL }),
+  setFirstNameField: (value) => ({ type: SET_FIRST_NAME_FIELD, value }),
 };
 
 const firstNameFieldReducer = (
@@ -12,10 +10,8 @@ const firstNameFieldReducer = (
   action,
 ) => {
   switch (action.type) {
-    case SELECT:
-      return action.contact;
-    case SET_NULL:
-      return null;
+    case SET_FIRST_NAME_FIELD:
+      return action.value;
     default:
       return firstNameField;
   };

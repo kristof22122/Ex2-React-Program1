@@ -1,7 +1,7 @@
-const SET_VALUE = 'phoneError/SET_VALUE';
+const SET_PHONE_ERROR = 'phoneError/SET_PHONE_ERROR';
 
 export const actions = {
-  setValue: (value) => ({ type: SET_VALUE, value }),
+  setPhoneError: (value) => ({ type: SET_PHONE_ERROR, value }),
 };
 
 const phoneErrorReducer = (
@@ -9,7 +9,7 @@ const phoneErrorReducer = (
   action,
 ) => {
   switch (action.type) {
-    case SET_VALUE:
+    case SET_PHONE_ERROR:
       return action.value;
     default:
       return phoneError;

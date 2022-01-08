@@ -1,7 +1,7 @@
-const SET_VALUE = 'lastNameError/SET_VALUE';
+const SET_LAST_NAME_ERROR = 'lastNameError/SET_LAST_NAME_ERROR';
 
 export const actions = {
-  setValue: (value) => ({ type: SET_VALUE, value }),
+  setLastNameError: (value) => ({ type: SET_LAST_NAME_ERROR, value }),
 };
 
 const lastNameErrorReducer = (
@@ -9,7 +9,7 @@ const lastNameErrorReducer = (
   action,
 ) => {
   switch (action.type) {
-    case SET_VALUE:
+    case SET_LAST_NAME_ERROR:
       return action.value;
     default:
       return lastNameError;

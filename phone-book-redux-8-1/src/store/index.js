@@ -1,11 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 
+import { requestCreate, requestDelete, requestRead, requestUpdate } from "../api";
+
 import contactsReducer from "./contacts";
 import selectContactReducer from './selectContact';
 import openAddFormReducer from './openAddForm';
 import openModalConfirmReducer from './openModalConfirm';
-import { requestCreate, requestDelete, requestRead, requestUpdate } from "../api";
 import firstNameFieldReducer from "./firstNameField";
 import lastNameFieldReducer from "./lastNameField";
 import phoneFieldReducer from "./phoneField";
@@ -93,21 +94,21 @@ export function getPhoneError(state) {
   return phoneError;
 };
 
+function baseRequestApiAction(callback) {
+  return (value) => () => {
+    return callback(value);
+  };
+};
+
 export const actions = {
   readContacts: () => () => {
     return new Promise(resolve => {
       resolve(requestRead());
     })
   },
-  deleteContactFromAPI: (id) => () => {
-    return requestDelete(id);
-  },
-  creatContactForAPI: (record) => () => {
-    return requestCreate(record);
-  },
-  updateContactForAPI: (record) => () => {
-    return requestUpdate(record);
-  },
+  deleteContactFromAPI: baseRequestApiAction(requestDelete),
+  creatContactForAPI: baseRequestApiAction(requestCreate),
+  updateContactForAPI: baseRequestApiAction(requestUpdate),
   validField: (validRegExp, field, setError) => (dispatch) => {
     const validTest = validRegExp.test(field);
 

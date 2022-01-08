@@ -43,30 +43,27 @@ export const ModalAddForm = React.memo((props) => {
   } = actions;
 
   const {
-    select: selectFirsNameField,
-    setNull: setNullFirstNameField,
+    setFirstNameField,
   } = firstNameFieldAction;
 
   const {
-    select: selectLastNameField,
-    setNull: setNullLastNameField,
+    setLastNameField,
   } = lastNameFieldAction;
 
   const {
-    select: selectPhoneField,
-    setNull: setNullPhoneField,
+    setPhoneField,
   } = phoneFieldAction;
 
   const {
-    setValue: firstNameErrorSetValue,
+    setFirstNameError,
   } = firstNameErrorAction;
 
   const {
-    setValue: lastNameErrorSetValue,
+    setLastNameError,
   } = lastNameErrorAction;
 
   const {
-    setValue: phoneErrorSetValue,
+    setPhoneError,
   } = phoneErrorAction;
   
   const validFirstName = /^[A-Za-z]{2,10}$/;
@@ -74,9 +71,9 @@ export const ModalAddForm = React.memo((props) => {
   const validPhone = /^\+8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
 
   const validate = () => {
-    const validFirstNameTest = dispatch(validField(validFirstName, firstNameField, firstNameErrorSetValue));
-    const validLastNameTest = dispatch(validField(validLastName, lastNameField, lastNameErrorSetValue));
-    const validPhoneTest = dispatch(validField(validPhone, phoneField, phoneErrorSetValue));
+    const validFirstNameTest = dispatch(validField(validFirstName, firstNameField, setFirstNameError));
+    const validLastNameTest = dispatch(validField(validLastName, lastNameField, setLastNameError));
+    const validPhoneTest = dispatch(validField(validPhone, phoneField, setPhoneError));
     
     return (validFirstNameTest
         && validLastNameTest
@@ -86,9 +83,9 @@ export const ModalAddForm = React.memo((props) => {
   const handleClick = () => {
     if (validate()) {
       addContact(firstNameField, lastNameField, phoneField);
-      dispatch(setNullFirstNameField(null));
-      dispatch(setNullLastNameField(null));
-      dispatch(setNullPhoneField(null));
+      dispatch(setFirstNameField(null));
+      dispatch(setLastNameField(null));
+      dispatch(setPhoneField(null));
       toggleAddModal();
     };      
   };
@@ -105,18 +102,18 @@ export const ModalAddForm = React.memo((props) => {
 
     switch (name) {
       case 'firstNameField':
-        dispatch(selectFirsNameField(value));
-        dispatch(firstNameErrorSetValue(false));
+        dispatch(setFirstNameField(value));
+        dispatch(setFirstNameError(false));
         break;
 
       case 'lastNameField':
-        dispatch(selectLastNameField(value));
-        dispatch(lastNameErrorSetValue(false));
+        dispatch(setLastNameField(value));
+        dispatch(setLastNameError(false));
         break;
 
       case 'phoneField':
-        dispatch(selectPhoneField(value));
-        dispatch(phoneErrorSetValue(false));
+        dispatch(setPhoneField(value));
+        dispatch(setPhoneError(false));
         break;
     
       default:
@@ -126,16 +123,16 @@ export const ModalAddForm = React.memo((props) => {
 
   useEffect(() => {
     if (selectContact) {
-      dispatch(selectFirsNameField(selectContact.firstName));
-      dispatch(selectLastNameField(selectContact.lastName));
-      dispatch(selectPhoneField(selectContact.phone));
+      dispatch(setFirstNameField(selectContact.firstName));
+      dispatch(setLastNameField(selectContact.lastName));
+      dispatch(setPhoneField(selectContact.phone));
     };
   }, [
     selectContact,
     dispatch,
-    selectFirsNameField,
-    selectLastNameField,
-    selectPhoneField,
+    setFirstNameField,
+    setLastNameField,
+    setPhoneField,
   ])
 
   return ReactDOM.createPortal(

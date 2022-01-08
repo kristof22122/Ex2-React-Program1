@@ -11,7 +11,7 @@ import { actions as selectContactAction } from '../../store/selectContact';
 export const ContactsList = (props) => {
   const dispatch = useDispatch();
   const {
-    select,
+    setSelectContact,
   } = selectContactAction;
 
   const {
@@ -55,7 +55,7 @@ export const ContactsList = (props) => {
                 key={id}
                 className={ContactsListCSS.contact}
                 onClick={() => {
-                  dispatch(select(contact));
+                  dispatch(setSelectContact(contact));
                 }}
               >
                 <Contact

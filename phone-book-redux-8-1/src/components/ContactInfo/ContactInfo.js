@@ -18,8 +18,9 @@ export const ContactInfo = (props) => {
   const dispatch = useDispatch();
   
   const {
-    setNull,
+    setSelectContact,
   } = selectContactAction;
+
   const {
     toggle,
   } = openModalConfirmAction;
@@ -38,7 +39,7 @@ export const ContactInfo = (props) => {
   const toggleModalConfirm = useCallback((choice) => {
     if (choice) {
       deleteContact(id);
-      dispatch(setNull(null));
+      dispatch(setSelectContact(null));
     };
 
     dispatch(toggle());
@@ -46,7 +47,7 @@ export const ContactInfo = (props) => {
   }, []);
 
   const handleClose = () => {
-    dispatch(setNull(null));
+    dispatch(setSelectContact(null));
   };
 
   const handleEdit = () => {

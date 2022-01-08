@@ -1,9 +1,7 @@
-// const SET_TRUE = 'firstNAmeError/SET_TRUE';
-// const SET_FALSE = 'firstNAmeError/SET_FALSE';
-const SET_VALUE = 'firstNameError/SET_VALUE';
+const SET_FIRST_NAME_ERROR = 'firstNameError/SET_FIRST_NAME_ERROR';
 
 export const actions = {
-  setValue: (value) => ({ type: SET_VALUE, value }),
+  setFirstNameError: (value) => ({ type: SET_FIRST_NAME_ERROR, value }),
 };
 
 const firstNameErrorReducer = (
@@ -11,7 +9,7 @@ const firstNameErrorReducer = (
   action,
 ) => {
   switch (action.type) {
-    case SET_VALUE:
+    case SET_FIRST_NAME_ERROR:
       return action.value;
     default:
       return firstNameError;

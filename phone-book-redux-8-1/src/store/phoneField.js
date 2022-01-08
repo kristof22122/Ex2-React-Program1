@@ -1,10 +1,8 @@
-const SELECT = 'phoneField/SELECT';
-const SET_NULL = 'phoneField/SET_NULL';
+const SET_PHONE_FIELD = 'phoneField/SET_PHONE_FIELD';
 
 
 export const actions = {
-  select: (contact) => ({ type: SELECT, contact }),
-  setNull: () => ({ type: SET_NULL }),
+  setPhoneField: (value) => ({ type: SET_PHONE_FIELD, value }),
 };
 
 const phoneFieldReducer = (
@@ -12,10 +10,8 @@ const phoneFieldReducer = (
   action,
 ) => {
   switch (action.type) {
-    case SELECT:
-      return action.contact;
-    case SET_NULL:
-      return null;
+    case SET_PHONE_FIELD:
+      return action.value;
     default:
       return phoneField;
   };

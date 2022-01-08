@@ -32,7 +32,7 @@ function App() {
   } = contactsAction;
 
   const {
-    select,
+    setSelectContact,
   } = selectContactAction;
 
   const {
@@ -56,7 +56,7 @@ function App() {
       };
 
       dispatch(update(updateContactInfo));
-      dispatch(select(updateContactInfo));
+      dispatch(setSelectContact(updateContactInfo));
       dispatch(updateContactForAPI(updateContactInfo));
       return;
     }
@@ -75,7 +75,7 @@ function App() {
       selectContact,
       update,
       add,
-      select,
+      setSelectContact,
       creatContactForAPI,
       updateContactForAPI,
     ]);

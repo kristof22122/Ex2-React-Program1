@@ -1,23 +1,24 @@
-const SELECT = 'selectContact/SELECT';
-const SET_NULL = 'selectContact/SET_NULL';
-
+const SET_SELECT_CONTACT = 'selectContact/SET_SELECT_CONTACT';
 
 export const actions = {
-  select: (contact) => ({ type: SELECT, contact }),
-  setNull: () => ({ type: SET_NULL }),
+  setSelectContact: (value) => ({ type: SET_SELECT_CONTACT, value})
 };
 
 const selectContactReducer = (
   selectContact = null,
   action,
 ) => {
-  switch (action.type) {
-    case SELECT:
-      selectContact = {...action.contact};
+  const {
+    value,
+  } = action;
 
-      return selectContact;
-    case SET_NULL:
-      return null;
+  switch (action.type) {
+    case SET_SELECT_CONTACT:
+      if (value === null) {
+        return null;
+      };
+
+      return { ...value };
     default:
       return selectContact;
   };

@@ -1,0 +1,12 @@
+.movies {
+  background-color: rgb(40, 87, 131);
+}
+
+.movies__list {
+  margin-bottom: 0.5rem;
+}
+
+.movies__title {
+  color: #fff;
+  margin-bottom: 1.5rem;
+}

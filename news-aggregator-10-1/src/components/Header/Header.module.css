@@ -1,0 +1,25 @@
+.news__header {
+  height: 70px;
+  padding: 20px;
+  background-color: #e3f0fd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.news__title {
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.news__select {
+  padding: 5px;
+  /* background-color: #dfe7f5; */
+  background-color: #e3f0fd;
+  text-transform: uppercase;
+  /* border: none; */
+  border-color: #cbe0f5;
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px 1px rgba(197, 212, 245, 0.315);
+  cursor: pointer;
+}

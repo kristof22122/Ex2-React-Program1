@@ -1,0 +1,7 @@
+.main {
+  border: 1px solid #2172db;
+  background-color: rgb(101, 184, 233);
+  padding: 20px;
+  min-height: 92vh;
+  width: 100%;
+}

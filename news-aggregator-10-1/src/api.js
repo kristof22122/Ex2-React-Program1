@@ -11,15 +11,13 @@ const baseApi = axios.create({
   },
 });
 
-export const getNews = (q, category) => {
+export const getNews = (q = '', category, language, page) => {
   return baseApi.request({
     params: {
       q,
-      // country: 'ua',
-      // category,
-      // language: 'ua,en,fr',
-      // language: 'en,fr,uk',
-      language: 'en',
+      category,
+      language,
+      page,
     },
   })
   .then(res => {

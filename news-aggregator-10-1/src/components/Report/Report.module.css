@@ -1,0 +1,9 @@
+.report__list {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+.report__item {
+  font-size: 12px;
+}

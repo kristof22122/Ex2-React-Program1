@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState,useEffect, useContext } from 'react';
 
 import NewsCategoryCSS from './NewsCategory.module.css';
+
+import { getTranslation } from '../../translation';
+import { LangContext } from '../../context/LangContext';
 
 const newsCategory = [
   'business',
@@ -16,7 +19,44 @@ const newsCategory = [
   'world',
 ];
 
-export const NewsCategory = () => {
+export const NewsCategory = (props) => {
+  const {
+    setCategoryForApi,
+  } = props;
+  const { language } = useContext(LangContext);
+
+  const categoryForTranslation = getTranslation('Main.NewsCategory', language);
+
+  const [ category, setCategory ] = useState(['business']);
+
+  const handleChangeCategory = (event) => {
+    const {
+      name,
+      checked,
+    } = event.target;
+
+    if (category.length === 1) {
+      if (!category.includes(name)) {
+        setCategory([ ...category, name ]);
+      };
+      
+      return;
+    };
+
+    if (category.length < 5) {
+      setCategory(checked ? [ ...category, name ] : category.filter(c => c !== name));
+    };
+    
+    if (!checked) {
+      setCategory(category.filter(c => c !== name));
+    };
+  };
+
+  useEffect(() => {
+    setCategoryForApi(category);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
+
   return (
     <div
       className={NewsCategoryCSS.news}
@@ -24,7 +64,7 @@ export const NewsCategory = () => {
       <ul
         className={NewsCategoryCSS.news__list}
       >
-        {newsCategory.map((category, i) => {
+        {newsCategory.map((value, i) => {
           return (
             <li
               key={i}
@@ -32,20 +72,21 @@ export const NewsCategory = () => {
             >
               <label
                 className={NewsCategoryCSS.news__label}
-                htmlFor={category}
+                htmlFor={value}
               >
-                {category}
+                {categoryForTranslation[i]}
               </label>
               <input
                 type="checkbox"
-                id={category}
+                id={value}
+                name={value}
+                checked={category.includes(value)}
+                onChange={handleChangeCategory}
               />
             </li>
           )
         })}
-
       </ul>
-      
     </div>
   )
 };

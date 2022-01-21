@@ -12,11 +12,23 @@
   font-size: 2rem;
 }
 
+.newsList__container {
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; */
+}
+
 .newsList__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   list-style: none;
 }
 
 .newsList__item {
+  margin-bottom: 5px;
+  width: 500px;
   padding: 5px;
   border-bottom: 2px solid #1785f3;
 }

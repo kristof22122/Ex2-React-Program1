@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import NewsSearchCSS from './NewsSearch.module.css';
 
+import { getTranslation } from '../../translation';
+import { LangContext } from '../../context/LangContext';
+
 export const NewsSearch = (props) => {
   const {
-    handleClick,
+    handleClickSearchNews,
   } = props;
 
-  const [ search, setSearch ] = useState(null);
+  const { language } = useContext(LangContext);
+
+  const [ query, setQuery ] = useState(null);
 
   return (
     <div
@@ -17,28 +22,29 @@ export const NewsSearch = (props) => {
         className={NewsSearchCSS.search__wrapper}
       >
         <label
-          htmlFor=""
+          htmlFor="search"
           className={NewsSearchCSS.search__label}
         >
-          news search
+          {getTranslation('Main.NewsSearch.title', language)}
         </label>
         <input
           className={NewsSearchCSS.search__input}
+          id="search"
           type="text"
-          value={search || ''}
+          value={query || ''}
           onChange={(event) => {
-            setSearch(event.target.value);
+            setQuery(event.target.value);
           }}
         />
         <button
           className={NewsSearchCSS.search__button}
           type="button"
           onClick={() => {
-            handleClick(search);
-            setSearch(null);
+            handleClickSearchNews(query);
+            setQuery(null);
           }}
         >
-          search
+          {getTranslation('Main.NewsSearch.buttonText', language)}
         </button>
       </div>
     </div>

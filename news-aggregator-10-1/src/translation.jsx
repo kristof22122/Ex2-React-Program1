@@ -1,0 +1,81 @@
+const translation = {
+  en: {
+    'Header.title': 'multilingual news aggregator',
+    'Header.language': [
+      'en',
+      'de',
+      'fr',
+    ],
+    'Main.NewsCategory': [
+      'business',
+      'entertainment',
+      'environment',
+      'food',
+      'health',
+      'politics',
+      'science',
+      'sports',
+      'technology',
+      'top',
+      'world',
+    ],
+    'Main.NewsSearch.title': 'news search',
+    'Main.NewsSearch.buttonText': 'search',
+    'Main.NewsList.title': 'news list',
+    'Main.NewsList.error': 'no news found',
+  },
+  de: {
+    'Header.title': 'mehrsprachiger nachrichtenaggregator',
+    'Header.language': [
+      'en',
+      'de',
+      'fr',
+    ],
+    'Main.NewsCategory': [
+      'geschäft',
+      'unterhaltung',
+      'umgebung',
+      'lebensmittel',
+      'die gesundheit',
+      'politik',
+      'wissenschaft',
+      'sport',
+      'technologie',
+      'oben',
+      'welt',
+    ],
+    'Main.NewsSearch.title': 'nachrichtensuche',
+    'Main.NewsSearch.buttonText': 'suche',
+    'Main.NewsList.title': 'nachrichtenliste',
+    'Main.NewsList.error': 'keine nachrichten gefunden',
+  },
+  fr: {
+    'Header.title': "agrégateur d'actualités multilingue",
+    'Header.language': [
+      'en',
+      'de',
+      'fr',
+    ],
+    'Main.NewsCategory': [
+      'entreprise',
+      'divertissement',
+      'environnement',
+      'aliments',
+      'santé',
+      'politique',
+      'la science',
+      'des sports',
+      'la technologie',
+      'haut',
+      'monde',
+    ],
+    'Main.NewsSearch.title': 'recherche de nouvelles',
+    'Main.NewsSearch.buttonText': 'chercher',
+    'Main.NewsList.title': 'liste de nouvelles',
+    'Main.NewsList.error': 'aucune nouvelle trouvée',
+  },
+};
+
+export const getTranslation = (text, lang) => {
+  return translation[lang][text];
+}

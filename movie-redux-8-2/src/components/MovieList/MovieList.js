@@ -7,8 +7,6 @@ import { Movie } from '../Movie/Movie';
 import { CustomPagination } from '../CustomPagination/CustomPagination';
 
 import { actions, getMoviesFromApi, getPage } from '../../store';
-import { actions as moviesFromApiAction } from '../../store/moviesFromApi';
-
 
 export const MovieList = () => {
   const dispatch = useDispatch();
@@ -17,20 +15,14 @@ export const MovieList = () => {
   const moviesFromApi = useSelector(getMoviesFromApi);
 
   const {
-    readTrendingMovies,
+    getMovieFromApi,
   } = actions;
 
-  const {
-    setMovies,
-  } = moviesFromApiAction;
-
   useEffect(() => {
-    dispatch(readTrendingMovies(page))
-      .then(res => {
-        dispatch(setMovies(res));
-      });
+    dispatch(getMovieFromApi(page));
 
     window.scroll(0, 0);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
   

@@ -17,7 +17,6 @@ export const CustomPagination = (props) => {
   const dispatch = useDispatch();
 
   const {
-    // setPage,
     numberOfPages = 10,
   } = props;
 

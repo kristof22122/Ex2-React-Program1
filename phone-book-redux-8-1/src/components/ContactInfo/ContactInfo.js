@@ -9,9 +9,16 @@ import { actions as selectContactAction } from '../../store/selectContact';
 import { actions as openModalConfirmAction } from '../../store/openModalConfirm';
 import { getOpenModalConfirm, getSelectContact } from '../../store';
 
+import { actions as contactsAction } from '../../store/contacts';
+
+import { requestDelete } from '../../api';
+
+const {
+  deleteSelectedContact,
+} = contactsAction;
+
 export const ContactInfo = (props) => {
   const {
-    deleteContact,
     toggleAddModal,
   } = props;
 
@@ -38,7 +45,8 @@ export const ContactInfo = (props) => {
 
   const toggleModalConfirm = useCallback((choice) => {
     if (choice) {
-      deleteContact(id);
+      requestDelete(id);
+      dispatch(deleteSelectedContact(id));
       dispatch(setSelectContact(null));
     };
 

@@ -24,7 +24,7 @@ import { actions as phoneErrorAction } from '../../store/phoneError';
 
 export const ModalAddForm = React.memo((props) => {
   const {
-    addContact,
+    // addContact,
     toggleAddModal,
   } = props;
 
@@ -40,6 +40,7 @@ export const ModalAddForm = React.memo((props) => {
 
   const {
     validField,
+    addContactsToApi,
   } = actions;
 
   const {
@@ -82,7 +83,7 @@ export const ModalAddForm = React.memo((props) => {
 
   const handleClick = () => {
     if (validate()) {
-      addContact(firstNameField, lastNameField, phoneField);
+      dispatch(addContactsToApi(firstNameField, lastNameField, phoneField, selectContact));
       dispatch(setFirstNameField(null));
       dispatch(setLastNameField(null));
       dispatch(setPhoneField(null));

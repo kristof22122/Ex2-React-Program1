@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 
-import { requestCreate, requestDelete, requestRead, requestUpdate } from "../api";
+import { requestCreate, requestRead, requestUpdate } from "../api";
 
 import contactsReducer from "./contacts";
 import selectContactReducer from './selectContact';
@@ -13,6 +13,9 @@ import phoneFieldReducer from "./phoneField";
 import firstNameErrorReducer from "./firstNameError";
 import lastNameErrorReducer from "./lastNameError";
 import phoneErrorReducer from "./phoneError";
+
+import { actions as contactsAction } from '../store/contacts';
+import { actions as selectContactAction } from '../store/selectContact';
 
 export function getContacts(state) {
   const {
@@ -100,13 +103,16 @@ function baseRequestApiAction(callback) {
   };
 };
 
+const {
+  add,
+  update,
+} = contactsAction;
+
+const {
+  setSelectContact,
+} = selectContactAction;
+
 export const actions = {
-  readContacts: () => () => {
-    return new Promise(resolve => {
-      resolve(requestRead());
-    })
-  },
-  deleteContactFromAPI: baseRequestApiAction(requestDelete),
   creatContactForAPI: baseRequestApiAction(requestCreate),
   updateContactForAPI: baseRequestApiAction(requestUpdate),
   validField: (validRegExp, field, setError) => (dispatch) => {
@@ -117,7 +123,50 @@ export const actions = {
     };
     
     return validTest;
-  }
+  },
+  readContactsFromApi: () => {
+    return (dispatch) => {
+      return requestRead()
+      .then(res => {
+        dispatch(add(res.records));
+      });
+    };
+  },
+  addContactsToApi: (firstNameField, lastNameField, phoneField, selectContact) => {
+    return (dispatch) => {
+      console.log('Add contact');
+      if (selectContact !== null) {
+        const {
+          id: selectContactId,
+        } = selectContact;
+  
+        const updateContactInfo = {
+          id: selectContactId,
+          firstName: firstNameField,
+          lastName: lastNameField,
+          phone: phoneField,
+        };
+  
+        dispatch(update(updateContactInfo));
+        dispatch(setSelectContact(updateContactInfo));
+        // dispatch(updateContactForAPI(updateContactInfo));
+        requestUpdate(updateContactInfo)
+        return;
+      }
+  
+      const id = (+new Date()).toString();
+      const newContact = {
+        id,
+        firstName: firstNameField,
+        lastName: lastNameField,
+        phone: phoneField,
+      };
+  
+      dispatch(add(newContact));
+      // dispatch(creatContactForAPI(newContact));
+      requestCreate(newContact)
+    };
+  },
 };
 
 const reducer = combineReducers({

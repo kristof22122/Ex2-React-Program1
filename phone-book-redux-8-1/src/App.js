@@ -7,93 +7,40 @@ import { ContactInfo } from './components/ContactInfo/ContactInfo';
 
 import { ModalAddForm } from './components/ModalAddForm/ModalAddForm';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 
-import { getSelectContact, getOpenAddForm, actions } from './store';
-import { actions as contactsAction } from './store/contacts';
+import { actions } from './store';
 import { actions as openAddFormAction } from './store/openAddForm';
-import { actions as selectContactAction } from './store/selectContact';
 
+const {
+  readContactsFromApi,
+} = actions;
 
-function App() {
+function App(props) {
+  const {
+    selectContact,
+    openAddForm,
+  } = props;
+
   const dispatch = useDispatch();
 
-  const selectContact = useSelector(getSelectContact);
+  // const selectContact = useSelector(getSelectContact);
 
-  const openAddForm = useSelector(getOpenAddForm);
+  // const openAddForm = useSelector(getOpenAddForm);
   const {
     toggle,
   } = openAddFormAction;
 
-  const {
-    add,
-    deleteSelectedContact,
-    update,
-  } = contactsAction;
-
-  const {
-    setSelectContact,
-  } = selectContactAction;
-
-  const {
-    readContacts,
-    deleteContactFromAPI,
-    creatContactForAPI,
-    updateContactForAPI,
-  } = actions;
-
-  const addContact = useCallback((firstNameField, lastNameField, phoneField) => {
-    if (selectContact !== null) {
-      const {
-        id: selectContactId,
-      } = selectContact;
-
-      const updateContactInfo = {
-        id: selectContactId,
-        firstName: firstNameField,
-        lastName: lastNameField,
-        phone: phoneField,
-      };
-
-      dispatch(update(updateContactInfo));
-      dispatch(setSelectContact(updateContactInfo));
-      dispatch(updateContactForAPI(updateContactInfo));
-      return;
-    }
-
-    const id = (+new Date()).toString();
-    const newContact = {
-      id,
-      firstName: firstNameField,
-      lastName: lastNameField,
-      phone: phoneField,
-    };
-
-    dispatch(add(newContact));
-    dispatch(creatContactForAPI(newContact))
-  }, [dispatch,
-      selectContact,
-      update,
-      add,
-      setSelectContact,
-      creatContactForAPI,
-      updateContactForAPI,
-    ]);
-
-  const deleteContact = useCallback((contactId) => {
-    dispatch(deleteSelectedContact(contactId));
-    dispatch(deleteContactFromAPI(contactId));
-  }, [dispatch, deleteSelectedContact, deleteContactFromAPI]);
+  // const {
+  //   readContactsFromApi,
+  // } = actions;
 
   const toggleAddModal = useCallback(() => {
     dispatch(toggle());
   }, [dispatch, toggle]);
 
   useEffect(() => {
-    dispatch(readContacts())
-      .then(res => {
-        dispatch(add(res.records));
-      });
+    dispatch(readContactsFromApi());
     
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -107,13 +54,11 @@ function App() {
       )}
       {selectContact && (
         <ContactInfo
-          deleteContact={deleteContact}
           toggleAddModal={toggleAddModal}
         />
       )}
       {openAddForm && (
-        <ModalAddForm 
-          addContact={addContact}
+        <ModalAddForm
           toggleAddModal={toggleAddModal}
         />
       )}
@@ -121,4 +66,17 @@ function App() {
   );
 }
 
-export default App;
+const mapStateProps = (state) => {
+  return {
+    selectContact: state.selectContact,
+    openAddForm: state.openAddForm,
+  }
+};
+
+const mapDispatchToProps = () => {
+  return {
+    readContactsFromApi,
+  }
+};
+
+export default connect(mapStateProps, mapDispatchToProps())(App);

@@ -13,12 +13,11 @@ import { LangContext } from '../../context/LangContext';
 export const Main = () => {
   const [ page, setPage ] = useState(1);
   const [ news, setNews ] = useState([]);
-  const [ queryForApi, setQueryForApi ] = useState(null)
+  const [ queryForApi, setQueryForApi ] = useState(null);
+  const [ categoryForApi, setCategoryForApi ] = useState([]);
   const {
     language,
   } = useContext(LangContext);
-  
-  const [ categoryForApi, setCategoryForApi ] = useState([]);
 
   const getNewsFromApi = (q, page) => {
     const categoryForApiString = categoryForApi.join(',');

@@ -10,9 +10,9 @@ export const NewsSearch = (props) => {
     handleClickSearchNews,
   } = props;
 
-  const { language } = useContext(LangContext);
-
   const [ query, setQuery ] = useState(null);
+
+  const { language } = useContext(LangContext);
 
   return (
     <div

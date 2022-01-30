@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
 import ContactInfoCSS from './ContactInfo.module.css';
 
@@ -7,9 +7,9 @@ import { ModalConfirm } from '../ModalConfirm/ModalConfirm';
 
 import { actions as selectContactAction } from '../../store/selectContact';
 import { actions as openModalConfirmAction } from '../../store/openModalConfirm';
-import { getOpenModalConfirm, getSelectContact } from '../../store';
 
 import { actions as contactsAction } from '../../store/contacts';
+import { actions as openAddFormAction } from '../../store/openAddForm';
 
 import { requestDelete } from '../../api';
 
@@ -17,24 +17,27 @@ const {
   deleteSelectedContact,
 } = contactsAction;
 
-export const ContactInfo = (props) => {
-  const {
-    toggleAddModal,
-  } = props;
+const {
+  setSelectContact,
+} = selectContactAction;
 
-  const dispatch = useDispatch();
-  
+const {
+  toggle: toggleModalConfirmAction,
+} = openModalConfirmAction;
+
+const {
+  toggle: toggleAddFormAction,
+} = openAddFormAction;
+
+const ContactInfo = (props) => {
   const {
+    selectContact,
+    openModalConfirm,
+    deleteSelectedContact,
     setSelectContact,
-  } = selectContactAction;
-
-  const {
-    toggle,
-  } = openModalConfirmAction;
-
-  const selectContact = useSelector(getSelectContact);
-
-  const openModalConfirm = useSelector(getOpenModalConfirm);
+    toggleModalConfirmAction,
+    toggleAddFormAction,
+  } = props;
 
   const {
     id,
@@ -46,20 +49,20 @@ export const ContactInfo = (props) => {
   const toggleModalConfirm = useCallback((choice) => {
     if (choice) {
       requestDelete(id);
-      dispatch(deleteSelectedContact(id));
-      dispatch(setSelectContact(null));
+      deleteSelectedContact(id);
+      setSelectContact(null);
     };
 
-    dispatch(toggle());
+    toggleModalConfirmAction();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClose = () => {
-    dispatch(setSelectContact(null));
+    setSelectContact(null);
   };
 
   const handleEdit = () => {
-    toggleAddModal();
+    toggleAddFormAction();
   };
 
   return (
@@ -139,3 +142,21 @@ export const ContactInfo = (props) => {
     </div>
   )
 };
+
+const mapStateProps = (state) => {
+  return {
+    selectContact: state.selectContact,
+    openModalConfirm: state.openModalConfirm,
+  }
+};
+
+const mapDispatchToProps = () => {
+  return {
+    deleteSelectedContact,
+    setSelectContact,
+    toggleModalConfirmAction,
+    toggleAddFormAction,
+  }
+};
+
+export default connect(mapStateProps, mapDispatchToProps())(ContactInfo);

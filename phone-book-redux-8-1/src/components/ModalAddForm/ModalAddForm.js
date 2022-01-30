@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 
 import ModalAddFormCSS from './ModalAddForm.module.css';
 
 import {
   actions,
-  getFirstNameError,
-  getFirstNameField,
-  getLastNameError,
-  getLastNameField,
-  getPhoneError,
-  getPhoneField,
-  getSelectContact,
+  // getFirstNameError,
+  // getFirstNameField,
+  // getLastNameError,
+  // getLastNameField,
+  // getPhoneError,
+  // getPhoneField,
+  // getSelectContact,
 } from '../../store';
 
 import { actions as firstNameFieldAction } from '../../store/firstNameField';
@@ -22,50 +22,72 @@ import { actions as firstNameErrorAction } from '../../store/firstNameError';
 import { actions as lastNameErrorAction } from '../../store/lastNameError';
 import { actions as phoneErrorAction } from '../../store/phoneError';
 
-export const ModalAddForm = React.memo((props) => {
+import { actions as openAddFormAction } from '../../store/openAddForm';
+
+const {
+  validField,
+  addContactsToApi,
+} = actions;
+
+const {
+  setFirstNameField,
+} = firstNameFieldAction;
+
+const {
+  setLastNameField,
+} = lastNameFieldAction;
+
+const {
+  setPhoneField,
+} = phoneFieldAction;
+
+const {
+  setFirstNameError,
+} = firstNameErrorAction;
+
+const {
+  setLastNameError,
+} = lastNameErrorAction;
+
+const {
+  setPhoneError,
+} = phoneErrorAction;
+
+const {
+  toggle: toggleAddFormAction,
+} = openAddFormAction;
+
+const ModalAddForm = React.memo((props) => {
   const {
-    // addContact,
-    toggleAddModal,
+    selectContact,
+    firstNameField,
+    lastNameField,
+    phoneField,
+    firstNameError,
+    lastNameError,
+    phoneError,
+    validField,
+    addContactsToApi,
+    setFirstNameField,
+    setLastNameField,
+    setPhoneField,
+    setFirstNameError,
+    setLastNameError,
+    setPhoneError,
+    toggleAddFormAction,
   } = props;
 
   const dispatch = useDispatch();
 
-  const selectContact = useSelector(getSelectContact);
-  const firstNameField = useSelector(getFirstNameField);
-  const lastNameField = useSelector(getLastNameField);
-  const phoneField = useSelector(getPhoneField);
-  const firstNameError = useSelector(getFirstNameError);
-  const lastNameError = useSelector(getLastNameError);
-  const phoneError = useSelector(getPhoneError);
+  // const selectContact = useSelector(getSelectContact);
+  // const firstNameField = useSelector(getFirstNameField);
+  // const lastNameField = useSelector(getLastNameField);
+  // const phoneField = useSelector(getPhoneField);
+  // const firstNameError = useSelector(getFirstNameError);
+  // const lastNameError = useSelector(getLastNameError);
+  // const phoneError = useSelector(getPhoneError);
 
-  const {
-    validField,
-    addContactsToApi,
-  } = actions;
 
-  const {
-    setFirstNameField,
-  } = firstNameFieldAction;
-
-  const {
-    setLastNameField,
-  } = lastNameFieldAction;
-
-  const {
-    setPhoneField,
-  } = phoneFieldAction;
-
-  const {
-    setFirstNameError,
-  } = firstNameErrorAction;
-
-  const {
-    setLastNameError,
-  } = lastNameErrorAction;
-
-  const {
-    setPhoneError,
-  } = phoneErrorAction;
   
   const validFirstName = /^[A-Za-z]{2,10}$/;
   const validLastName = /^[A-Za-z]{2,20}$/;
@@ -87,12 +109,12 @@ export const ModalAddForm = React.memo((props) => {
       dispatch(setFirstNameField(null));
       dispatch(setLastNameField(null));
       dispatch(setPhoneField(null));
-      toggleAddModal();
+      toggleAddFormAction();
     };      
   };
 
   const closeForm = () => {
-      toggleAddModal();
+      toggleAddFormAction();
     };
 
   const handleChange = (event) => {
@@ -243,3 +265,31 @@ export const ModalAddForm = React.memo((props) => {
     document.getElementById('modalAddForm')
   );
 });
+
+const mapStateProps = (state) => {
+  return {
+    selectContact: state.selectContact,
+    firstNameField: state.firstNameField,
+    lastNameField: state.lastNameField,
+    phoneField: state.phoneField,
+    firstNameError: state.firstNameError,
+    lastNameError: state.lastNameError,
+    phoneError: state.phoneError,
+  }
+};
+
+const mapDispatchToProps = () => {
+  return {
+    validField,
+    addContactsToApi,
+    setFirstNameField,
+    setLastNameField,
+    setPhoneField,
+    setFirstNameError,
+    setLastNameError,
+    setPhoneError,
+    toggleAddFormAction,
+  }
+};
+
+export default connect(mapStateProps, mapDispatchToProps())(ModalAddForm);

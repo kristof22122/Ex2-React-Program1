@@ -1,24 +1,27 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
 import ContactsListCSS from './ContactsList.module.css';
 
 import { Contact } from '../Contact/Contact';
 
-import { getContacts } from '../../store';
 import { actions as selectContactAction } from '../../store/selectContact';
+import { actions as openAddFormAction } from '../../store/openAddForm';
 
-export const ContactsList = (props) => {
-  const dispatch = useDispatch();
+const {
+  toggle,
+} = openAddFormAction;
+
+const {
+  setSelectContact,
+} = selectContactAction;
+
+const ContactsList = (props) => {
   const {
+    toggle,
     setSelectContact,
-  } = selectContactAction;
-
-  const {
-    toggleAddModal,
+    contacts,
   } = props;
-
-  const contacts = useSelector(getContacts);
 
   return (
     <div
@@ -36,7 +39,8 @@ export const ContactsList = (props) => {
             type="button"
             className="btn btn-primary"
             onClick={() => {
-              toggleAddModal();
+              // toggleAddModal();
+              toggle();
             }}
           >
             Add contact
@@ -55,7 +59,7 @@ export const ContactsList = (props) => {
                 key={id}
                 className={ContactsListCSS.contact}
                 onClick={() => {
-                  dispatch(setSelectContact(contact));
+                  setSelectContact(contact);
                 }}
               >
                 <Contact
@@ -68,3 +72,18 @@ export const ContactsList = (props) => {
     </div>
   );
 };
+
+const mapStateProps = (state) => {
+  return {
+    contacts: state.contacts,
+  }
+};
+
+const mapDispatchToProps = () => {
+  return {
+    toggle,
+    setSelectContact,
+  }
+};
+
+export default connect(mapStateProps, mapDispatchToProps())(ContactsList);

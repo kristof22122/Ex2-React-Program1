@@ -17,4 +17,12 @@ const movieReviewInfoReducer = (
   };
 };
 
+export function selectMovieReviewInfo(state) {
+  const {
+    movieReviewInfo,
+  } = state;
+
+  return movieReviewInfo;
+};
+
 export default movieReviewInfoReducer;

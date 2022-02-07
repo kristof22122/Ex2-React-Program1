@@ -6,20 +6,24 @@ import MovieListCSS from './MovieList.module.css';
 import { Movie } from '../Movie/Movie';
 import { CustomPagination } from '../CustomPagination/CustomPagination';
 
-import { actions, getMoviesFromApi, getPage } from '../../store';
+import { selectPage } from '../../store/page';
+import { selectMoviesFromApi } from '../../store/moviesFromApi';
+import {
+  actions,
+} from '../../store';
+
+const {
+  actionGetMovieFromApi,
+} = actions;
 
 export const MovieList = () => {
   const dispatch = useDispatch();
 
-  const page = useSelector(getPage);
-  const moviesFromApi = useSelector(getMoviesFromApi);
-
-  const {
-    getMovieFromApi,
-  } = actions;
+  const page = useSelector(selectPage);
+  const moviesFromApi = useSelector(selectMoviesFromApi);
 
   useEffect(() => {
-    dispatch(getMovieFromApi(page));
+    dispatch(actionGetMovieFromApi(page));
 
     window.scroll(0, 0);
 

@@ -6,16 +6,17 @@ import MovieCastInfoCSS from './MovieCastInfo.module.css';
 
 import { img_300, noPicture } from '../../config/config';
 
-import { actions, getMovieCastInfo } from '../../store';
+import { actions } from '../../store';
+import { selectMovieCastInfo } from '../../store/movieCastInfo';
+
+const {
+  actionGetMovieCostInfoFromApi,
+} = actions;
 
 export const MovieCastInfo = () => {
   const dispatch = useDispatch();
 
-  const movieCastInfo = useSelector(getMovieCastInfo);
-
-  const {
-    getMovieCostInfoFromApi,
-  } = actions;
+  const movieCastInfo = useSelector(selectMovieCastInfo);
   
   const params = useParams();
 
@@ -59,7 +60,7 @@ export const MovieCastInfo = () => {
 
   useEffect(() => {
     if (movieId) {
-      dispatch(getMovieCostInfoFromApi(movieId));
+      dispatch(actionGetMovieCostInfoFromApi(movieId));
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movieId]);

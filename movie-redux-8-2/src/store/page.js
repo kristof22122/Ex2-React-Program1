@@ -17,4 +17,12 @@ const pageReducer = (
   };
 };
 
+export function selectPage(state) {
+  const {
+    page,
+  } = state;
+
+  return page;
+};
+
 export default pageReducer;

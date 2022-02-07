@@ -7,6 +7,10 @@ import CustomPaginationCSS from './CustomPagination.module.css';
 
 import { actions as pageAction } from '../../store/page';
 
+const {
+  setPage,
+} = pageAction;
+
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -19,10 +23,6 @@ export const CustomPagination = (props) => {
   const {
     numberOfPages = 10,
   } = props;
-
-  const {
-    setPage,
-  } = pageAction;
 
   const handlePageChange = (page) => {
     dispatch(setPage(page));

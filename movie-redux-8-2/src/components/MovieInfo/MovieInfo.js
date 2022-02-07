@@ -4,16 +4,17 @@ import { Link, useParams } from 'react-router-dom';
 
 import MovieInfoCSS from './MovieInfo.module.css';
 
-import { actions, getMovieInfo } from '../../store';
+import { actions } from '../../store';
+import { selectMovieInfo } from '../../store/movieInfo'
+
+const {
+  actionGetMovieInfoFromApi,
+} = actions;
 
 export const MovieInfo = () => {
   const dispatch = useDispatch();
 
-  const movieInfo = useSelector(getMovieInfo);
-
-  const {
-    getMovieInfoFromApi,
-  } = actions;
+  const movieInfo = useSelector(selectMovieInfo);
 
   const params = useParams();
 
@@ -38,7 +39,7 @@ export const MovieInfo = () => {
 
   useEffect(() => {
     if (movieId) {
-      dispatch(getMovieInfoFromApi(movieId));
+      dispatch(actionGetMovieInfoFromApi(movieId));
     };
    
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -17,4 +17,12 @@ const moviesFromApiReducer = (
   };
 };
 
+export function selectMoviesFromApi(state) {
+  const {
+    moviesFromApi,
+  } = state;
+
+  return moviesFromApi;
+};
+
 export default moviesFromApiReducer;

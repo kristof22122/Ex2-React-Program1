@@ -53,7 +53,6 @@ const mapStateProps = (state) => {
 const mapDispatchToProps = () => {
   return {
     readContactsFromApi,
-    // toggle,
   }
 };
 

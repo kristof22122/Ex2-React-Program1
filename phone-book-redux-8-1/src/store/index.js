@@ -7,95 +7,15 @@ import contactsReducer from "./contacts";
 import selectContactReducer from './selectContact';
 import openAddFormReducer from './openAddForm';
 import openModalConfirmReducer from './openModalConfirm';
-import firstNameFieldReducer from "./firstNameField";
-import lastNameFieldReducer from "./lastNameField";
-import phoneFieldReducer from "./phoneField";
-import firstNameErrorReducer from "./firstNameError";
-import lastNameErrorReducer from "./lastNameError";
-import phoneErrorReducer from "./phoneError";
 
-import { actions as contactsAction } from '../store/contacts';
-import { actions as selectContactAction } from '../store/selectContact';
+import modalAddFormFieldsReducer from "./modalAddFormFields";
 
-export function getContacts(state) {
-  const {
-    contacts,
-  } = state;
+import { actions as contactsAction } from './contacts';
+import { actions as selectContactAction } from './selectContact';
 
-  return contacts;
-};
+import { actions as modalAddFormFieldsAction } from "./modalAddFormFields";
 
-export function getSelectContact(state) {
-  const {
-    selectContact,
-  } = state;
-
-  return selectContact
-};
-
-export function getOpenAddForm(state) {
-  const {
-    openAddForm,
-  } = state;
-
-  return openAddForm;
-};
-
-export function getOpenModalConfirm(state) {
-  const {
-    openModalConfirm,
-  } = state;
-
-  return openModalConfirm;
-};
-
-export function getFirstNameField(state) {
-  const {
-    firstNameField,
-  } = state;
-
-  return firstNameField;
-};
-
-export function getLastNameField(state) {
-  const {
-    lastNameField,
-  } = state;
-
-  return lastNameField;
-};
-
-export function getPhoneField(state) {
-  const {
-    phoneField,
-  } = state;
-
-  return phoneField;
-};
-
-export function getFirstNameError(state) {
-  const {
-    firstNameError,
-  } = state;
-
-  return firstNameError;
-};
-
-export function getLastNameError(state) {
-  const {
-    lastNameError,
-  } = state;
-
-  return lastNameError;
-};
-
-export function getPhoneError(state) {
-  const {
-    phoneError,
-  } = state;
-
-  return phoneError;
-};
+import { actions as openAddFormAction } from './openAddForm';
 
 function baseRequestApiAction(callback) {
   return (value) => () => {
@@ -112,18 +32,22 @@ const {
   setSelectContact,
 } = selectContactAction;
 
+const {
+  setFirstNameField,
+  setFirstNameError,
+  setLastNameField,
+  setLastNameError,
+  setPhoneField,
+  setPhoneError,
+} = modalAddFormFieldsAction;
+
+const {
+  toggle: toggleAddFormAction,
+} = openAddFormAction;
+
 export const actions = {
   creatContactForAPI: baseRequestApiAction(requestCreate),
   updateContactForAPI: baseRequestApiAction(requestUpdate),
-  validField: (validRegExp, field, setError) => (dispatch) => {
-    const validTest = validRegExp.test(field);
-
-    if (!validTest || field === null) {
-      dispatch(setError(true));
-    };
-    
-    return validTest;
-  },
   readContactsFromApi: () => {
     return (dispatch) => {
       return requestRead()
@@ -134,7 +58,6 @@ export const actions = {
   },
   addContactsToApi: (firstNameField, lastNameField, phoneField, selectContact) => {
     return (dispatch) => {
-      console.log('Add contact');
       if (selectContact !== null) {
         const {
           id: selectContactId,
@@ -149,7 +72,6 @@ export const actions = {
   
         dispatch(update(updateContactInfo));
         dispatch(setSelectContact(updateContactInfo));
-        // dispatch(updateContactForAPI(updateContactInfo));
         requestUpdate(updateContactInfo)
         return;
       }
@@ -163,10 +85,75 @@ export const actions = {
       };
   
       dispatch(add(newContact));
-      // dispatch(creatContactForAPI(newContact));
       requestCreate(newContact)
     };
   },
+  addFormHandleClick: (
+      firstNameField,
+      setFirstNameError,
+      lastNameField,
+      setLastNameError,
+      phoneField,
+      setPhoneError,
+      selectContact,
+      ) => {
+    return (dispatch) => {
+      const validField = (validRegExp, field, setError) => {
+        const validTest = validRegExp.test(field);
+
+        if (!validTest || field === null) {
+          dispatch(setError(true));
+        };
+
+        return validTest;
+      };
+      
+      const validFirstName = /^[A-Za-z]{2,10}$/;
+      const validLastName = /^[A-Za-z]{2,20}$/;
+      const validPhone = /^\+8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
+
+      const validate = () => {
+        const validFirstNameTest = validField(validFirstName, firstNameField, setFirstNameError);
+        const validLastNameTest = validField(validLastName, lastNameField, setLastNameError);
+        const validPhoneTest = validField(validPhone, phoneField, setPhoneError);
+          
+        return (validFirstNameTest
+            && validLastNameTest
+            && validPhoneTest);
+      };
+
+      if (validate()) {
+        dispatch(actions.addContactsToApi(firstNameField, lastNameField, phoneField, selectContact));
+        dispatch(setFirstNameField(null));
+        dispatch(setLastNameField(null));
+        dispatch(setPhoneField(null));
+        dispatch(toggleAddFormAction());
+      }
+    }
+  },
+  addFormHandleChange: (value, name) => {
+    return (dispatch) => {
+      switch (name) {
+        case 'firstNameField':
+          dispatch(setFirstNameField(value));
+          dispatch(setFirstNameError(false));
+          break;
+  
+        case 'lastNameField':
+          dispatch(setLastNameField(value));
+          dispatch(setLastNameError(false));
+          break;
+  
+        case 'phoneField':
+          dispatch(setPhoneField(value));
+          dispatch(setPhoneError(false));
+          break;
+      
+        default:
+          break;
+      };
+    }
+  }
 };
 
 const reducer = combineReducers({
@@ -174,12 +161,8 @@ const reducer = combineReducers({
   selectContact: selectContactReducer,
   openAddForm: openAddFormReducer,
   openModalConfirm: openModalConfirmReducer,
-  firstNameField: firstNameFieldReducer,
-  lastNameField: lastNameFieldReducer,
-  phoneField: phoneFieldReducer,
-  firstNameError: firstNameErrorReducer,
-  lastNameError: lastNameErrorReducer,
-  phoneError: phoneErrorReducer,
+
+  modalAddFormFields: modalAddFormFieldsReducer,
 });
 
 const store = createStore(reducer, applyMiddleware(thunk));

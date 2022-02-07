@@ -9,7 +9,7 @@ import { actions as selectContactAction } from '../../store/selectContact';
 import { actions as openAddFormAction } from '../../store/openAddForm';
 
 const {
-  toggle,
+  toggle: toggleAddFormAction,
 } = openAddFormAction;
 
 const {
@@ -18,7 +18,7 @@ const {
 
 const ContactsList = (props) => {
   const {
-    toggle,
+    toggleAddFormAction,
     setSelectContact,
     contacts,
   } = props;
@@ -39,8 +39,7 @@ const ContactsList = (props) => {
             type="button"
             className="btn btn-primary"
             onClick={() => {
-              // toggleAddModal();
-              toggle();
+              toggleAddFormAction();
             }}
           >
             Add contact
@@ -81,7 +80,7 @@ const mapStateProps = (state) => {
 
 const mapDispatchToProps = () => {
   return {
-    toggle,
+    toggleAddFormAction,
     setSelectContact,
   }
 };

@@ -1,4 +1,4 @@
-const SET_FIRST_NAME_FIELD = 'firstNameField/SET_FIRST_NAME_FIELD'
+const SET_FIRST_NAME_FIELD = 'firstNameField/SET_FIRST_NAME_FIELD';
 
 
 export const actions = {

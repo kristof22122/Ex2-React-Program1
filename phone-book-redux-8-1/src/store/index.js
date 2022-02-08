@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 
-import { requestCreate, requestRead, requestUpdate } from "../api";
+import { requestCreate, requestRead, requestUpdate, requestDelete } from "../api";
 
 import contactsReducer from "./contacts";
 import toggleModalFormsReducer, { actions as toggleModalFormsAction } from './toggleModalForms';
@@ -22,6 +22,7 @@ const {
   add,
   update,
   setSelectContact,
+  deleteSelectedContact,
 } = contactsAction;
 
 const {
@@ -144,6 +145,17 @@ export const actions = {
         default:
           break;
       };
+    }
+  },
+  toggleModalConfirm: (choice, id) => {
+    return (dispatch) => {
+      if (choice) {
+        requestDelete(id);
+        dispatch(deleteSelectedContact(id));
+        dispatch(setSelectContact(null));
+      };
+
+      dispatch(toggleModalForm('confirmForm'));
     }
   }
 };

@@ -1,20 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
 
 import ModalConfirmCSS from './ModalConfirm.module.css';
 
-export const ModalConfirm = (props) => {
+import { actions } from '../../store';
+
+const {
+  toggleModalConfirm,
+} = actions;
+
+const ModalConfirm = (props) => {
   const {
+    selectContact,
     toggleModalConfirm,
-  } = props;
+  } = props
 
-  const setYes = () => {
-    toggleModalConfirm(true);
+  const {
+    id,
+  } = selectContact;
+
+  const handleClick = (choice, id) => {
+    toggleModalConfirm(choice, id);
   };
-
-  const setNo = () => {
-    toggleModalConfirm(false);
-  }
 
   return ReactDOM.createPortal(
     <div
@@ -34,14 +42,18 @@ export const ModalConfirm = (props) => {
           <button
             type="button"
             className="btn btn-success"
-            onClick={setYes}
+            onClick={() => {
+              handleClick(true, id)
+            }}
           >
             Yes
           </button>
           <button
             type="button"
             className="btn btn-danger"
-            onClick={setNo}
+            onClick={() => {
+              handleClick(false, id)
+            }}
           >
             No
           </button>
@@ -51,3 +63,11 @@ export const ModalConfirm = (props) => {
     document.getElementById('modalConfirm')
   )
 };
+
+const mapStateProps = (state) => {
+  return {
+    selectContact: state.contactsValues.selectContact,
+  }
+};
+
+export default connect(mapStateProps, { toggleModalConfirm })(ModalConfirm);

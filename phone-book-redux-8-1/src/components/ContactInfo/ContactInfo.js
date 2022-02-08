@@ -1,17 +1,18 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import ContactInfoCSS from './ContactInfo.module.css';
 
-import { ModalConfirm } from '../ModalConfirm/ModalConfirm';
-
-// import { actions as openModalConfirmAction } from '../../store/openModalConfirm';
+import ModalConfirm from '../ModalConfirm/ModalConfirm';
 
 import { actions as contactsAction } from '../../store/contacts';
-// import { actions as openAddFormAction } from '../../store/openAddForm';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 
-import { requestDelete } from '../../api';
+import { actions } from '../../store';
+
+const {
+  toggleModalConfirm,
+} = actions;
 
 const {
   toggleModalForm,
@@ -22,23 +23,14 @@ const {
   setSelectContact,
 } = contactsAction;
 
-// const {
-//   toggle: toggleModalConfirmAction,
-// } = openModalConfirmAction;
-
-// const {
-//   toggle: toggleAddFormAction,
-// } = openAddFormAction;
-
 const ContactInfo = (props) => {
   const {
     selectContact,
     openModalConfirm,
-    deleteSelectedContact,
     setSelectContact,
     toggleModalForm,
-    // toggleModalConfirmAction,
-    // toggleAddFormAction,
+
+    toggleModalConfirm,
   } = props;
 
   const {
@@ -48,24 +40,11 @@ const ContactInfo = (props) => {
     phone,
   } = selectContact;
 
-  const toggleModalConfirm = useCallback((choice) => {
-    if (choice) {
-      requestDelete(id);
-      deleteSelectedContact(id);
-      setSelectContact(null);
-    };
-
-    // toggleModalConfirmAction();
-    toggleModalForm('confirmForm');
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleClose = () => {
     setSelectContact(null);
   };
 
   const handleEdit = () => {
-    // toggleAddFormAction();
     toggleModalForm('addForm')
   };
 
@@ -114,7 +93,7 @@ const ContactInfo = (props) => {
                   className="btn btn-danger"
                   type="button"
                   onClick={() => {
-                    toggleModalConfirm(false);
+                    toggleModalConfirm(false, id);
                   }}
                 >
                   Delete
@@ -140,7 +119,6 @@ const ContactInfo = (props) => {
       </div>
       {openModalConfirm && (
         <ModalConfirm
-          toggleModalConfirm={toggleModalConfirm}
         />
       )}
     </div>
@@ -159,8 +137,7 @@ const mapDispatchToProps = () => {
     deleteSelectedContact,
     setSelectContact,
     toggleModalForm,
-    // toggleModalConfirmAction,
-    // toggleAddFormAction,
+    toggleModalConfirm,
   }
 };
 

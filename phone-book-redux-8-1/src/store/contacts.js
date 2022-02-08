@@ -1,32 +1,54 @@
-const ADD = 'contacts/ADD';
-const DELETE_SELECTED_CONTACT = 'contacts/DELETE_SELECTED_CONTACT';
-const UPDATE = 'contacts/UPDATE';
+const ADD = 'contactsValues/ADD';
+const DELETE_SELECTED_CONTACT = 'contactsValues/DELETE_SELECTED_CONTACT';
+const UPDATE = 'contactsValues/UPDATE';
+
+const SET_SELECT_CONTACT = 'contactsValues/SET_SELECT_CONTACT';
 
 
 export const actions = {
   add: (contact) => ({ type: ADD, contact }),
   deleteSelectedContact: (contact) => ({ type: DELETE_SELECTED_CONTACT, contact }),
   update: (contact) => ({ type: UPDATE, contact }),
+  setSelectContact: (value) => ({ type: SET_SELECT_CONTACT, value})
 };
 
+const contactsDefaultValue = {
+  contacts: [],
+  selectContact: null,
+}
+
 const contactsReducer = (
-  contacts = [],
+  contactsValues = contactsDefaultValue,
   action,
 ) => {
   const {
     contact: actionContact,
+    value,
   } = action;
+
+  const {
+    contacts,
+  } = contactsValues;
 
   switch (action.type) {
     case ADD:
       if (Array.isArray(actionContact)) {
-        return [...actionContact];
+        return {
+          ...contactsValues,
+          contacts: [...actionContact]
+        };
       };
 
-      return [...contacts, actionContact];
+      return {
+        ...contactsValues,
+        contacts: [...contacts, actionContact]
+      };
     case DELETE_SELECTED_CONTACT:
-      return contacts.filter(
-        contact => contact.id !== actionContact);
+      return {
+        ...contactsValues,
+        contacts: contacts.filter(
+        contact => contact.id !== actionContact)
+      };
     case UPDATE:
       const {
         id,
@@ -35,7 +57,9 @@ const contactsReducer = (
         phone,
       } = actionContact;
 
-      return contacts.map(contact => {
+      return {
+        ...contactsValues,
+        contacts: contacts.map(contact => {
         const {
           id: contactId,
         } = contact;
@@ -52,9 +76,21 @@ const contactsReducer = (
         };
 
         return contact;
-      });
+      })};
+    case SET_SELECT_CONTACT:
+        if (value === null) {
+          return {
+            ...contactsValues,
+            selectContact: null,
+          };
+        };
+
+        return {
+          ...contactsValues,
+          selectContact: { ...value },
+        };
     default:
-      return contacts;
+      return contactsValues;
   };
 };
 

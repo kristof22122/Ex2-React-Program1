@@ -45,15 +45,9 @@ function App(props) {
 
 const mapStateProps = (state) => {
   return {
-    selectContact: state.selectContact,
+    selectContact: state.contactsValues.selectContact,
     openAddForm: state.openAddForm,
   }
 };
 
-const mapDispatchToProps = () => {
-  return {
-    readContactsFromApi,
-  }
-};
-
-export default connect(mapStateProps, mapDispatchToProps())(App);
+export default connect(mapStateProps, {readContactsFromApi})(App);

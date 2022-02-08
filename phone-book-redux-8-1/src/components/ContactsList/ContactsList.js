@@ -5,8 +5,8 @@ import ContactsListCSS from './ContactsList.module.css';
 
 import { Contact } from '../Contact/Contact';
 
-import { actions as selectContactAction } from '../../store/selectContact';
 import { actions as openAddFormAction } from '../../store/openAddForm';
+import { actions as ContactsAction } from '../../store/contacts';
 
 const {
   toggle: toggleAddFormAction,
@@ -14,14 +14,18 @@ const {
 
 const {
   setSelectContact,
-} = selectContactAction;
+} = ContactsAction;
 
 const ContactsList = (props) => {
   const {
     toggleAddFormAction,
     setSelectContact,
-    contacts,
+    contactsValues,
   } = props;
+
+  const {
+    contacts,
+  } = contactsValues;
 
   return (
     <div
@@ -74,7 +78,7 @@ const ContactsList = (props) => {
 
 const mapStateProps = (state) => {
   return {
-    contacts: state.contacts,
+    contactsValues: state.contactsValues,
   }
 };
 

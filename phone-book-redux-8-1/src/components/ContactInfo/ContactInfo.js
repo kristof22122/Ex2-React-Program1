@@ -5,7 +5,6 @@ import ContactInfoCSS from './ContactInfo.module.css';
 
 import { ModalConfirm } from '../ModalConfirm/ModalConfirm';
 
-import { actions as selectContactAction } from '../../store/selectContact';
 import { actions as openModalConfirmAction } from '../../store/openModalConfirm';
 
 import { actions as contactsAction } from '../../store/contacts';
@@ -15,11 +14,8 @@ import { requestDelete } from '../../api';
 
 const {
   deleteSelectedContact,
-} = contactsAction;
-
-const {
   setSelectContact,
-} = selectContactAction;
+} = contactsAction;
 
 const {
   toggle: toggleModalConfirmAction,
@@ -145,7 +141,7 @@ const ContactInfo = (props) => {
 
 const mapStateProps = (state) => {
   return {
-    selectContact: state.selectContact,
+    selectContact: state.contactsValues.selectContact,
     openModalConfirm: state.openModalConfirm,
   }
 };

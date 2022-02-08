@@ -205,7 +205,7 @@ const ModalAddForm = React.memo((props) => {
 
 const mapStateProps = (state) => {
   return {
-    selectContact: state.selectContact,
+    selectContact: state.contactsValues.selectContact,
     firstNameField: state.firstNameField,
     lastNameField: state.lastNameField,
     phoneField: state.phoneField,

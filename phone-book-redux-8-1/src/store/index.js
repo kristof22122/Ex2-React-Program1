@@ -4,14 +4,12 @@ import thunk from 'redux-thunk';
 import { requestCreate, requestRead, requestUpdate } from "../api";
 
 import contactsReducer from "./contacts";
-import selectContactReducer from './selectContact';
 import openAddFormReducer from './openAddForm';
 import openModalConfirmReducer from './openModalConfirm';
 
 import modalAddFormFieldsReducer from "./modalAddFormFields";
 
 import { actions as contactsAction } from './contacts';
-import { actions as selectContactAction } from './selectContact';
 
 import { actions as modalAddFormFieldsAction } from "./modalAddFormFields";
 
@@ -26,11 +24,8 @@ function baseRequestApiAction(callback) {
 const {
   add,
   update,
-} = contactsAction;
-
-const {
   setSelectContact,
-} = selectContactAction;
+} = contactsAction;
 
 const {
   setFirstNameField,
@@ -157,8 +152,7 @@ export const actions = {
 };
 
 const reducer = combineReducers({
-  contacts: contactsReducer,
-  selectContact: selectContactReducer,
+  contactsValues: contactsReducer,
   openAddForm: openAddFormReducer,
   openModalConfirm: openModalConfirmReducer,
 

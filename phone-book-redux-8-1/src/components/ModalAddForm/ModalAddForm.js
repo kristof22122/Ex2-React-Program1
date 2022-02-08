@@ -20,12 +20,49 @@ const {
 
 const {
   setFirstNameField,
-  setFirstNameError,
   setLastNameField,
-  setLastNameError,
   setPhoneField,
-  setPhoneError,
 } = modalAddFormFieldsAction;
+
+const InputBlock = (props) => {
+  const {
+    fieldName,
+    fieldValue,
+    errorValue,
+    placeholder,
+    callback,
+  } = props;
+
+  return (
+    <>
+      <div className="mb-3">
+          <label
+            htmlFor={fieldName}
+            className={ModalAddFormCSS.form__label}
+          >
+            Firs name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name={fieldName}
+            id={fieldName}
+            placeholder={placeholder}
+            value={fieldValue || ''}
+            onChange={callback}
+            required
+          />
+        </div>
+        {(errorValue) && (
+            <label
+              className={ModalAddFormCSS.form__error}
+            >
+              Wrong first name
+            </label>
+          )}
+    </>
+  );
+}
 
 const ModalAddForm = React.memo((props) => {
   const {
@@ -34,9 +71,6 @@ const ModalAddForm = React.memo((props) => {
     setFirstNameField,
     setLastNameField,
     setPhoneField,
-    setFirstNameError,
-    setLastNameError,
-    setPhoneError,
 
     toggleModalForm,
     
@@ -58,11 +92,8 @@ const ModalAddForm = React.memo((props) => {
   const handleClick = () => {
     addFormHandleClick(
       firstNameField,
-      setFirstNameError,
       lastNameField,
-      setLastNameError,
       phoneField,
-      setPhoneError,
       selectContact
     );
   };
@@ -101,82 +132,27 @@ const ModalAddForm = React.memo((props) => {
       <form
         className={ModalAddFormCSS.form}
       >
-        <div className="mb-3">
-          <label
-            htmlFor="firstNameField"
-            className={ModalAddFormCSS.form__label}
-          >
-            Firs name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="firstNameField"
-            id="firstNameField"
-            placeholder="1 - 10 letters"
-            value={firstNameField || ''}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {(firstNameError) && (
-            <label
-              className={ModalAddFormCSS.form__error}
-            >
-              Wrong first name
-            </label>
-          )}
-        <div className="mb-3">
-          <label
-            htmlFor="lastNameField"
-            className={ModalAddFormCSS.form__label}
-          >
-            Last name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="lastNameField"
-            id="lastNameField"
-            placeholder="1 - 20 letters"
-            value={lastNameField || ''}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {(lastNameError) && (
-            <label
-              className={ModalAddFormCSS.form__error}
-            >
-              Wrong last name
-            </label>
-          )}
-        <div className="mb-3">
-          <label
-            className={ModalAddFormCSS.form__label}
-            htmlFor="phoneField"
-          >
-            Phone
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="phoneField"
-            id="phoneField"
-            placeholder="+8(999)999-99-99"
-            value={phoneField || ''}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {(phoneError) && (
-            <label
-              className={ModalAddFormCSS.form__error}
-            >
-              Wrong phone number
-              +8(999)999-99-99
-            </label>
-          )}
+        <InputBlock
+          fieldName='firstNameField'
+          fieldValue={firstNameField}
+          errorValue={firstNameError}
+          placeholder='1 - 10 letters'
+          callback={handleChange}
+        />
+        <InputBlock
+          fieldName='lastNameField'
+          fieldValue={lastNameField}
+          errorValue={lastNameError}
+          placeholder='1 - 20 letters'
+          callback={handleChange}
+        />
+        <InputBlock
+          fieldName='phoneField'
+          fieldValue={phoneField}
+          errorValue={phoneError}
+          placeholder='+8(999)999-99-99'
+          callback={handleChange}
+        />
         <div
           className={ModalAddFormCSS.form__buttons}
         >
@@ -221,9 +197,6 @@ const mapDispatchToProps = () => {
     setFirstNameField,
     setLastNameField,
     setPhoneField,
-    setFirstNameError,
-    setLastNameError,
-    setPhoneError,
     toggleModalForm,
     addFormHandleClick,
     addFormHandleChange,

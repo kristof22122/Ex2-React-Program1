@@ -83,11 +83,8 @@ export const actions = {
   },
   addFormHandleClick: (
       firstNameField,
-      setFirstNameError,
       lastNameField,
-      setLastNameError,
       phoneField,
-      setPhoneError,
       selectContact,
       ) => {
     return (dispatch) => {
@@ -105,17 +102,10 @@ export const actions = {
       const validLastName = /^[A-Za-z]{2,20}$/;
       const validPhone = /^\+8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
 
-      const validate = () => {
-        const validFirstNameTest = validField(validFirstName, firstNameField, setFirstNameError);
-        const validLastNameTest = validField(validLastName, lastNameField, setLastNameError);
-        const validPhoneTest = validField(validPhone, phoneField, setPhoneError);
-          
-        return (validFirstNameTest
-            && validLastNameTest
-            && validPhoneTest);
-      };
-
-      if (validate()) {
+      if (validField(validFirstName, firstNameField, setFirstNameError)
+          && validField(validLastName, lastNameField, setLastNameError)
+          && validField(validPhone, phoneField, setPhoneError)
+        ) {
         dispatch(actions.addContactsToApi(firstNameField, lastNameField, phoneField, selectContact));
         dispatch(setFirstNameField(null));
         dispatch(setLastNameField(null));

@@ -6,9 +6,12 @@ import ModalAddFormCSS from './ModalAddForm.module.css';
 
 import { actions } from '../../store';
 
-import { actions as openAddFormAction } from '../../store/openAddForm';
-
 import { actions as modalAddFormFieldsAction } from '../../store/modalAddFormFields';
+import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
+
+const {
+  toggleModalForm,
+} = toggleModalFormsAction;
 
 const {
   addFormHandleClick,
@@ -24,10 +27,6 @@ const {
   setPhoneError,
 } = modalAddFormFieldsAction;
 
-const {
-  toggle: toggleAddFormAction,
-} = openAddFormAction;
-
 const ModalAddForm = React.memo((props) => {
   const {
     selectContact,
@@ -39,7 +38,7 @@ const ModalAddForm = React.memo((props) => {
     setLastNameError,
     setPhoneError,
 
-    toggleAddFormAction,
+    toggleModalForm,
     
     addFormHandleClick,
     addFormHandleChange,
@@ -69,7 +68,7 @@ const ModalAddForm = React.memo((props) => {
   };
 
   const closeForm = () => {
-    toggleAddFormAction();
+    toggleModalForm('addForm')
   };
 
   const handleChange = (event) => {
@@ -225,7 +224,7 @@ const mapDispatchToProps = () => {
     setFirstNameError,
     setLastNameError,
     setPhoneError,
-    toggleAddFormAction,
+    toggleModalForm,
     addFormHandleClick,
     addFormHandleChange,
   }

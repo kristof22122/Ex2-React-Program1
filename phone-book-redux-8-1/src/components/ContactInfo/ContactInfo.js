@@ -5,25 +5,30 @@ import ContactInfoCSS from './ContactInfo.module.css';
 
 import { ModalConfirm } from '../ModalConfirm/ModalConfirm';
 
-import { actions as openModalConfirmAction } from '../../store/openModalConfirm';
+// import { actions as openModalConfirmAction } from '../../store/openModalConfirm';
 
 import { actions as contactsAction } from '../../store/contacts';
-import { actions as openAddFormAction } from '../../store/openAddForm';
+// import { actions as openAddFormAction } from '../../store/openAddForm';
+import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 
 import { requestDelete } from '../../api';
+
+const {
+  toggleModalForm,
+} = toggleModalFormsAction;
 
 const {
   deleteSelectedContact,
   setSelectContact,
 } = contactsAction;
 
-const {
-  toggle: toggleModalConfirmAction,
-} = openModalConfirmAction;
+// const {
+//   toggle: toggleModalConfirmAction,
+// } = openModalConfirmAction;
 
-const {
-  toggle: toggleAddFormAction,
-} = openAddFormAction;
+// const {
+//   toggle: toggleAddFormAction,
+// } = openAddFormAction;
 
 const ContactInfo = (props) => {
   const {
@@ -31,8 +36,9 @@ const ContactInfo = (props) => {
     openModalConfirm,
     deleteSelectedContact,
     setSelectContact,
-    toggleModalConfirmAction,
-    toggleAddFormAction,
+    toggleModalForm,
+    // toggleModalConfirmAction,
+    // toggleAddFormAction,
   } = props;
 
   const {
@@ -49,7 +55,8 @@ const ContactInfo = (props) => {
       setSelectContact(null);
     };
 
-    toggleModalConfirmAction();
+    // toggleModalConfirmAction();
+    toggleModalForm('confirmForm');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -58,7 +65,8 @@ const ContactInfo = (props) => {
   };
 
   const handleEdit = () => {
-    toggleAddFormAction();
+    // toggleAddFormAction();
+    toggleModalForm('addForm')
   };
 
   return (
@@ -142,7 +150,7 @@ const ContactInfo = (props) => {
 const mapStateProps = (state) => {
   return {
     selectContact: state.contactsValues.selectContact,
-    openModalConfirm: state.openModalConfirm,
+    openModalConfirm: state.toggleModalFormsValues.openModalConfirm,
   }
 };
 
@@ -150,8 +158,9 @@ const mapDispatchToProps = () => {
   return {
     deleteSelectedContact,
     setSelectContact,
-    toggleModalConfirmAction,
-    toggleAddFormAction,
+    toggleModalForm,
+    // toggleModalConfirmAction,
+    // toggleAddFormAction,
   }
 };
 

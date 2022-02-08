@@ -46,7 +46,7 @@ function App(props) {
 const mapStateProps = (state) => {
   return {
     selectContact: state.contactsValues.selectContact,
-    openAddForm: state.openAddForm,
+    openAddForm: state.toggleModalFormsValues.openAddForm,
   }
 };
 

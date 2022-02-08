@@ -5,12 +5,16 @@ import ContactsListCSS from './ContactsList.module.css';
 
 import { Contact } from '../Contact/Contact';
 
-import { actions as openAddFormAction } from '../../store/openAddForm';
+// import { actions as openAddFormAction } from '../../store/openAddForm';
 import { actions as ContactsAction } from '../../store/contacts';
+import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
+// const {
+//   toggle: toggleAddFormAction,
+// } = openAddFormAction;
 
 const {
-  toggle: toggleAddFormAction,
-} = openAddFormAction;
+  toggleModalForm,
+} = toggleModalFormsAction;
 
 const {
   setSelectContact,
@@ -18,7 +22,8 @@ const {
 
 const ContactsList = (props) => {
   const {
-    toggleAddFormAction,
+    // toggleAddFormAction,
+    toggleModalForm,
     setSelectContact,
     contactsValues,
   } = props;
@@ -43,7 +48,7 @@ const ContactsList = (props) => {
             type="button"
             className="btn btn-primary"
             onClick={() => {
-              toggleAddFormAction();
+              toggleModalForm('addForm');
             }}
           >
             Add contact
@@ -84,7 +89,8 @@ const mapStateProps = (state) => {
 
 const mapDispatchToProps = () => {
   return {
-    toggleAddFormAction,
+    // toggleAddFormAction,
+    toggleModalForm,
     setSelectContact,
   }
 };

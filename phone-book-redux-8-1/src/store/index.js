@@ -4,16 +4,13 @@ import thunk from 'redux-thunk';
 import { requestCreate, requestRead, requestUpdate } from "../api";
 
 import contactsReducer from "./contacts";
-import openAddFormReducer from './openAddForm';
-import openModalConfirmReducer from './openModalConfirm';
+import toggleModalFormsReducer, { actions as toggleModalFormsAction } from './toggleModalForms';
 
 import modalAddFormFieldsReducer from "./modalAddFormFields";
 
 import { actions as contactsAction } from './contacts';
 
 import { actions as modalAddFormFieldsAction } from "./modalAddFormFields";
-
-import { actions as openAddFormAction } from './openAddForm';
 
 function baseRequestApiAction(callback) {
   return (value) => () => {
@@ -37,8 +34,8 @@ const {
 } = modalAddFormFieldsAction;
 
 const {
-  toggle: toggleAddFormAction,
-} = openAddFormAction;
+  toggleModalForm,
+} = toggleModalFormsAction;
 
 export const actions = {
   creatContactForAPI: baseRequestApiAction(requestCreate),
@@ -122,7 +119,7 @@ export const actions = {
         dispatch(setFirstNameField(null));
         dispatch(setLastNameField(null));
         dispatch(setPhoneField(null));
-        dispatch(toggleAddFormAction());
+        dispatch(toggleModalForm('addForm'));
       }
     }
   },
@@ -153,10 +150,8 @@ export const actions = {
 
 const reducer = combineReducers({
   contactsValues: contactsReducer,
-  openAddForm: openAddFormReducer,
-  openModalConfirm: openModalConfirmReducer,
-
   modalAddFormFields: modalAddFormFieldsReducer,
+  toggleModalFormsValues: toggleModalFormsReducer,
 });
 
 const store = createStore(reducer, applyMiddleware(thunk));

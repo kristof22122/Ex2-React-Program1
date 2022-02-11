@@ -17,6 +17,14 @@ const contactsDefaultValue = {
   selectContact: null,
 }
 
+export function selectContacts(state) {
+  return state.contactsValues.contacts;
+}
+
+export const selectSelectedContact = (state) => {
+  return state.contactsValues.selectContact;
+} 
+
 const contactsReducer = (
   contactsValues = contactsDefaultValue,
   action,

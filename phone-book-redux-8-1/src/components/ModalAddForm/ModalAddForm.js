@@ -6,8 +6,17 @@ import ModalAddFormCSS from './ModalAddForm.module.css';
 
 import { actions } from '../../store';
 
-import { actions as modalAddFormFieldsAction } from '../../store/modalAddFormFields';
+import {
+  selectFirstNameField,
+  selectFirstNameError,
+  selectLastNameField,
+  selectLastNameError,
+  selectPhoneField,
+  selectPhoneError,
+} from '../../store/modalAddFormFields';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
+import { selectSelectedContact } from '../../store/contacts';
+
 
 const {
   toggleModalForm,
@@ -15,20 +24,16 @@ const {
 
 const {
   addFormHandleClick,
-  addFormHandleChange
+  addFormHandleChange,
+  openAddModalForm,
 } = actions;
-
-const {
-  setFirstNameField,
-  setLastNameField,
-  setPhoneField,
-} = modalAddFormFieldsAction;
 
 const InputBlock = (props) => {
   const {
     fieldName,
     fieldValue,
     errorValue,
+    errorMessage,
     placeholder,
     callback,
   } = props;
@@ -57,7 +62,7 @@ const InputBlock = (props) => {
             <label
               className={ModalAddFormCSS.form__error}
             >
-              Wrong first name
+              {errorMessage}
             </label>
           )}
     </>
@@ -68,34 +73,23 @@ const ModalAddForm = React.memo((props) => {
   const {
     selectContact,
 
-    setFirstNameField,
-    setLastNameField,
-    setPhoneField,
-
     toggleModalForm,
     
     addFormHandleClick,
     addFormHandleChange,
-
-    modalAddFormFields,
-  } = props;
-
-  const {
+    
     firstNameField,
     lastNameField,
     phoneField,
     firstNameError,
     lastNameError,
     phoneError,
-  } = modalAddFormFields;
+
+    openAddModalForm,
+  } = props;
 
   const handleClick = () => {
-    addFormHandleClick(
-      firstNameField,
-      lastNameField,
-      phoneField,
-      selectContact
-    );
+    addFormHandleClick();
   };
 
   const closeForm = () => {
@@ -112,17 +106,10 @@ const ModalAddForm = React.memo((props) => {
   };
 
   useEffect(() => {
-    if (selectContact) {
-      setFirstNameField(selectContact.firstName);
-      setLastNameField(selectContact.lastName);
-      setPhoneField(selectContact.phone);
-    };
-
+    openAddModalForm();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     selectContact,
-    setFirstNameField,
-    setLastNameField,
-    setPhoneField,
   ])
 
   return ReactDOM.createPortal(
@@ -136,6 +123,7 @@ const ModalAddForm = React.memo((props) => {
           fieldName='firstNameField'
           fieldValue={firstNameField}
           errorValue={firstNameError}
+          errorMessage='Wrong first name'
           placeholder='1 - 10 letters'
           callback={handleChange}
         />
@@ -143,6 +131,7 @@ const ModalAddForm = React.memo((props) => {
           fieldName='lastNameField'
           fieldValue={lastNameField}
           errorValue={lastNameError}
+          errorMessage='Wrong last name'
           placeholder='1 - 20 letters'
           callback={handleChange}
         />
@@ -150,6 +139,7 @@ const ModalAddForm = React.memo((props) => {
           fieldName='phoneField'
           fieldValue={phoneField}
           errorValue={phoneError}
+          errorMessage='Wrong phone'
           placeholder='+8(999)999-99-99'
           callback={handleChange}
         />
@@ -179,28 +169,33 @@ const ModalAddForm = React.memo((props) => {
 });
 
 const mapStateProps = (state) => {
-  return {
-    selectContact: state.contactsValues.selectContact,
-    firstNameField: state.firstNameField,
-    lastNameField: state.lastNameField,
-    phoneField: state.phoneField,
-    firstNameError: state.firstNameError,
-    lastNameError: state.lastNameError,
-    phoneError: state.phoneError,
+  const selectContact = selectSelectedContact(state);
 
-    modalAddFormFields: state.modalAddFormFields,
+  const firstNameField = selectFirstNameField(state);
+  const lastNameField = selectLastNameField(state);
+  const phoneField = selectPhoneField(state);
+  const firstNameError = selectFirstNameError(state);
+  const lastNameError = selectLastNameError(state);
+  const phoneError = selectPhoneError(state);
+
+  return {
+    selectContact,
+    
+    firstNameField,
+    lastNameField,
+    phoneField,
+    firstNameError,
+    lastNameError,
+    phoneError,
   }
 };
 
-const mapDispatchToProps = () => {
-  return {
-    setFirstNameField,
-    setLastNameField,
-    setPhoneField,
+export default connect(
+  mapStateProps,
+  {
     toggleModalForm,
     addFormHandleClick,
     addFormHandleChange,
+    openAddModalForm,
   }
-};
-
-export default connect(mapStateProps, mapDispatchToProps())(ModalAddForm);
+)(ModalAddForm);

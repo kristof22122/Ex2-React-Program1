@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import AppCSS from './App.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ContactsList from './components/ContactsList/ContactsList';
 import ContactInfo from './components/ContactInfo/ContactInfo';
-
 import ModalAddForm from './components/ModalAddForm/ModalAddForm';
 
-import { connect } from 'react-redux';
-
 import { actions } from './store';
+import { selectSelectedContact } from './store/contacts';
+import { selectOpenAddForm } from './store/toggleModalForms';
 
 const {
   readContactsFromApi,
@@ -44,9 +44,12 @@ function App(props) {
 }
 
 const mapStateProps = (state) => {
+  const selectContact = selectSelectedContact(state);
+  const openAddForm = selectOpenAddForm(state);
+
   return {
-    selectContact: state.contactsValues.selectContact,
-    openAddForm: state.toggleModalFormsValues.openAddForm,
+    selectContact,
+    openAddForm,
   }
 };
 

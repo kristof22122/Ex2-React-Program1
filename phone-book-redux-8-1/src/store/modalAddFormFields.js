@@ -1,17 +1,7 @@
-const SET_FIRST_NAME_FIELD = 'modalAddForm/SET_FIRST_NAME_FIELD';
-const SET_FIRST_NAME_ERROR = 'modalAddForm/SET_FIRST_NAME_ERROR';
-const SET_LAST_NAME_FIELD = 'modalAddForm/SET_LAST_NAME_FIELD';
-const SET_LAST_NAME_ERROR = 'modalAddForm/SET_LAST_NAME_ERROR';
-const SET_PHONE_FIELD = 'modalAddForm/SET_PHONE_FIELD';
-const SET_PHONE_ERROR = 'modalAddForm/SET_PHONE_ERROR';
+const SET_FORM_FIELD = 'modalAddForm/SET_FORM_FIELD';
 
 export const actions = {
-  setFirstNameField: (value) => ({ type: SET_FIRST_NAME_FIELD, value }),
-  setFirstNameError: (value) => ({ type: SET_FIRST_NAME_ERROR, value }),
-  setLastNameField: (value) => ({ type: SET_LAST_NAME_FIELD, value }),
-  setLastNameError: (value) => ({ type: SET_LAST_NAME_ERROR, value }),
-  setPhoneField: (value) => ({ type: SET_PHONE_FIELD, value }),
-  setPhoneError: (value) => ({ type: SET_PHONE_ERROR, value }),
+  setFormField: (value, fieldName) => ({ type: SET_FORM_FIELD, value, fieldName})
 };
 
 const modalAddFormDefaultValues = {
@@ -23,41 +13,79 @@ const modalAddFormDefaultValues = {
   phoneError: false,
 }
 
+export const selectFirstNameField = (state) => {
+  return state.modalAddFormValues.firstNameField;
+}
+export const selectFirstNameError = (state) => {
+  return state.modalAddFormValues.firstNameError;
+}
+export const selectLastNameField = (state) => {
+  return state.modalAddFormValues.lastNameField;
+}
+export const selectLastNameError = (state) => {
+  return state.modalAddFormValues.lastNameError;
+}
+export const selectPhoneField = (state) => {
+  return state.modalAddFormValues.phoneField;
+}
+export const selectPhoneError = (state) => {
+  return state.modalAddFormValues.phoneError;
+}
+
 const modalAddFormFieldsReducer = (
   modalAddFormValues = modalAddFormDefaultValues,
   action,
 ) => {
+  const {
+    value,
+    fieldName,
+  } = action;
+
   switch (action.type) {
-    case SET_FIRST_NAME_FIELD:
-      return {
-        ...modalAddFormValues,
-        firstNameField: action.value,
+    case SET_FORM_FIELD:
+      if (fieldName === 'firstNameField') {
+        return {
+          ...modalAddFormValues,
+          firstNameField: value,
+        };
       };
-    case SET_FIRST_NAME_ERROR:
-      return {
-        ...modalAddFormValues,
-        firstNameError: action.value,
+      
+      if (fieldName === 'firstNameError') {
+        return {
+          ...modalAddFormValues,
+          firstNameError: value,
+        };
       };
-    case SET_LAST_NAME_FIELD:
-      return {
-        ...modalAddFormValues,
-        lastNameField: action.value,
+
+      if (fieldName === 'lastNameField') {
+        return {
+          ...modalAddFormValues,
+          lastNameField: value,
+        };
       };
-    case SET_LAST_NAME_ERROR:
-      return {
-        ...modalAddFormValues,
-        lastNameError: action.value,
+
+      if (fieldName === 'lastNameError') {
+        return {
+          ...modalAddFormValues,
+          lastNameError: value,
+        };
       };
-    case SET_PHONE_FIELD:
-      return {
-        ...modalAddFormValues,
-        phoneField: action.value,
+
+      if (fieldName === 'phoneField') {
+        return {
+          ...modalAddFormValues,
+          phoneField: value,
+        };
       };
-    case SET_PHONE_ERROR:
-      return {
-        ...modalAddFormValues,
-        phoneError: action.value,
+
+      if (fieldName === 'phoneError') {
+        return {
+          ...modalAddFormValues,
+          phoneError: value,
+        };
       };
+
+      return;
     default:
       return modalAddFormValues;
   };

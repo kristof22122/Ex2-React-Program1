@@ -5,12 +5,9 @@ import ContactsListCSS from './ContactsList.module.css';
 
 import { Contact } from '../Contact/Contact';
 
-// import { actions as openAddFormAction } from '../../store/openAddForm';
-import { actions as ContactsAction } from '../../store/contacts';
+import { actions as ContactsAction, selectContacts } from '../../store/contacts';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
-// const {
-//   toggle: toggleAddFormAction,
-// } = openAddFormAction;
+
 
 const {
   toggleModalForm,
@@ -22,15 +19,10 @@ const {
 
 const ContactsList = (props) => {
   const {
-    // toggleAddFormAction,
     toggleModalForm,
     setSelectContact,
-    contactsValues,
-  } = props;
-
-  const {
     contacts,
-  } = contactsValues;
+  } = props;
 
   return (
     <div
@@ -82,17 +74,17 @@ const ContactsList = (props) => {
 };
 
 const mapStateProps = (state) => {
+  const contacts = selectContacts(state);
+
   return {
-    contactsValues: state.contactsValues,
+    contacts,
   }
 };
 
-const mapDispatchToProps = () => {
-  return {
-    // toggleAddFormAction,
+export default connect(
+  mapStateProps,
+  {
     toggleModalForm,
     setSelectContact,
   }
-};
-
-export default connect(mapStateProps, mapDispatchToProps())(ContactsList);
+)(ContactsList);

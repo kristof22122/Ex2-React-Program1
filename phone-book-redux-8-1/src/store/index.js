@@ -8,9 +8,14 @@ import toggleModalFormsReducer, { actions as toggleModalFormsAction } from './to
 
 import modalAddFormFieldsReducer from "./modalAddFormFields";
 
-import { actions as contactsAction } from './contacts';
+import { actions as contactsAction, selectSelectedContact } from './contacts';
 
-import { actions as modalAddFormFieldsAction } from "./modalAddFormFields";
+import {
+  actions as modalAddFormFieldsAction,
+  selectFirstNameField,
+  selectLastNameField,
+  selectPhoneField,
+} from "./modalAddFormFields";
 
 function baseRequestApiAction(callback) {
   return (value) => () => {
@@ -26,12 +31,7 @@ const {
 } = contactsAction;
 
 const {
-  setFirstNameField,
-  setFirstNameError,
-  setLastNameField,
-  setLastNameError,
-  setPhoneField,
-  setPhoneError,
+  setFormField,
 } = modalAddFormFieldsAction;
 
 const {
@@ -81,18 +81,19 @@ export const actions = {
       requestCreate(newContact)
     };
   },
-  addFormHandleClick: (
-      firstNameField,
-      lastNameField,
-      phoneField,
-      selectContact,
-      ) => {
+  addFormHandleClick: () => {
+    const state = store.getState();
+    const selectContact = selectSelectedContact(state);
+    const firstNameField = selectFirstNameField(state);
+    const lastNameField = selectLastNameField(state);
+    const phoneField = selectPhoneField(state);
+
     return (dispatch) => {
-      const validField = (validRegExp, field, setError) => {
+      const validField = (validRegExp, field, setError, fieldName) => {
         const validTest = validRegExp.test(field);
 
         if (!validTest || field === null) {
-          dispatch(setError(true));
+          dispatch(setError(true, fieldName));
         };
 
         return validTest;
@@ -102,14 +103,14 @@ export const actions = {
       const validLastName = /^[A-Za-z]{2,20}$/;
       const validPhone = /^\+8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
 
-      if (validField(validFirstName, firstNameField, setFirstNameError)
-          && validField(validLastName, lastNameField, setLastNameError)
-          && validField(validPhone, phoneField, setPhoneError)
+      if (validField(validFirstName, firstNameField, setFormField, 'firstNameError')
+          && validField(validLastName, lastNameField, setFormField, 'lastNameError')
+          && validField(validPhone, phoneField, setFormField, 'phoneError')
         ) {
         dispatch(actions.addContactsToApi(firstNameField, lastNameField, phoneField, selectContact));
-        dispatch(setFirstNameField(null));
-        dispatch(setLastNameField(null));
-        dispatch(setPhoneField(null));
+        dispatch(setFormField(null, 'firstNameField'));
+        dispatch(setFormField(null, 'lastNameField'));
+        dispatch(setFormField(null, 'phoneField'));
         dispatch(toggleModalForm('addForm'));
       }
     }
@@ -118,18 +119,18 @@ export const actions = {
     return (dispatch) => {
       switch (name) {
         case 'firstNameField':
-          dispatch(setFirstNameField(value));
-          dispatch(setFirstNameError(false));
+          dispatch(setFormField(value, 'firstNameField'));
+          dispatch(setFormField(false, 'firstNameError'));
           break;
   
         case 'lastNameField':
-          dispatch(setLastNameField(value));
-          dispatch(setLastNameError(false));
+          dispatch(setFormField(value, 'lastNameField'));
+          dispatch(setFormField(false, 'lastNameError'));
           break;
   
         case 'phoneField':
-          dispatch(setPhoneField(value));
-          dispatch(setPhoneError(false));
+          dispatch(setFormField(value, 'phoneField'));
+          dispatch(setFormField(false, 'phoneError'));
           break;
       
         default:
@@ -137,7 +138,7 @@ export const actions = {
       };
     }
   },
-  toggleModalConfirm: (choice, id) => {
+  confirmDelete: (choice, id) => {
     return (dispatch) => {
       if (choice) {
         requestDelete(id);
@@ -147,12 +148,24 @@ export const actions = {
 
       dispatch(toggleModalForm('confirmForm'));
     }
-  }
+  },
+  openAddModalForm: () => {
+    const state = store.getState();
+    const selectContact = selectSelectedContact(state);
+
+    return (dispatch) => {
+      if (selectContact) {
+        dispatch(setFormField(selectContact.firstName, 'firstNameField'));
+        dispatch(setFormField(selectContact.lastName, 'lastNameField'));
+        dispatch(setFormField(selectContact.phone, 'phoneField'));
+      };
+    }
+  },
 };
 
 const reducer = combineReducers({
   contactsValues: contactsReducer,
-  modalAddFormFields: modalAddFormFieldsReducer,
+  modalAddFormValues: modalAddFormFieldsReducer,
   toggleModalFormsValues: toggleModalFormsReducer,
 });
 

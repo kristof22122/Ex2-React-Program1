@@ -4,6 +4,14 @@ export const actions = {
   toggleModalForm: (modalForm) => ({ type: TOGGLE, modalForm }),
 };
 
+export const selectOpenAddForm = (state) => {
+  return state.toggleModalFormsValues.openAddForm;
+}
+
+export const selectOpenModalConfirm = (state) => {
+  return state.toggleModalFormsValues.openModalConfirm;
+} 
+
 const toggleModalFormsDefaultValues = {
   openAddForm: false,
   openModalConfirm: false,

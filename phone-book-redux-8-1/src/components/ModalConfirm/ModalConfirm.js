@@ -5,15 +5,16 @@ import { connect } from 'react-redux';
 import ModalConfirmCSS from './ModalConfirm.module.css';
 
 import { actions } from '../../store';
+import { selectSelectedContact } from '../../store/contacts';
 
 const {
-  toggleModalConfirm,
+  confirmDelete,
 } = actions;
 
 const ModalConfirm = (props) => {
   const {
     selectContact,
-    toggleModalConfirm,
+    confirmDelete,
   } = props
 
   const {
@@ -21,7 +22,7 @@ const ModalConfirm = (props) => {
   } = selectContact;
 
   const handleClick = (choice, id) => {
-    toggleModalConfirm(choice, id);
+    confirmDelete(choice, id);
   };
 
   return ReactDOM.createPortal(
@@ -65,9 +66,11 @@ const ModalConfirm = (props) => {
 };
 
 const mapStateProps = (state) => {
+  const selectContact = selectSelectedContact(state);
+
   return {
-    selectContact: state.contactsValues.selectContact,
+    selectContact,
   }
 };
 
-export default connect(mapStateProps, { toggleModalConfirm })(ModalConfirm);
+export default connect(mapStateProps, { confirmDelete })(ModalConfirm);

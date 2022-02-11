@@ -5,13 +5,14 @@ import ContactInfoCSS from './ContactInfo.module.css';
 
 import ModalConfirm from '../ModalConfirm/ModalConfirm';
 
-import { actions as contactsAction } from '../../store/contacts';
+import { actions as contactsAction, selectSelectedContact } from '../../store/contacts';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 
 import { actions } from '../../store';
+import { selectOpenModalConfirm } from '../../store/toggleModalForms';
 
 const {
-  toggleModalConfirm,
+  confirmDelete,
 } = actions;
 
 const {
@@ -19,7 +20,6 @@ const {
 } = toggleModalFormsAction;
 
 const {
-  deleteSelectedContact,
   setSelectContact,
 } = contactsAction;
 
@@ -30,7 +30,7 @@ const ContactInfo = (props) => {
     setSelectContact,
     toggleModalForm,
 
-    toggleModalConfirm,
+    confirmDelete,
   } = props;
 
   const {
@@ -45,7 +45,7 @@ const ContactInfo = (props) => {
   };
 
   const handleEdit = () => {
-    toggleModalForm('addForm')
+    toggleModalForm('addForm');
   };
 
   return (
@@ -93,7 +93,7 @@ const ContactInfo = (props) => {
                   className="btn btn-danger"
                   type="button"
                   onClick={() => {
-                    toggleModalConfirm(false, id);
+                    confirmDelete(false, id);
                   }}
                 >
                   Delete
@@ -126,19 +126,19 @@ const ContactInfo = (props) => {
 };
 
 const mapStateProps = (state) => {
+  const selectContact = selectSelectedContact(state);
+  const openModalConfirm = selectOpenModalConfirm(state);
   return {
-    selectContact: state.contactsValues.selectContact,
-    openModalConfirm: state.toggleModalFormsValues.openModalConfirm,
+    selectContact,
+    openModalConfirm,
   }
 };
 
-const mapDispatchToProps = () => {
-  return {
-    deleteSelectedContact,
+export default connect(
+  mapStateProps,
+  {
     setSelectContact,
     toggleModalForm,
-    toggleModalConfirm,
+    confirmDelete,
   }
-};
-
-export default connect(mapStateProps, mapDispatchToProps())(ContactInfo);
+)(ContactInfo);

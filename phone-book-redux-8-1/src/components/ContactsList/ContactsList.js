@@ -8,6 +8,11 @@ import { Contact } from '../Contact/Contact';
 import { actions as ContactsAction, selectContacts } from '../../store/contacts';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 
+import { fieldsLabel } from '../../store';
+
+const {
+  addFormLabel,
+} = fieldsLabel;
 
 const {
   toggleModalForm,
@@ -40,7 +45,7 @@ const ContactsList = (props) => {
             type="button"
             className="btn btn-primary"
             onClick={() => {
-              toggleModalForm('addForm');
+              toggleModalForm(addFormLabel);
             }}
           >
             Add contact

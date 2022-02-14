@@ -23,6 +23,29 @@ function baseRequestApiAction(callback) {
   };
 };
 
+export const fieldsLabel = {
+  firstNameLabel: 'firstNameField',
+  lastNameLabel: 'lastNameField',
+  phoneLabel: 'phoneField',
+  firstNameErrorLabel: 'firstNameError',
+  lastNameErrorLabel: 'lastNameError',
+  phoneErrorLabel: 'phoneError',
+  addFormLabel: 'addForm',
+  confirmFormLabel: 'confirmForm',
+};
+
+
+const {
+  firstNameLabel,
+  lastNameLabel,
+  phoneLabel,
+  firstNameErrorLabel,
+  lastNameErrorLabel,
+  phoneErrorLabel,
+  addFormLabel,
+  confirmFormLabel,
+} = fieldsLabel;
+
 const {
   add,
   update,
@@ -103,34 +126,34 @@ export const actions = {
       const validLastName = /^[A-Za-z]{2,20}$/;
       const validPhone = /^\+8\(\d{3}\)\d{3}-\d{2}-\d{2}$/;
 
-      if (validField(validFirstName, firstNameField, setFormField, 'firstNameError')
-          && validField(validLastName, lastNameField, setFormField, 'lastNameError')
-          && validField(validPhone, phoneField, setFormField, 'phoneError')
+      if (validField(validFirstName, firstNameField, setFormField, firstNameErrorLabel)
+          && validField(validLastName, lastNameField, setFormField, lastNameErrorLabel)
+          && validField(validPhone, phoneField, setFormField, phoneErrorLabel)
         ) {
         dispatch(actions.addContactsToApi(firstNameField, lastNameField, phoneField, selectContact));
-        dispatch(setFormField(null, 'firstNameField'));
-        dispatch(setFormField(null, 'lastNameField'));
-        dispatch(setFormField(null, 'phoneField'));
-        dispatch(toggleModalForm('addForm'));
+        dispatch(setFormField(null, firstNameLabel));
+        dispatch(setFormField(null, lastNameLabel));
+        dispatch(setFormField(null, phoneLabel));
+        dispatch(toggleModalForm(addFormLabel));
       }
     }
   },
   addFormHandleChange: (value, name) => {
     return (dispatch) => {
       switch (name) {
-        case 'firstNameField':
-          dispatch(setFormField(value, 'firstNameField'));
-          dispatch(setFormField(false, 'firstNameError'));
+        case firstNameLabel:
+          dispatch(setFormField(value, firstNameLabel));
+          dispatch(setFormField(false, firstNameErrorLabel));
           break;
   
-        case 'lastNameField':
-          dispatch(setFormField(value, 'lastNameField'));
-          dispatch(setFormField(false, 'lastNameError'));
+        case lastNameLabel:
+          dispatch(setFormField(value, lastNameLabel));
+          dispatch(setFormField(false, lastNameErrorLabel));
           break;
   
-        case 'phoneField':
-          dispatch(setFormField(value, 'phoneField'));
-          dispatch(setFormField(false, 'phoneError'));
+        case phoneLabel:
+          dispatch(setFormField(value, phoneLabel));
+          dispatch(setFormField(false, phoneErrorLabel));
           break;
       
         default:
@@ -146,7 +169,7 @@ export const actions = {
         dispatch(setSelectContact(null));
       };
 
-      dispatch(toggleModalForm('confirmForm'));
+      dispatch(toggleModalForm(confirmFormLabel));
     }
   },
   openAddModalForm: () => {
@@ -155,9 +178,9 @@ export const actions = {
 
     return (dispatch) => {
       if (selectContact) {
-        dispatch(setFormField(selectContact.firstName, 'firstNameField'));
-        dispatch(setFormField(selectContact.lastName, 'lastNameField'));
-        dispatch(setFormField(selectContact.phone, 'phoneField'));
+        dispatch(setFormField(selectContact.firstName, firstNameLabel));
+        dispatch(setFormField(selectContact.lastName, lastNameLabel));
+        dispatch(setFormField(selectContact.phone, phoneLabel));
       };
     }
   },

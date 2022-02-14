@@ -43,49 +43,11 @@ const modalAddFormFieldsReducer = (
 
   switch (action.type) {
     case SET_FORM_FIELD:
-      if (fieldName === 'firstNameField') {
-        return {
-          ...modalAddFormValues,
-          firstNameField: value,
-        };
-      };
-      
-      if (fieldName === 'firstNameError') {
-        return {
-          ...modalAddFormValues,
-          firstNameError: value,
-        };
-      };
 
-      if (fieldName === 'lastNameField') {
-        return {
-          ...modalAddFormValues,
-          lastNameField: value,
-        };
+      return {
+        ...modalAddFormValues,
+        [fieldName]: value,
       };
-
-      if (fieldName === 'lastNameError') {
-        return {
-          ...modalAddFormValues,
-          lastNameError: value,
-        };
-      };
-
-      if (fieldName === 'phoneField') {
-        return {
-          ...modalAddFormValues,
-          phoneField: value,
-        };
-      };
-
-      if (fieldName === 'phoneError') {
-        return {
-          ...modalAddFormValues,
-          phoneError: value,
-        };
-      };
-
-      return;
     default:
       return modalAddFormValues;
   };

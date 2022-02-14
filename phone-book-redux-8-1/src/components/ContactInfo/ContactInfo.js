@@ -8,11 +8,16 @@ import ModalConfirm from '../ModalConfirm/ModalConfirm';
 import { actions as contactsAction, selectSelectedContact } from '../../store/contacts';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 
-import { actions } from '../../store';
+import { actions, fieldsLabel } from '../../store';
 import { selectOpenModalConfirm } from '../../store/toggleModalForms';
 
 const {
+  addFormLabel,
+} = fieldsLabel;
+
+const {
   confirmDelete,
+  openAddModalForm,
 } = actions;
 
 const {
@@ -31,6 +36,7 @@ const ContactInfo = (props) => {
     toggleModalForm,
 
     confirmDelete,
+    openAddModalForm,
   } = props;
 
   const {
@@ -45,7 +51,8 @@ const ContactInfo = (props) => {
   };
 
   const handleEdit = () => {
-    toggleModalForm('addForm');
+    toggleModalForm(addFormLabel);
+    openAddModalForm();
   };
 
   return (
@@ -140,5 +147,6 @@ export default connect(
     setSelectContact,
     toggleModalForm,
     confirmDelete,
+    openAddModalForm,
   }
 )(ContactInfo);

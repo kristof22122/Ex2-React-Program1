@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 import ModalAddFormCSS from './ModalAddForm.module.css';
 
-import { actions } from '../../store';
+import { actions, fieldsLabel } from '../../store';
 
 import {
   selectFirstNameField,
@@ -17,6 +17,12 @@ import {
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 import { selectSelectedContact } from '../../store/contacts';
 
+const {
+  firstNameLabel,
+  lastNameLabel,
+  phoneLabel,
+  addFormLabel,
+} = fieldsLabel;
 
 const {
   toggleModalForm,
@@ -25,7 +31,6 @@ const {
 const {
   addFormHandleClick,
   addFormHandleChange,
-  openAddModalForm,
 } = actions;
 
 const InputBlock = (props) => {
@@ -84,8 +89,6 @@ const ModalAddForm = React.memo((props) => {
     firstNameError,
     lastNameError,
     phoneError,
-
-    openAddModalForm,
   } = props;
 
   const handleClick = () => {
@@ -93,7 +96,7 @@ const ModalAddForm = React.memo((props) => {
   };
 
   const closeForm = () => {
-    toggleModalForm('addForm')
+    toggleModalForm(addFormLabel)
   };
 
   const handleChange = (event) => {
@@ -105,13 +108,6 @@ const ModalAddForm = React.memo((props) => {
     addFormHandleChange(value, name);
   };
 
-  useEffect(() => {
-    openAddModalForm();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    selectContact,
-  ])
-
   return ReactDOM.createPortal(
     <div
       className={ModalAddFormCSS.wrapper}
@@ -120,7 +116,7 @@ const ModalAddForm = React.memo((props) => {
         className={ModalAddFormCSS.form}
       >
         <InputBlock
-          fieldName='firstNameField'
+          fieldName={firstNameLabel}
           fieldValue={firstNameField}
           errorValue={firstNameError}
           errorMessage='Wrong first name'
@@ -128,7 +124,7 @@ const ModalAddForm = React.memo((props) => {
           callback={handleChange}
         />
         <InputBlock
-          fieldName='lastNameField'
+          fieldName={lastNameLabel}
           fieldValue={lastNameField}
           errorValue={lastNameError}
           errorMessage='Wrong last name'
@@ -136,7 +132,7 @@ const ModalAddForm = React.memo((props) => {
           callback={handleChange}
         />
         <InputBlock
-          fieldName='phoneField'
+          fieldName={phoneLabel}
           fieldValue={phoneField}
           errorValue={phoneError}
           errorMessage='Wrong phone'
@@ -196,6 +192,5 @@ export default connect(
     toggleModalForm,
     addFormHandleClick,
     addFormHandleChange,
-    openAddModalForm,
   }
 )(ModalAddForm);

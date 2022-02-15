@@ -1,0 +1,26 @@
+.title__wrapper {
+  height: 6rem;
+}
+
+.overview__wrapper {
+  height: 8rem;
+}
+
+.overview__link {
+  height: 5rem;
+}
+
+.link {
+  text-decoration: none;
+  color: #276aa8;
+  transition: all 0.3s;
+}
+
+.link:hover {
+  padding: 0 3px;
+  color: #5b7be4;
+  border: 1px solid #5466a1;
+  box-shadow: 5px 3px 3px rgba(105, 114, 148, 0.6);
+  
+}
+

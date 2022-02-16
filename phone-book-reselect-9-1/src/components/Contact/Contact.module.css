@@ -1,0 +1,10 @@
+.contact {
+  display: flex;
+  color: #fff;
+}
+
+.contact__image {
+  width: 1.7rem;
+  border-radius: 50%;
+  margin-right: 10px;
+}

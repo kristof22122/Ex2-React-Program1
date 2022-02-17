@@ -1,32 +1,16 @@
-import { createSelector } from "reselect";
-
 const TOGGLE = 'toggleModalForms/TOGGLE';
 
 export const actions = {
   toggleModalForm: (modalForm) => ({ type: TOGGLE, modalForm }),
 };
 
-const selectOpenAddForm = (state) => {
+export const selectOpenAddForm = (state) => {
   return state.toggleModalFormsValues.openAddForm;
 };
 
-const selectOpenModalConfirm = (state) => {
+export  const selectOpenModalConfirm = (state) => {
   return state.toggleModalFormsValues.openModalConfirm;
 };
-
-export const reselectOpenAddForm = createSelector(
-  selectOpenAddForm,
-  (openAddForm) => {
-    return openAddForm;
-  }
-);
-
-export const reselectOpenModalConfirm = createSelector(
-  selectOpenModalConfirm,
-  (openModalConfirm) => {
-    return openModalConfirm;
-  }
-);
 
 const toggleModalFormsDefaultValues = {
   openAddForm: false,

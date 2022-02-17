@@ -1,5 +1,3 @@
-import { createSelector } from "reselect";
-
 const SET_FORM_FIELD = 'modalAddForm/SET_FORM_FIELD';
 
 export const actions = {
@@ -15,63 +13,24 @@ const modalAddFormDefaultValues = {
   phoneError: false,
 }
 
-const selectFirstNameField = (state) => {
+export const selectFirstNameField = (state) => {
   return state.modalAddFormValues.firstNameField;
 }
-const selectFirstNameError = (state) => {
+export const selectFirstNameError = (state) => {
   return state.modalAddFormValues.firstNameError;
 }
-const selectLastNameField = (state) => {
+export const selectLastNameField = (state) => {
   return state.modalAddFormValues.lastNameField;
 }
-const selectLastNameError = (state) => {
+export const selectLastNameError = (state) => {
   return state.modalAddFormValues.lastNameError;
 }
-const selectPhoneField = (state) => {
+export const selectPhoneField = (state) => {
   return state.modalAddFormValues.phoneField;
 }
-const selectPhoneError = (state) => {
+export const selectPhoneError = (state) => {
   return state.modalAddFormValues.phoneError;
 }
-
-export const reselectFirstNameField = createSelector(
-  selectFirstNameField,
-  (firstNameField) => {
-    return firstNameField;
-  }
-);
-export const reselectFirstNameError = createSelector(
-  selectFirstNameError,
-  (firstNameError) => {
-    return firstNameError;
-  }
-);
-export const reselectLastNameField = createSelector(
-  selectLastNameField,
-  (lastNameField) => {
-    return lastNameField;
-  }
-);
-export const reselectLastNameError = createSelector(
-  selectLastNameError,
-  (lastNameError) => {
-    return lastNameError;
-  }
-);
-export const reselectPhoneField = createSelector(
-  selectPhoneField,
-  (phoneField) => {
-    return phoneField;
-  }
-);
-export const reselectPhoneError = createSelector(
-  selectPhoneError,
-  (phoneError) => {
-    return phoneError;
-  }
-);
-
-
 
 const modalAddFormFieldsReducer = (
   modalAddFormValues = modalAddFormDefaultValues,

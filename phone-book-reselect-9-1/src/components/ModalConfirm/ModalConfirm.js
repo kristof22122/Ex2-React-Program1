@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import ModalConfirmCSS from './ModalConfirm.module.css';
 
 import { actions } from '../../store';
-import { reselectSelectedContact } from '../../store/contacts';
+import { selectSelectedContact } from '../../store/contacts';
 
 const {
   confirmDelete,
@@ -66,7 +66,7 @@ const ModalConfirm = (props) => {
 };
 
 const mapStateProps = (state) => {
-  const selectContact = reselectSelectedContact(state);
+  const selectContact = selectSelectedContact(state);
 
   return {
     selectContact,

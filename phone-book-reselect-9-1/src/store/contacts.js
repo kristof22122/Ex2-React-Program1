@@ -1,5 +1,3 @@
-import { createSelector } from "reselect";
-
 const ADD = 'contactsValues/ADD';
 const DELETE_SELECTED_CONTACT = 'contactsValues/DELETE_SELECTED_CONTACT';
 const UPDATE = 'contactsValues/UPDATE';
@@ -19,27 +17,13 @@ const contactsDefaultValue = {
   selectContact: null,
 }
 
-function selectContacts(state) {
+export function selectContacts(state) {
   return state.contactsValues.contacts;
 };
 
-const selectSelectedContact = (state) => {
+export const selectSelectedContact = (state) => {
   return state.contactsValues.selectContact;
 }
-
-export const reselectContacts = createSelector(
-  selectContacts,
-  (contacts) => {
-    return contacts;
-  }
-);
-
-export const reselectSelectedContact = createSelector(
-  selectSelectedContact,
-  (selectContact) => {
-    return selectContact;
-  }
-);
 
 const contactsReducer = (
   contactsValues = contactsDefaultValue,

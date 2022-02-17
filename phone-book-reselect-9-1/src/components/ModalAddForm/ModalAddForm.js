@@ -7,15 +7,15 @@ import ModalAddFormCSS from './ModalAddForm.module.css';
 import { actions, fieldsLabel } from '../../store';
 
 import {
-  reselectFirstNameField,
-  reselectFirstNameError,
-  reselectLastNameField,
-  reselectLastNameError,
-  reselectPhoneField,
-  reselectPhoneError,
+  selectFirstNameField,
+  selectFirstNameError,
+  selectLastNameField,
+  selectLastNameError,
+  selectPhoneField,
+  selectPhoneError,
 } from '../../store/modalAddFormFields';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
-import { reselectSelectedContact } from '../../store/contacts';
+import { selectSelectedContact } from '../../store/contacts';
 
 const {
   firstNameLabel,
@@ -165,14 +165,14 @@ const ModalAddForm = React.memo((props) => {
 });
 
 const mapStateProps = (state) => {
-  const selectContact = reselectSelectedContact(state);
+  const selectContact = selectSelectedContact(state);
 
-  const firstNameField = reselectFirstNameField(state);
-  const lastNameField = reselectLastNameField(state);
-  const phoneField = reselectPhoneField(state);
-  const firstNameError = reselectFirstNameError(state);
-  const lastNameError = reselectLastNameError(state);
-  const phoneError = reselectPhoneError(state);
+  const firstNameField = selectFirstNameField(state);
+  const lastNameField = selectLastNameField(state);
+  const phoneField = selectPhoneField(state);
+  const firstNameError = selectFirstNameError(state);
+  const lastNameError = selectLastNameError(state);
+  const phoneError = selectPhoneError(state);
 
   return {
     selectContact,

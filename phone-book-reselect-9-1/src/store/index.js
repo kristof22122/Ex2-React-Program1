@@ -8,13 +8,13 @@ import toggleModalFormsReducer, { actions as toggleModalFormsAction } from './to
 
 import modalAddFormFieldsReducer from "./modalAddFormFields";
 
-import { actions as contactsAction, reselectSelectedContact } from './contacts';
+import { actions as contactsAction, selectSelectedContact } from './contacts';
 
 import {
   actions as modalAddFormFieldsAction,
-  reselectFirstNameField,
-  reselectLastNameField,
-  reselectPhoneField,
+  selectFirstNameField,
+  selectLastNameField,
+  selectPhoneField,
 } from "./modalAddFormFields";
 
 function baseRequestApiAction(callback) {
@@ -106,10 +106,10 @@ export const actions = {
   },
   addFormHandleClick: () => {
     const state = store.getState();
-    const selectContact = reselectSelectedContact(state);
-    const firstNameField = reselectFirstNameField(state);
-    const lastNameField = reselectLastNameField(state);
-    const phoneField = reselectPhoneField(state);
+    const selectContact = selectSelectedContact(state);
+    const firstNameField = selectFirstNameField(state);
+    const lastNameField = selectLastNameField(state);
+    const phoneField = selectPhoneField(state);
 
     return (dispatch) => {
       const validField = (validRegExp, field, setError, fieldName) => {
@@ -174,7 +174,7 @@ export const actions = {
   },
   openAddModalForm: () => {
     const state = store.getState();
-    const selectContact = reselectSelectedContact(state);
+    const selectContact = selectSelectedContact(state);
 
     return (dispatch) => {
       if (selectContact) {

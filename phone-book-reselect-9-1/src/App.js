@@ -8,8 +8,8 @@ import ContactInfo from './components/ContactInfo/ContactInfo';
 import ModalAddForm from './components/ModalAddForm/ModalAddForm';
 
 import { actions } from './store';
-import { reselectSelectedContact } from './store/contacts';
-import { reselectOpenAddForm } from './store/toggleModalForms';
+import { selectSelectedContact } from './store/contacts';
+import { selectOpenAddForm } from './store/toggleModalForms';
 
 const {
   readContactsFromApi,
@@ -24,7 +24,6 @@ function App(props) {
 
   useEffect(() => {
     readContactsFromApi();
-    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,8 +43,8 @@ function App(props) {
 }
 
 const mapStateProps = (state) => {
-  const selectContact = reselectSelectedContact(state);
-  const openAddForm = reselectOpenAddForm(state);
+  const selectContact = selectSelectedContact(state);
+  const openAddForm = selectOpenAddForm(state);
 
   return {
     selectContact,

@@ -5,11 +5,11 @@ import ContactInfoCSS from './ContactInfo.module.css';
 
 import ModalConfirm from '../ModalConfirm/ModalConfirm';
 
-import { actions as contactsAction, reselectSelectedContact } from '../../store/contacts';
+import { actions as contactsAction, selectSelectedContact } from '../../store/contacts';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 
 import { actions, fieldsLabel } from '../../store';
-import { reselectOpenModalConfirm } from '../../store/toggleModalForms';
+import { selectOpenModalConfirm } from '../../store/toggleModalForms';
 
 const {
   addFormLabel,
@@ -133,8 +133,8 @@ const ContactInfo = (props) => {
 };
 
 const mapStateProps = (state) => {
-  const selectContact = reselectSelectedContact(state);
-  const openModalConfirm = reselectOpenModalConfirm(state);
+  const selectContact = selectSelectedContact(state);
+  const openModalConfirm = selectOpenModalConfirm(state);
   return {
     selectContact,
     openModalConfirm,

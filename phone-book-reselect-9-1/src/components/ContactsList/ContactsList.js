@@ -5,7 +5,7 @@ import ContactsListCSS from './ContactsList.module.css';
 
 import { Contact } from '../Contact/Contact';
 
-import { actions as ContactsAction, reselectContacts } from '../../store/contacts';
+import { actions as ContactsAction, selectContacts } from '../../store/contacts';
 import { actions as toggleModalFormsAction } from '../../store/toggleModalForms';
 
 import { fieldsLabel } from '../../store';
@@ -79,7 +79,7 @@ const ContactsList = (props) => {
 };
 
 const mapStateProps = (state) => {
-  const contacts = reselectContacts(state);
+  const contacts = selectContacts(state);
 
   return {
     contacts,

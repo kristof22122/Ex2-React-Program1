@@ -1,34 +1,29 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import HeaderSCSS from './Header.module.css';
 
-import { getTranslation } from '../../translation';
-
 import { LangContext } from '../../context/LangContext';
 
-const language = [
+const languages = [
   'en',
   'de',
   'fr',
 ];
 
 export const Header = () => {
-  const { language: languageForTranslate, setLanguage } = useContext(LangContext);
-
-  const [ lan, setLan ] = useState('en');
+  const {
+    language: languageForTranslate,
+    setLanguage,
+    getTranslation, 
+  } = useContext(LangContext);
 
   const handleChangeLanguage = (event) => {
     const {
       value,
     } = event.target;
 
-    setLan(value);
+    setLanguage(value)
   };
-
-  useEffect(() => {
-    setLanguage(lan);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lan]);
 
   return (
     <header
@@ -37,14 +32,14 @@ export const Header = () => {
       <h2
         className={HeaderSCSS.news__title}
       >
-        {getTranslation('Header.title', languageForTranslate)}
+        {getTranslation('Header.title')}
       </h2>
       <select
         className={HeaderSCSS.news__select}
-        value={lan}
+        value={languageForTranslate}
         onChange={handleChangeLanguage}
       >
-        {language.map((lan, i) => {
+        {languages.map((lan, i) => {
           return (
             <option
               className={HeaderSCSS.news__option}

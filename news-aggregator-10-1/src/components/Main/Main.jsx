@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import MainCSS from './Main.module.css';
 
@@ -14,7 +14,7 @@ export const Main = () => {
   const [ page, setPage ] = useState(1);
   const [ news, setNews ] = useState([]);
   const [ queryForApi, setQueryForApi ] = useState(null);
-  const [ categoryForApi, setCategoryForApi ] = useState([]);
+  const [ categoryForApi, setCategoryForApi ] = useState(['business']);
   const {
     language,
   } = useContext(LangContext);
@@ -24,7 +24,9 @@ export const Main = () => {
 
     getNews(q, categoryForApiString, language, page)
       .then(res => {
-        setNews((page === 1) ? res : [...news, ...res]);
+        setNews((currentNews) => {
+          return (page === 1) ? res : [...currentNews, ...res] 
+        });
       });
   }
 
@@ -38,6 +40,11 @@ export const Main = () => {
     setPage(current => current + 1);
     getNewsFromApi(queryForApi, page + 1);
   };
+
+  useEffect(() => {
+    getNewsFromApi(queryForApi, page);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language])
 
   return (
     <div

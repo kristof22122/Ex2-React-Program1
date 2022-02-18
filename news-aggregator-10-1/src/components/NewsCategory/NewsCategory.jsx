@@ -2,10 +2,9 @@ import React, { useState,useEffect, useContext } from 'react';
 
 import NewsCategoryCSS from './NewsCategory.module.css';
 
-import { getTranslation } from '../../translation';
 import { LangContext } from '../../context/LangContext';
 
-const newsCategory = [
+const newsCategories = [
   'business',
   'entertainment',
   'environment',
@@ -23,9 +22,9 @@ export const NewsCategory = (props) => {
   const {
     setCategoryForApi,
   } = props;
-  const { language } = useContext(LangContext);
-
-  const categoryForTranslation = getTranslation('Main.NewsCategory', language);
+  const {
+    getTranslation,
+  } = useContext(LangContext);
 
   const [ category, setCategory ] = useState(['business']);
 
@@ -35,21 +34,19 @@ export const NewsCategory = (props) => {
       checked,
     } = event.target;
 
-    if (category.length === 1) {
-      if (!category.includes(name)) {
-        setCategory([ ...category, name ]);
+    setCategory((currentCategories) => {
+      if (currentCategories.length === 1) {
+        return (!currentCategories.includes(name)) 
+          ? [ ...currentCategories, name] 
+          : [...currentCategories];
       };
-      
-      return;
-    };
 
-    if (category.length < 5) {
-      setCategory(checked ? [ ...category, name ] : category.filter(c => c !== name));
-    };
-    
-    if (!checked) {
-      setCategory(category.filter(c => c !== name));
-    };
+      return (!checked) 
+        ? currentCategories.filter(c => c !== name)
+        : currentCategories.length < 5
+          ? [ ...currentCategories, name ]
+          : [...currentCategories];
+    });
   };
 
   useEffect(() => {
@@ -64,7 +61,9 @@ export const NewsCategory = (props) => {
       <ul
         className={NewsCategoryCSS.news__list}
       >
-        {newsCategory.map((value, i) => {
+        {newsCategories.map((value, i) => {
+          const mainNewsCategory = getTranslation(`Main.NewsCategory.${value}`);
+
           return (
             <li
               key={i}
@@ -74,7 +73,7 @@ export const NewsCategory = (props) => {
                 className={NewsCategoryCSS.news__label}
                 htmlFor={value}
               >
-                {categoryForTranslation[i]}
+                {mainNewsCategory}
               </label>
               <input
                 type="checkbox"

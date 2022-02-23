@@ -32,17 +32,13 @@ export const NewsCategory = (props) => {
     } = event.target;
 
     setCategory((currentCategories) => {
-      if (currentCategories.length === 1) {
-        return (!currentCategories.includes(name)) 
-          ? [ ...currentCategories, name] 
-          : [...currentCategories];
-      };
+      const newCategories = (!checked) 
+        ? currentCategories.filter(c => c !== name) 
+        : [ ...currentCategories, name];
 
-      return (!checked) 
-        ? currentCategories.filter(c => c !== name)
-        : currentCategories.length < 5
-          ? [ ...currentCategories, name ]
-          : [...currentCategories];
+      return (newCategories.length > 0 && newCategories.length <= 5)
+        ? newCategories 
+        : [ ...currentCategories ];
     });
   };
 

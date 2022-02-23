@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import NewsListCSS from './NewsList.module.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,7 +7,7 @@ import { Report } from '../Report/Report';
 
 import { useId } from 'react-id-generator';
 
-import { LangContext } from '../../context/LangContext';
+import { Translation } from '../Translation/Translation';
 
 export const NewsList = (props) => {
   const {
@@ -15,9 +15,6 @@ export const NewsList = (props) => {
     handleClickAddPage,
   } = props;
   const liId = useId(news.length);
-  const {
-    getTranslation,
-  } = useContext(LangContext);
 
   return (
     <div
@@ -26,7 +23,7 @@ export const NewsList = (props) => {
       <h1
         className={NewsListCSS.newsList__title}
       >
-        {getTranslation('Main.NewsList.title')}
+        <Translation text={'Main.NewsList.title'} />
       </h1>
       
         {news.length === 0 ? (
@@ -34,7 +31,7 @@ export const NewsList = (props) => {
             <h4
               className={NewsListCSS.newsList__noNews}
             >
-              {getTranslation('Main.NewsList.error')}
+              <Translation text={'Main.NewsList.error'} />
             </h4>
           </>
         ) 

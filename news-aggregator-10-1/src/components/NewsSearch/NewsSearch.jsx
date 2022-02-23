@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import NewsSearchCSS from './NewsSearch.module.css';
-
-import { LangContext } from '../../context/LangContext';
+import { Translation } from '../Translation/Translation';
 
 export const NewsSearch = (props) => {
   const {
@@ -10,11 +9,6 @@ export const NewsSearch = (props) => {
   } = props;
 
   const [ query, setQuery ] = useState(null);
-
-  const {
-    language,
-    getTranslation,
-  } = useContext(LangContext);
 
   return (
     <div
@@ -27,7 +21,7 @@ export const NewsSearch = (props) => {
           htmlFor="search"
           className={NewsSearchCSS.search__label}
         >
-          {getTranslation('Main.NewsSearch.title')}
+          <Translation text={'Main.NewsSearch.title'} />
         </label>
         <input
           className={NewsSearchCSS.search__input}
@@ -46,7 +40,7 @@ export const NewsSearch = (props) => {
             setQuery(null);
           }}
         >
-          {getTranslation('Main.NewsSearch.buttonText', language)}
+          <Translation text={'Main.NewsSearch.buttonText'} />
         </button>
       </div>
     </div>

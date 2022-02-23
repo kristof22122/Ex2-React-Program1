@@ -1,8 +1,8 @@
-import React, { useState,useEffect, useContext } from 'react';
+import React, { useState,useEffect} from 'react';
 
 import NewsCategoryCSS from './NewsCategory.module.css';
 
-import { LangContext } from '../../context/LangContext';
+import { Translation } from '../Translation/Translation';
 
 const newsCategories = [
   'business',
@@ -22,9 +22,6 @@ export const NewsCategory = (props) => {
   const {
     setCategoryForApi,
   } = props;
-  const {
-    getTranslation,
-  } = useContext(LangContext);
 
   const [ category, setCategory ] = useState(['business']);
 
@@ -62,7 +59,6 @@ export const NewsCategory = (props) => {
         className={NewsCategoryCSS.news__list}
       >
         {newsCategories.map((value, i) => {
-          const mainNewsCategory = getTranslation(`Main.NewsCategory.${value}`);
 
           return (
             <li
@@ -73,7 +69,9 @@ export const NewsCategory = (props) => {
                 className={NewsCategoryCSS.news__label}
                 htmlFor={value}
               >
-                {mainNewsCategory}
+                <Translation
+                  text={`Main.NewsCategory.${value}`}
+                />
               </label>
               <input
                 type="checkbox"

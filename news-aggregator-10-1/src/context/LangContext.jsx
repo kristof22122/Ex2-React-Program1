@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 
-import { translation } from '../translation';
-
 export const LangContext = React.createContext({
   language: 'en',
-  setLanguage: null,
 });
 
 export const LangProvider = (props) => {
@@ -13,13 +10,9 @@ export const LangProvider = (props) => {
     children,
   } = props;
 
-  const getTranslation = (text) => {
-    return translation[language][text];
-  }
   const contextValue = {
     language,
     setLanguage,
-    getTranslation,
   };
 
   return (

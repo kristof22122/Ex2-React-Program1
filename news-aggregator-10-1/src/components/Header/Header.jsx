@@ -4,6 +4,8 @@ import HeaderSCSS from './Header.module.css';
 
 import { LangContext } from '../../context/LangContext';
 
+import { Translation } from '../Translation/Translation';
+
 const languages = [
   'en',
   'de',
@@ -14,7 +16,6 @@ export const Header = () => {
   const {
     language: languageForTranslate,
     setLanguage,
-    getTranslation, 
   } = useContext(LangContext);
 
   const handleChangeLanguage = (event) => {
@@ -32,7 +33,7 @@ export const Header = () => {
       <h2
         className={HeaderSCSS.news__title}
       >
-        {getTranslation('Header.title')}
+        <Translation text={'Header.title'} />
       </h2>
       <select
         className={HeaderSCSS.news__select}
